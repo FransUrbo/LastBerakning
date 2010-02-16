@@ -2,7 +2,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.3 2010-02-16 22:20:19 turbo Exp $
+// $Id: index.php,v 1.4 2010-02-16 22:33:35 turbo Exp $
+
+$VERSION = "$Revision: 1.4 $";
 
 // {{{ Defines
 $BK["1"]["FRONT"] = 10000;
@@ -314,7 +316,9 @@ if(!$_REQUEST["action"]) {
   // }}}
 }
 
-echo "<p><p><font size=\"-1\">Lastber&auml;rkningsprogram, Copyleft<br>Turbo Fredriksson &lt;turbo@bayour.com&gt;</font><br>";
+echo "<p><p><font size=\"-1\">Lastber&auml;rkningsprogram, Copyleft<br>Turbo Fredriksson &lt;turbo@bayour.com&gt;<br>";
+echo "Version: ".preg_replace("/\\$Revision: 1.4 $1', $VERSION);
+echo "</font>";
 
 /*
  * Local variables:
