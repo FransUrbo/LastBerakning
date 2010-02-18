@@ -2,9 +2,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.8 2010-02-18 17:38:16 turbo Exp $
+// $Id: index.php,v 1.9 2010-02-18 18:42:54 turbo Exp $
 
-$VERSION = "$Revision: 1.8 $";
+$VERSION = "$Revision: 1.9 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -100,6 +100,24 @@ function parse_table($data, $distance, $bk = 0) {
 // }}}
 
 if(!$_REQUEST["action"]) {
+  // {{{ Retreive and parse cookie(s)
+  foreach(array("truck", "trailer") as $type) {
+	$str = "LastBerakning:$type";
+	if($_COOKIE[$str]) {
+	  $cookie = preg_split("/:/", $_COOKIE[$str]);
+	  for($i=0; $cookie[$i]; $i++) {
+		$val = preg_split("/=/", $cookie[$i]);
+		$_REQUEST[$val[0]] = $val[1];
+	  }
+
+	  unset($_REQUEST[$str]);
+
+	  if($DEBUG >= 3)
+		printr($_REQUEST);
+	}
+  }
+  // }}}
+
   // {{{ Input form
 ?>
 <html>
@@ -116,31 +134,31 @@ if(!$_REQUEST["action"]) {
 
         <tr>
 	      <td>Tj&auml;nstevikt</td>
-          <td><input type="text" name="truck_weight" tabindex="1"></td>
+          <td><input type="text" name="truck_weight" tabindex="1" value="<?php echo $_REQUEST["truck_weight"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Tj&auml;nstevikt</td>
-          <td><input type="text" name="trailer_weight" tabindex="11"></td>
+          <td><input type="text" name="trailer_weight" tabindex="11" value="<?php echo $_REQUEST["trailer_weight"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
         <tr>
           <td>Max belastning<br>Framaxel</td>
-          <td><input type="text" name="truck_load_front" tabindex="2"></td>
+          <td><input type="text" name="truck_load_front" tabindex="2" value="<?php echo $_REQUEST["truck_load_front"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Max belastning<br>Framaxel</td>
-          <td><input type="text" name="trailer_load_front" tabindex="12"></td>
+          <td><input type="text" name="trailer_load_front" tabindex="12" value="<?php echo $_REQUEST["trailer_load_front"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
         <tr>
           <td>Max belastning<br>Bakaxel</td>
-          <td><input type="text" name="truck_load_back" tabindex="3"></td>
+          <td><input type="text" name="truck_load_back" tabindex="3" value="<?php echo $_REQUEST["truck_load_back"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Max belastning<br>Bakaxel</td>
-          <td><input type="text" name="trailer_load_back" tabindex="13"></td>
+          <td><input type="text" name="trailer_load_back" tabindex="13" value="<?php echo $_REQUEST["trailer_load_back"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
@@ -148,9 +166,9 @@ if(!$_REQUEST["action"]) {
           <td>Axlar</td>
           <td>
             <select name="truck_axles">
-              <option name="single" value="single">Enkelaxel</option>
-              <option name="boggie" value="boggie">Boggie</option>
-              <option name="tripple" value="tripple">Trippleaxel</option>
+              <option name="truck_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="truck_axles_boggie" value="boggie"<?php if($_REQUEST["truck_axles"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="truck_axles_tripple" value="tripple"<?php if($_REQUEST["truck_axles"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
             </select>
           </td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -158,20 +176,20 @@ if(!$_REQUEST["action"]) {
           <td>Axlar</td>
           <td>
             <select name="trailer_axles">
-              <option name="single" value="single">Enkelaxel</option>
-              <option name="boggie" value="boggie">Boggie</option>
-              <option name="tripple" value="tripple">Trippleaxel</option>
+              <option name="trailer_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="trailer_axles_boggie" value="boggie"<?php if($_REQUEST["truck_axles"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="trailer_axles_tripple" value="tripple"<?php if($_REQUEST["truck_axles"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
             </select>
           </td>
         </tr>
 
         <tr>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
-          <td><input type="checkbox" name="truck_road_nice" tabindex="7"></td>
+          <td><input type="checkbox" name="truck_road_nice" tabindex="7"<?php if($_REQUEST["truck_road_nice"]) { echo " CHECKED"; } ?>></td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
-          <td><input type="checkbox" name="trailer_road_nice" tabindex="17"></td>
+          <td><input type="checkbox" name="trailer_road_nice" tabindex="17"<?php if($_REQUEST["trailer_road_nice"]) { echo " CHECKED"; } ?>></td>
         </tr>
 
         <tr>
@@ -184,21 +202,21 @@ if(!$_REQUEST["action"]) {
 
         <tr>
           <td>Axelavst&aring;nd</td>
-          <td><input type="text" name="truck_axle" tabindex="4"></td>
+          <td><input type="text" name="truck_axle" tabindex="4" value="<?php echo $_REQUEST["truck_axle"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Axelavst&aring;nd</td>
-          <td><input type="text" name="trailer_axle" tabindex="14"></td>
+          <td><input type="text" name="trailer_axle" tabindex="14" value="<?php echo $_REQUEST["trailer_axle"]; ?>"></td>
           <td>mm</td>
         </tr>
 
         <tr>
           <td>Kopplingsavst&aring;nd</td>
-          <td><input type="text" name="truck_link" tabindex="5"></td>
+          <td><input type="text" name="truck_link" tabindex="5" value="<?php echo $_REQUEST["truck_link"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Kopplingsavst&aring;nd</td>
-          <td><input type="text" name="trailer_link" tabindex="15"></td>
+          <td><input type="text" name="trailer_link" tabindex="15" value="<?php echo $_REQUEST["trailer_link"]; ?>"></td>
           <td>mm</td>
         </tr>
 
@@ -232,6 +250,26 @@ if(!$_REQUEST["action"]) {
 	  echo "$key => $val<br>";
 	}
 	echo "<p>";
+  }
+  // }}}
+
+  // {{{ Save truck/trailer
+  foreach(array("truck", "trailer") as $type) {
+	$str = $type."_save";
+	if($_REQUEST[$str]) {
+	  $cookie = "";
+
+	  foreach($_REQUEST as $key => $val) {
+		if(preg_match("/^$type/", $key) and !preg_match("/_save$/", $key))
+		  $cookie .= "$key=$val:";
+	  }
+
+	  if($DEBUG >= 3)
+		echo "LastBerakning:$type='$cookie'<br>";
+	  if(!$DEBUG)
+		// Can't set cookie if debuging - output already sent!
+		setcookie("LastBerakning:$type", $cookie);
+	}
   }
   // }}}
 
