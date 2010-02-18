@@ -2,9 +2,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.9 2010-02-18 18:42:54 turbo Exp $
+// $Id: index.php,v 1.10 2010-02-18 18:48:24 turbo Exp $
 
-$VERSION = "$Revision: 1.9 $";
+$VERSION = "$Revision: 1.10 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -318,7 +318,8 @@ if(!$_REQUEST["action"]) {
 		$str1 = $type."_axle";
 
 		$dist = $_REQUEST[$str1];
-		eval("\$dist = ".htmlspecialchars($dist).";");
+		if($dist)
+		  eval("\$dist = ".htmlspecialchars($dist).";");
 
 		$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
 	  }
