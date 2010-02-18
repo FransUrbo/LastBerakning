@@ -2,9 +2,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.7 2010-02-18 17:33:34 turbo Exp $
+// $Id: index.php,v 1.8 2010-02-18 17:38:16 turbo Exp $
 
-$VERSION = "$Revision: 1.7 $";
+$VERSION = "$Revision: 1.8 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -466,7 +466,7 @@ if(!$_REQUEST["action"]) {
         <td>BK<?php echo "$bk"; ?></td>
         <td><?php echo $LOAD[$bk]["train"]?> ton</td>
         <td>(<?php
-			 $max_load_truck = ($LOAD[$bk]["truck"] -  $_REQUEST["truck_weight"]) / 1000;
+			 $max_load_truck = $LOAD[$bk]["truck"] -  $_REQUEST["truck_weight"];
 			 $max_load_train = ($LOAD[$bk]["train"] - ($_REQUEST["truck_weight"] + $_REQUEST["trailer_weight"]));
 			 $max_load_trail = $max_load_train - $max_load_truck;
 
