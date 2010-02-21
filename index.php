@@ -2,9 +2,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.10 2010-02-18 18:48:24 turbo Exp $
+// $Id: index.php,v 1.11 2010-02-21 10:51:29 turbo Exp $
 
-$VERSION = "$Revision: 1.10 $";
+$VERSION = "$Revision: 1.11 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -109,7 +109,6 @@ if(!$_REQUEST["action"]) {
 		$val = preg_split("/=/", $cookie[$i]);
 		$_REQUEST[$val[0]] = $val[1];
 	  }
-
 	  unset($_REQUEST[$str]);
 
 	  if($DEBUG >= 3)
@@ -121,49 +120,102 @@ if(!$_REQUEST["action"]) {
   // {{{ Input form
 ?>
 <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="tooltip.css">
+  </head>
   <body>
     <table>
       <form method="post" name="berakning":
         <tr>
-          <td colspan="2"><h1>Bil:</h1></td>
+          <td colspan="3"><h1>Bil:</h1></td>
           <td align="right"><input type="checkbox" name="truck_save">Spara</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td colspan="2"><h1>Sl&auml;p:</h1></td>
+          <td colspan="3"><h1>Sl&auml;p:</h1></td>
           <td align="right"><input type="checkbox" name="trailer_save">Spara</td>
         </tr>
 
         <tr>
 	      <td>Tj&auml;nstevikt</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="truck_weight" tabindex="1" value="<?php echo $_REQUEST["truck_weight"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Tj&auml;nstevikt</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="trailer_weight" tabindex="11" value="<?php echo $_REQUEST["trailer_weight"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
         <tr>
           <td>Max belastning<br>Framaxel</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="truck_load_front" tabindex="2" value="<?php echo $_REQUEST["truck_load_front"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Max belastning<br>Framaxel</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="trailer_load_front" tabindex="12" value="<?php echo $_REQUEST["trailer_load_front"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
         <tr>
           <td>Max belastning<br>Bakaxel</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="truck_load_back" tabindex="3" value="<?php echo $_REQUEST["truck_load_back"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Max belastning<br>Bakaxel</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="trailer_load_back" tabindex="13" value="<?php echo $_REQUEST["trailer_load_back"]; ?>"></td>
           <td>Ton</td>
         </tr>
 
         <tr>
           <td>Axlar</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+                Bakaxel typ (En, tv&aring; eller tre bakaxlar)
+              </span>
+            </a>
+          </td>
           <td>
             <select name="truck_axles">
               <option name="truck_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
@@ -174,6 +226,13 @@ if(!$_REQUEST["action"]) {
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Axlar</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+                Bakaxel typ (En, tv&aring; eller tre bakaxlar)
+              </span>
+            </a>
+          </td>
           <td>
             <select name="trailer_axles">
               <option name="trailer_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
@@ -185,47 +244,103 @@ if(!$_REQUEST["action"]) {
 
         <tr>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+                Tvillingmontage och luftfj&auml;dring
+              </span>
+            </a>
+          </td>
           <td><input type="checkbox" name="truck_road_nice" tabindex="7"<?php if($_REQUEST["truck_road_nice"]) { echo " CHECKED"; } ?>></td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+                Tvillingmontage och luftfj&auml;dring
+              </span>
+            </a>
+          </td>
           <td><input type="checkbox" name="trailer_road_nice" tabindex="17"<?php if($_REQUEST["trailer_road_nice"]) { echo " CHECKED"; } ?>></td>
         </tr>
 
         <tr>
-          <td></td>
-          <td colspan="2"><font size="-2">* Tvillingmontage och luftfj&auml;dring</font></td>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td></td>
-          <td colspan="2"><font size="-2">* Tvillingmontage och luftfj&auml;dring</font></td>
-        </tr>
-
-        <tr>
           <td>Axelavst&aring;nd</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+				* <b>Enkelaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>5900</b><p>
+
+				* <b>Boggieaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
+				&nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>4900+1350</b><p>
+
+				* <b>Trippelaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
+				&nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
+                &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan andra och sista (tredje) bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>3750+1360+1310</b><p>
+
+				Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="truck_axle" tabindex="4" value="<?php echo $_REQUEST["truck_axle"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Axelavst&aring;nd</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+				* <b>Enkelaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>1820</b><p>
+
+				* <b>Boggieaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
+				&nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>6400+2020</b><p>
+
+				* <b>Trippelaxel</b><br>
+				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
+				&nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
+                &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan andra och sista (tredje) bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>3750+1360+1310</b><p>
+
+				Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="trailer_axle" tabindex="14" value="<?php echo $_REQUEST["trailer_axle"]; ?>"></td>
           <td>mm</td>
         </tr>
 
         <tr>
           <td>Kopplingsavst&aring;nd</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="truck_link" tabindex="5" value="<?php echo $_REQUEST["truck_link"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>Kopplingsavst&aring;nd</td>
+		  <td>
+			<a class=info href="#">?
+			  <span>
+			    Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+              </span>
+            </a>
+          </td>
           <td><input type="text" name="trailer_link" tabindex="15" value="<?php echo $_REQUEST["trailer_link"]; ?>"></td>
           <td>mm</td>
-        </tr>
-
-        <tr>
-          <td></td>
-          <td colspan="2"><font size="-2">* Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas</font></td>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td></td>
-          <td colspan="2"><font size="-2">* Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas</font></td>
         </tr>
 
         <!-- ---------------------------------- -->
