@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.18 2010-02-22 22:48:19 turbo Exp $
+// $Id: index.php,v 1.19 2010-02-22 23:46:04 turbo Exp $
 
-$VERSION = "$Revision: 1.18 $";
+$VERSION = "$Revision: 1.19 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -456,108 +456,94 @@ if(!$_REQUEST["action"]) {
   }
   // }}}
 
-
-  // {{{ 2. $GROSS_BK
+  // {{{ 2. Figure out if it's really a boogie/tripple axle
   $TRAILER = 0;
 
-  // Lookup BKx table value dep. on axle distance
+  foreach(array("truck", "trailer") as $type) {
+	foreach(array("front", "back") as $location) {
+	  $key1 = $type.'_axles_'.$location;
+	  if($_REQUEST[$key1]) {
+		$key2 = $type."_axle";
+		$dist = preg_split("/\+/", $_REQUEST[$key2]);
+		
+		if($_REQUEST[$key1] == 'tripple') {
+		  // {{{ If the distance between the first and last axle in the tripple
+		  // is > 5 meters, it's NOT a tripple, but a boggie!
+		  // EX: 3750+2990+2020
+		  if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			if(($dist[1]+$dist[2]) > 5000) {
+			  $_REQUEST[$key1] = 'boggie';
+			  $_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
+			}
+		  }
+		  // }}}
+		} elseif($_REQUEST[$key1] == 'boggie') {
+		  // {{{ If the distance between the first and last axle in the boggie
+		  // is > 2 meters, it's NOT a boggie, but a single!
+		  if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			// Boggie + Boggie
+			// EX: 2020+4480+1310
+			
+			if($dist[0] > 2000) {
+			  $_REQUEST[$key1] = 'single';
+			  $_REQUEST[$key2] = $dist[0] + $dist[1];
+			}
+		  } elseif(preg_match("/\+/", $_REQUEST[$key2])) {
+			// EX: 4900+2020
+			
+			if($dist[1] > 2000) {
+			  $_REQUEST[$key1] = 'single';
+			  $_REQUEST[$key2] = $dist[0] + $dist[1];
+			}
+		  }
+		  // }}}
+		}
+	  }
+	}
+
+	if(($type == 'trailer') and ($_REQUEST["trailer_load_front"] == '0')) {
+	  // {{{ Trailer - no front axles!
+	  $TRAILER = 1;
+	  
+	  // Force trailer_axles_front to single
+	  $_REQUEST["trailer_axles_front"] = 'single';
+	  // }}}
+	}
+  }
+  // }}}
+
+
+  // {{{ 3. $GROSS_BK
+  // Lookup BKx table value dep. on FIRST and LAST axle distance
   if($DEBUG)
 	echo "<b>Gross BK values (\$GROSS_BK)</b>:<br>";
 
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
-	  $str = $type."_axles_back";
+	  $key = $type."_axle";
 
-	  // {{{ Figure out if it's really a boogie/tripple axle
-	  foreach(array("front", "back") as $location) {
-		$key1 = $type.'_axles_'.$location;
-		if($_REQUEST[$key1]) {
-		  $key2 = $type."_axle";
-
-		  if($_REQUEST[$key1] == 'tripple') {
-			// {{{ If the distance between the first and last axle in the tripple
-			// is > 5 meters, it's NOT a tripple, but a boggie!
-			// EX: 3750+2990+2020
-			if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
-			  $dist = preg_split("/\+/", $_REQUEST[$key2]);
-
-			  if(($dist[1]+$dist[2]) > 5000) {
-				$_REQUEST[$key1] = 'boggie';
-				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
-			  }
-			}
-			// }}}
-		  } elseif($_REQUEST[$key1] == 'boggie') {
-			// {{{ If the distance between the first and last axle in the boggie
-			// is > 2 meters, it's NOT a boggie, but a single!
-			// EX: 4900+2020
-			if(preg_match("/\+/", $_REQUEST[$key2])) {
-			  $dist = preg_split("/\+/", $_REQUEST[$key2]);
-
-			  if($dist[1] > 2000) {
-				$_REQUEST[$key1] = 'single';
-				$_REQUEST[$key2] = $dist[0] + $dist[1];
-			  }
-			}
-			// }}}
-		  }
-		}
-	  }
-	  // }}}
-	  
-	  if(($type == 'trailer') and ($_REQUEST["trailer_load_front"] == '0')) {
-		// {{{ Trailer - no front axles!
-		$TRAILER = 1;
-		
-		// Force trailer_axles_front to single
-		$_REQUEST["trailer_axles_front"] = 'single';
-		// }}}
-	  } else {
-		// {{{ Trailer - with front axle OR Truck!
-		if($_REQUEST[$str] == "single") {
-		  // {{{ => SINGLE
-		  if($DEBUG >= 2)
-			echo "Single axle (bk$bk / $type)<br>";
-		  
-		  $str1 = $type."_axle";
-		  if($_REQUEST[$str1])
-			$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $_REQUEST[$str1]);
-		  // }}}
-		} elseif(($_REQUEST[$str] == "boggie") or ($_REQUEST[$str] == "tripple")) {
-		  // {{{ => BOGGIE/TRIPPLE
-		  if($DEBUG >= 2)
-			echo $_REQUEST[$str]." axle (bk$bk / $type)<br>";
-		  
-		  $str1 = $type."_axle";
-		  
-		  if($_REQUEST[$str1]) {
-			$dist = $_REQUEST[$str1];
-			if($dist)
-			  eval("\$dist = ".htmlspecialchars($dist).";");
-			
-			$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
-		  } elseif($DEBUG >= 2) {
-			  echo "&nbsp;&nbsp;n/a<br>";
-			  $GROSS_BK[$bk][$type] = 0;
-		  }
-		  // }}}
-		}
+	  if($_REQUEST[$key]) {
+		if(preg_match("/\+/", $_REQUEST[$key]))
+		  eval("\$dist = ".htmlspecialchars($_REQUEST[$key]).";");
+		else
+		  $dist = $_REQUEST[$key];
 		  
 		if($DEBUG >= 2)
-		  echo "<br>";
-		// }}}
-	  }
+		  echo "Checking bk$bk / $type: raw dist = '".$_REQUEST[$key]."' ($dist)<br>";
+		$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+	  } else
+		$GROSS_BK[$bk][$type] = 0;
 	}
-
+	
 	if($DEBUG >= 2)
-	  echo "--------------<p>";
-  }	
+	  echo "--------------<br>";
+  }
 
   if($DEBUG)
 	printr($GROSS_BK);
   // }}}
 
-  // {{{ 3. $MAX_AXLE
+  // {{{ 4. $MAX_AXLE
   // Calculate max axle load
   if($DEBUG)
 	echo "<b>Max axle load (\$MAX_AXLE)</b>:<br>";
@@ -669,7 +655,7 @@ if(!$_REQUEST["action"]) {
 	printr($MAX_AXLE);
   // }}}
 
-  // {{{ 4. $LOAD
+  // {{{ 5. $LOAD
   // Get the lowest denominator of GROSS_BK / MAX_AXLE
   if($DEBUG)
 	echo "<b>Max Gross weight (\$LOAD)</b>:<br>";
