@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.13 2010-02-22 20:12:38 turbo Exp $
+// $Id: index.php,v 1.14 2010-02-22 21:04:31 turbo Exp $
 
-$VERSION = "$Revision: 1.13 $";
+$VERSION = "$Revision: 1.14 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -464,6 +464,32 @@ if(!$_REQUEST["action"]) {
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
 	  $str = $type."_axles_back";
+
+	  // {{{ Figure out if it's really a boogie/tripple axle
+	  foreach(array("front", "back") as $location) {
+		$key1 = $type.'_axles_'.$location;
+		if($_REQUEST[$key1]) {
+		  if($_REQUEST[$key1] == 'tripple') {
+			// If the distance between the first and last axle in the tripple
+			// is > 5 meters, it's NOT a tripple, but a boggie!
+			$key2 = $type."_axle";
+			if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			  $dist = preg_split("/\+/", $_REQUEST[$key2]);
+			  $new_dist = $dist[0]+$dist[1]."+".$dist[2];
+			  $dist = $dist[1]+$dist[2];
+
+			  if($dist > 5000) {
+				$_REQUEST[$key1] = 'boggie';
+				$_REQUEST[$key2] = $new_dist;
+			  }
+			}
+//		  } elseif($_REQUEST[$key1] == 'boggie')
+// TODO (?)
+//
+		  }
+		}
+	  }
+	  // }}}
 	  
 	  if(($type == 'trailer') and ($_REQUEST["trailer_load_front"] == '0')) {
 		// {{{ Trailer - no front axles!
@@ -486,7 +512,7 @@ if(!$_REQUEST["action"]) {
 		} elseif(($_REQUEST[$str] == "boggie") or ($_REQUEST[$str] == "tripple")) {
 		  // {{{ => BOGGIE/TRIPPLE
 		  if($DEBUG >= 2)
-			echo "Boggie/Tripple axle (bk$bk / $type)<br>";
+			echo $_REQUEST[$str]." axle (bk$bk / $type)<br>";
 		  
 		  $str1 = $type."_axle";
 		  
@@ -565,7 +591,7 @@ if(!$_REQUEST["action"]) {
 			  echo "&nbsp;&nbsp;load=$tmp<br>";
 			
 			if($DEBUG >= 3)
-			  echo "&nbsp;&nbsp;Boggie/Tripple axle ($bk / $type): load ($tmp) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
+			  echo "&nbsp;&nbsp;$axle axle ($bk / $type): load ($tmp) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
 			
 			($tmp <= $_REQUEST[$str]) ? $$load = $tmp : $$load = $_REQUEST[$str];
 			// }}}
