@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.12 2010-02-22 17:05:34 turbo Exp $
+// $Id: index.php,v 1.13 2010-02-22 20:12:38 turbo Exp $
 
-$VERSION = "$Revision: 1.12 $";
+$VERSION = "$Revision: 1.13 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -39,14 +39,14 @@ function parse_table($data, $distance, $bk = 0) {
   // Tables is in meters, but form is in milimeter...
   $d = $distance / 1000;
   if($DEBUG >= 2)
-	echo "Distance: '$d'm (bk=$bk)<br>";
+	echo "&nbsp;&nbsp;Distance: '$d'm<br>";
 
   for($i = 0; $data[$i] and !$RET; $i++) {
 	// Split up the line in three data parts
 	// Ex:	11.00<11.25=44.00
 	$vals = preg_split("/[\<\>\=]/", $data[$i]);
 	if($DEBUG >= 3) {
-	  echo "&nbsp;&nbsp;";
+	  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 	  print_r($vals);
 	  echo "<br>";
 	}
@@ -129,30 +129,32 @@ if(!$_REQUEST["action"]) {
     <table>
       <form method="post" name="berakning":
         <tr>
-          <td colspan="3"><h1>Bil:</h1></td>
+          <td colspan="4"><h1>Bil:</h1></td>
           <td align="right"><input type="checkbox" name="truck_save">Spara</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td colspan="3"><h1>Sl&auml;p:</h1></td>
+          <td colspan="4"><h1>Sl&auml;p:</h1></td>
           <td align="right"><input type="checkbox" name="trailer_save">Spara</td>
         </tr>
 
         <tr>
-	      <td>Tj&auml;nstevikt</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+          <td>&nbsp;</td>
+          <td>Tj&auml;nstevikt</td>
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
               </span>
             </a>
           </td>
           <td><input type="text" name="truck_weight" tabindex="1" value="<?php echo $_REQUEST["truck_weight"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;</td>
           <td>Tj&auml;nstevikt</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
               </span>
             </a>
           </td>
@@ -161,47 +163,87 @@ if(!$_REQUEST["action"]) {
         </tr>
 
         <tr>
-          <td>Max belastning<br>Framaxel</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+          <td rowspan="2">Framaxel</td>
+          <td>Max belastning</td>
+          <td>
+            <a class="info" href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
               </span>
             </a>
           </td>
           <td><input type="text" name="truck_load_front" tabindex="2" value="<?php echo $_REQUEST["truck_load_front"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td>Max belastning<br>Framaxel</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset<br>
-			    Om trailer, skriv <b>0</b> som vikt
+          <td rowspan="2">Framaxel</td>
+          <td>Max belastning</td>
+          <td>
+            <a class="info" href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset.<br>
+                Om trailer, skriv <b>0</b> som vikt.
               </span>
             </a>
           </td>
-          <td><input type="text" name="trailer_load_front" tabindex="12" value="<?php echo $_REQUEST["trailer_load_front"]; ?>"></td>
+          <td><input name="trailer_load_front" tabindex="12" value="<?php echo $_REQUEST["trailer_load_front"]; ?>" type="text"></td>
           <td>Ton</td>
+        </tr>
+        <tr>
+          <td>Axeltyp</td>
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
+              </span>
+            </a>
+          </td>
+          <td>
+            <select name="truck_axles_front">
+              <option name="truck_axles_front_single" value="single"<?php if($_REQUEST["truck_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="truck_axles_front_boggie" value="boggie"<?php if($_REQUEST["truck_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="truck_axles_front_tripple" value="tripple"<?php if($_REQUEST["truck_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+            </select>
+          </td>
+          <td>&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>Axeltyp</td>
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset<br>
+                Om trailer, skriv <b>0</b> som vikt
+              </span>
+            </a>
+          </td>
+          <td>
+            <select name="trailer_axles_front">
+              <option name="trailer_axles_front_single" value="single"<?php if($_REQUEST["trailer_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="trailer_axles_front_boggie" value="boggie"<?php if($_REQUEST["trailer_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="trailer_axles_front_tripple" value="tripple"<?php if($_REQUEST["trailer_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+            </select>
+          </td>
+          <td>&nbsp;</td>
         </tr>
 
         <tr>
-          <td>Max belastning<br>Bakaxel</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+          <td rowspan="2">Bakaxel</td>
+          <td>Max belastning</td>
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
               </span>
             </a>
           </td>
           <td><input type="text" name="truck_load_back" tabindex="3" value="<?php echo $_REQUEST["truck_load_back"]; ?>"></td>
           <td>Ton</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td>Max belastning<br>Bakaxel</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+          <td rowspan="2">Bakaxel</td>
+          <td>Max belastning</td>
+          <td>
+            <a class=info href="#">?
+              <span>
+                Vikt i ton fr&aring;n registrerings beviset
               </span>
             </a>
           </td>
@@ -210,45 +252,46 @@ if(!$_REQUEST["action"]) {
         </tr>
 
         <tr>
-          <td>Axlar</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
+          <td>Axeltyp</td>
+          <td>
+            <a class=info href="#">?
+              <span>
                 Bakaxel typ (En, tv&aring; eller tre bakaxlar)
               </span>
             </a>
           </td>
           <td>
-            <select name="truck_axles">
-              <option name="truck_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
-              <option name="truck_axles_boggie" value="boggie"<?php if($_REQUEST["truck_axles"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
-              <option name="truck_axles_tripple" value="tripple"<?php if($_REQUEST["truck_axles"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+            <select name="truck_axles_back">
+              <option name="truck_axles_back_single" value="single"<?php if($_REQUEST["truck_axles_back"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="truck_axles_back_boggie" value="boggie"<?php if($_REQUEST["truck_axles_back"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="truck_axles_back_tripple" value="tripple"<?php if($_REQUEST["truck_axles_back"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
             </select>
           </td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td>Axlar</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
+          <td>Axeltyp</td>
+          <td>
+            <a class=info href="#">?
+              <span>
                 Bakaxel typ (En, tv&aring; eller tre bakaxlar)
               </span>
             </a>
           </td>
           <td>
-            <select name="trailer_axles">
-              <option name="trailer_axles_single" value="single"<?php if($_REQUEST["truck_axles"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
-              <option name="trailer_axles_boggie" value="boggie"<?php if($_REQUEST["truck_axles"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
-              <option name="trailer_axles_tripple" value="tripple"<?php if($_REQUEST["truck_axles"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+            <select name="trailer_axles_back">
+              <option name="trailer_axles_back_single" value="single"<?php if($_REQUEST["truck_axles_back"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
+              <option name="trailer_axles_back_boggie" value="boggie"<?php if($_REQUEST["truck_axles_back"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <option name="trailer_axles_back_tripple" value="tripple"<?php if($_REQUEST["truck_axles_back"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
             </select>
           </td>
         </tr>
 
         <tr>
+          <td>&nbsp;</td>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
+          <td>
+            <a class=info href="#">?
+              <span>
                 Tvillingmontage och luftfj&auml;dring
               </span>
             </a>
@@ -256,64 +299,61 @@ if(!$_REQUEST["action"]) {
           <td><input type="checkbox" name="truck_road_nice" tabindex="7"<?php if($_REQUEST["truck_road_nice"]) { echo " CHECKED"; } ?>></td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td>V&auml;gv&auml;nlig fj&auml;dring</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-                Tvillingmontage och luftfj&auml;dring
-              </span>
-            </a>
-          </td>
-          <td><input type="checkbox" name="trailer_road_nice" tabindex="17"<?php if($_REQUEST["trailer_road_nice"]) { echo " CHECKED"; } ?>></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
         </tr>
 
         <tr>
+          <td>&nbsp;</td>
           <td>Axelavst&aring;nd</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-				* <b>Enkelaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
+          <td>
+            <a class=info href="#">?
+              <span>
+                * <b>Enkelaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>5900</b><p>
 
-				* <b>Boggieaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
-				&nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
+                * <b>Boggieaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
+                &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>4900+1350</b><p>
 
-				* <b>Trippelaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
-				&nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
+                * <b>Trippelaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
                 &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan andra och sista (tredje) bakaxeln<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>3750+1360+1310</b><p>
 
-				Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
+                Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
               </span>
             </a>
           </td>
           <td><input type="text" name="truck_axle" tabindex="4" value="<?php echo $_REQUEST["truck_axle"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;</td>
           <td>Axelavst&aring;nd</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-				* <b>Enkelaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
+          <td>
+            <a class=info href="#">?
+              <span>
+                * <b>Enkelaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och bakaxel<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>1820</b><p>
 
-				* <b>Boggieaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
-				&nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
+                * <b>Boggieaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln <b>+</b><br>
+                &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan f&ouml;rsta och sista bakaxeln<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>6400+2020</b><p>
 
-				* <b>Trippelaxel</b><br>
-				&nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
-				&nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
+                * <b>Trippelaxel</b><br>
+                &nbsp;&nbsp;&nbsp;Avst&aring;ndet mellan framaxel och f&ouml;rsta bakaxeln<br>
+                &nbsp;&nbsp;&nbsp;<b>+</b> avst&aring;ndet mellan f&ouml;rsta och andra bakaxeln <b>+</b><br>
                 &nbsp;&nbsp;&nbsp;avst&aring;ndet mellan andra och sista (tredje) bakaxeln<br>
                 &nbsp;&nbsp;&nbsp;Exempel (skriv in exakt s&aring; h&auml;r!): <b>3750+1360+1310</b><p>
 
-				Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
+                Programmet r&auml;knar automatiskt ut dom avst&aring;nd det beh&ouml;ver fr&aring;n dessa
               </span>
             </a>
           </td>
@@ -322,22 +362,24 @@ if(!$_REQUEST["action"]) {
         </tr>
 
         <tr>
+          <td>&nbsp;</td>
           <td>Kopplingsavst&aring;nd</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+          <td>
+            <a class=info href="#">?
+              <span>
+                Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
               </span>
             </a>
           </td>
           <td><input type="text" name="truck_link" tabindex="5" value="<?php echo $_REQUEST["truck_link"]; ?>"></td>
           <td>mm</td>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;</td>
           <td>Kopplingsavst&aring;nd</td>
-		  <td>
-			<a class=info href="#">?
-			  <span>
-			    Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+          <td>
+            <a class=info href="#">?
+              <span>
+                Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
               </span>
             </a>
           </td>
@@ -348,6 +390,7 @@ if(!$_REQUEST["action"]) {
         <!-- ---------------------------------- -->
 
        <tr>
+          <td>&nbsp;</td>
           <td>
             <input type="submit" name="action" value="submit">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -366,7 +409,7 @@ if(!$_REQUEST["action"]) {
 	foreach($_REQUEST as $key => $val) {
 	  echo "$key => $val<br>";
 	}
-	echo "<p>";
+	echo "--------------<p>";
   }
   // }}}
 
@@ -381,11 +424,9 @@ if(!$_REQUEST["action"]) {
 		  $cookie .= "$key=$val:";
 	  }
 
-	  if($DEBUG >= 3)
-		echo "LastBerakning:$type='$cookie'<br>";
 	  if(!$DEBUG)
 		// Can't set cookie if debuging - output already sent!
-		setcookie("LastBerakning:$type", $cookie);
+		setcookie("LastBerakning:$type", $cookie, 0, $_SERVER["REQUEST_URI"]);
 	}
   }
   // }}}
@@ -422,23 +463,31 @@ if(!$_REQUEST["action"]) {
 
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
-	  $str = $type."_axles";
+	  $str = $type."_axles_back";
 	  
 	  if(($type == 'trailer') and ($_REQUEST["trailer_load_front"] == '0')) {
-		// Trailer - no front axles!
+		// {{{ Trailer - no front axles!
 		$TRAILER = 1;
+		
+		// Force trailer_axles_front to single
+		$_REQUEST["trailer_axles_front"] = 'single';
+		// }}}
 	  } else {
-		// Trailer - with front axle!
+		// {{{ Trailer - with front axle!
 		if($_REQUEST[$str] == "single") {
-		  // => SINGLE
+		  // {{{ => SINGLE
 		  if($DEBUG >= 2)
-			echo "Single axle ($bk / $type)<br>";
+			echo "Single axle (bk$bk / $type)<br>";
 		  
 		  $str1 = $type."_axle";
 		  if($_REQUEST[$str1])
 			$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $_REQUEST[$str1]);
+		  // }}}
 		} elseif(($_REQUEST[$str] == "boggie") or ($_REQUEST[$str] == "tripple")) {
-		  // => BOGGIE/TRIPPLE
+		  // {{{ => BOGGIE/TRIPPLE
+		  if($DEBUG >= 2)
+			echo "Boggie/Tripple axle (bk$bk / $type)<br>";
+		  
 		  $str1 = $type."_axle";
 		  
 		  $dist = $_REQUEST[$str1];
@@ -446,10 +495,12 @@ if(!$_REQUEST["action"]) {
 			eval("\$dist = ".htmlspecialchars($dist).";");
 		  
 		  $GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+		  // }}}
 		}
-
+		  
 		if($DEBUG >= 2)
 		  echo "<br>";
+		// }}}
 	  }
 	}
 
@@ -468,78 +519,67 @@ if(!$_REQUEST["action"]) {
 
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
-	  // {{{ Get the lowest axle load allowed - front
-	  if(!$TRAILER) {
-		if($DEBUG >= 2)
-		  echo "Single axle ($bk / $type)<br>";
-		
-		$str = $type.'_load_front';
+	  // {{{ Get the lowest axle load allowed
+	  foreach(array("front", "back") as $location) {
+		$str = $type.'_load_'.$location;
+		$load = 'load_'.$location;
+
 		if($_REQUEST[$str]) {
-		  if($DEBUG >= 3)
-			echo "&nbsp;&nbsp;_REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][FRONT] (".$BK[$bk]["FRONT"].")<br>";
-		  
-		  ($_REQUEST[$str] <= $BK[$bk]["FRONT"]) ? $load_front = $_REQUEST[$str] : $load_front = $BK[$bk]["FRONT"];
+		  $key = $type."_axles_".$location;
+		  if($_REQUEST[$key] == 'single') {
+			// {{{ => Single axle
+			if($DEBUG >= 3)
+			  echo "Single axle ($bk / $type): _REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][".strtoupper($location)."] (".$BK[$bk][strtoupper($location)].")<br>";
+			
+			($_REQUEST[$str] <= $BK[$bk][strtoupper($location)])  ? $$load  = $_REQUEST[$str]  : $$load  = $BK[$bk][strtoupper($location)];
+			// }}}
+		  } else {
+			// {{{ => Boggie/Tripple axle
+			$key = $type."_axles_".$location;
+			if($_REQUEST[$key] == "boggie")
+			  $axle = "boggie";
+			elseif($_REQUEST[$key] == "tripple")
+			  $axle = "tripple";
+			
+			if($DEBUG >= 2)
+			  echo "$axle axle ($bk / $type / $location)<br>";
+			
+			$str2 = $type."_axle";
+			if(preg_match("/\+.*\+/", $_REQUEST[$str2])) {
+			  $dist = preg_split("/\+/", $_REQUEST[$str2]);
+			  $dist = $dist[1]+$dist[2];
+			} elseif(preg_match("/\+/", $_REQUEST[$str2])) {
+			  $dist = preg_split("/\+/", $_REQUEST[$str2]);
+			  $dist = $dist[1];
+			} else
+				$dist = $_REQUEST[$str2];
+			
+			eval("\$dist = ".htmlspecialchars($dist).";");
+			if($DEBUG >= 2) {
+			  echo "&nbsp;&nbsp;dist: ".$_REQUEST[$str2]."=$dist<br>";
+			  echo "parse_table(TABLE_DATA[$axle], $dist, bk$bk)<br>";
+			}
+
+			$tmp = parse_table($TABLE_DATA[$axle], $dist, $bk);
+			if($DEBUG >= 2)
+			  echo "&nbsp;&nbsp;load=$tmp<br>";
+			
+			if($DEBUG >= 3)
+			  echo "&nbsp;&nbsp;Boggie/Tripple axle ($bk / $type): load ($tmp) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
+			
+			($tmp <= $_REQUEST[$str]) ? $$load = $tmp : $$load = $_REQUEST[$str];
+			// }}}
+		  }
 		} else
-		  $load_front = 0;
+		  $$load  = 0;
+
 		if($DEBUG >= 2)
-		  echo "Load front ($bk / $type): '$load_front'<br>";
+		  echo "Load $location ($bk / $type): '".$$load."'<p>";
 	  }
 	  // }}}
 
-	  // {{{ Get the lowest axle load allowed - back
-	  $str = $type.'_load_back';
-	  if($_REQUEST[$str]) {
-		$str1 = $type."_axles";
-		if($_REQUEST[$str1] == 'single') {
-		  // {{{ => Single axle
-		  if($DEBUG >= 3)
-			echo "&nbsp;&nbsp;Single axle ($bk / $type): _REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][BACK] (".$BK[$bk]["BACK"].")<br>";
-
-		  ($_REQUEST[$str] <= $BK[$bk]["BACK"])  ? $load_back  = $_REQUEST[$str]  : $load_back  = $BK[$bk]["BACK"];
-		  // }}}
-		} else {
-		  // {{{ => Boggie/Tripple axle
-		  $str1 = $type."_axles";
-		  if($_REQUEST[$str1] == "boggie")
-			$axle = "boggie";
-		  elseif($_REQUEST[$str1] == "tripple")
-			$axle = "tripple";
-		  
-		  if($DEBUG >= 2)
-			echo "$axle axle ($bk / $type)<br>";
-
-		  $str2 = $type."_axle";
-		  if(preg_match("/\+.*\+/", $_REQUEST[$str2])) {
-			$dist = preg_split("/\+/", $_REQUEST[$str2]);
-			$dist = $dist[1]+$dist[2];
-		  } elseif(preg_match("/\+/", $_REQUEST[$str2])) {
-			$dist = preg_split("/\+/", $_REQUEST[$str2]);
-			$dist = $dist[1];
-		  } else
-			$dist = $_REQUEST[$str2];
-		  
-		  eval("\$dist = ".htmlspecialchars($dist).";");
-		  if($DEBUG >= 2)
-			echo "&nbsp;&nbsp;dist: ".$_REQUEST[$str2]."=$dist<br>";
-		  
-		  $load = parse_table($TABLE_DATA[$axle], $dist, $bk);
-		  if($DEBUG >= 2)
-			echo "&nbsp;&nbsp;load=$load<br>";
-
-		  if($DEBUG >= 3)
-			echo "&nbsp;&nbsp;Boggie/Tripple axle ($bk / $type): load ($load) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
-
-		  ($load <= $_REQUEST[$str]) ? $load_back = $load : $load_back = $_REQUEST[$str];
-		  // }}}
-		}
-	  } else
-		$load_back  = 0;
-	  if($DEBUG >= 2)
-		echo "Load back ($bk / $type): '$load_back'<br>";
-	  // }}}
-
 	  if($DEBUG >= 3)
-		echo "&nbsp;&nbsp;MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
+		echo "MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
 	  elseif(($DEBUG >= 1) and ($DEBUG <= 2))
 		echo "<br>";
 	  $MAX_AXLE[$bk][$type] = sprintf("%01.0f", ($load_front + $load_back));
@@ -561,6 +601,29 @@ if(!$_REQUEST["action"]) {
   if($DEBUG)
 	echo "<b>Max Gross weight (\$LOAD)</b>:<br>";
 
+  // {{{ Get number of axles
+  foreach(array("truck", "trailer") as $type) {
+	$NR_AXLES[$type] = 0;
+  
+	foreach(array("front", "back") as $location) {
+	  $key = $type."_axles_".$location;
+
+	  if($_REQUEST[$key] == 'single')
+		$NR_AXLES[$type] += 1;
+	  if($_REQUEST[$key] == 'boggie')
+		$NR_AXLES[$type] += 2;
+	  if($_REQUEST[$key] == 'tripple')
+		$NR_AXLES[$type] += 3;
+	}
+
+	if($DEBUG >= 2)
+	  echo "Number of axles on $type: '".$NR_AXLES[$type]."'<br>";
+  }
+
+  if($DEBUG >= 3)
+	echo "<br>";
+  // }}}
+
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
 	  if($DEBUG >= 3)
@@ -569,26 +632,25 @@ if(!$_REQUEST["action"]) {
 
 	  // {{{ Check for common limitations...
 	  if($LOAD[$bk][$type]) {
-		$str1 = $type."_axles";
-		$str2 = $type."_road_nice";
+		$key = $type."_road_nice";
 		
-		if(($_REQUEST[$str1] == 'single') and ($LOAD[$bk][$type] > 18))
+		if(($NR_AXLES[$type] == 2) and ($LOAD[$bk][$type] > 18))
 		  // Two axles
 		  $LOAD[$bk][$type] = 18;
 		
-		elseif(($_REQUEST[$str1] == 'boggie') and !$_REQUEST[$str2] and ($LOAD[$bk][$type] > 25))
+		elseif(($NR_AXLES[$type] == 3) and !$_REQUEST[$key] and ($LOAD[$bk][$type] > 25))
 		  // Three axles, Not road nice
 		  $LOAD[$bk][$type] = 25;
 		
-		elseif(($_REQUEST[$str1] == 'boggie') and  $_REQUEST[$str2] and ($LOAD[$bk][$type] > 26))
+		elseif(($NR_AXLES[$type] == 3) and  $_REQUEST[$key] and ($LOAD[$bk][$type] > 26))
 		  // Three axles, road nice
 		  $LOAD[$bk][$type] = 26;
 		
-		elseif(($_REQUEST[$str1] == 'tripple') and !$_REQUEST[$str2] and ($LOAD[$bk][$type] > 31))
+		elseif(($NR_AXLES[$type] >= 4) and !$_REQUEST[$key] and ($LOAD[$bk][$type] > 31))
 		  // >= Four axles, Not road nice
 		  $LOAD[$bk][$type] = 31;
 		
-		elseif(($_REQUEST[$str1] == 'tripple') and  $_REQUEST[$str2] and ($LOAD[$bk][$type] > 32))
+		elseif(($NR_AXLES[$type] >= 4) and  $_REQUEST[$key] and ($LOAD[$bk][$type] > 32))
 		  // >= Four axles, road nice
 		  $LOAD[$bk][$type] = 32;
 	  } else
