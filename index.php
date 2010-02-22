@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.17 2010-02-22 22:38:51 turbo Exp $
+// $Id: index.php,v 1.18 2010-02-22 22:48:19 turbo Exp $
 
-$VERSION = "$Revision: 1.17 $";
+$VERSION = "$Revision: 1.18 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -193,7 +193,7 @@ if(!$_REQUEST["action"]) {
           <td>
             <a class=info href="#">?
               <span>
-                Vikt i ton fr&aring;n registrerings beviset
+                Framaxel typ (En eller tv&aring; framaxlar)
               </span>
             </a>
           </td>
@@ -201,7 +201,9 @@ if(!$_REQUEST["action"]) {
             <select name="truck_axles_front">
               <option name="truck_axles_front_single" value="single"<?php if($_REQUEST["truck_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
               <option name="truck_axles_front_boggie" value="boggie"<?php if($_REQUEST["truck_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <!---
               <option name="truck_axles_front_tripple" value="tripple"<?php if($_REQUEST["truck_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+              -->
             </select>
           </td>
           <td>&nbsp;</td>
@@ -210,8 +212,7 @@ if(!$_REQUEST["action"]) {
           <td>
             <a class=info href="#">?
               <span>
-                Vikt i ton fr&aring;n registrerings beviset<br>
-                Om trailer, skriv <b>0</b> som vikt
+                Framaxel typ (En eller tv&aring; framaxlar)
               </span>
             </a>
           </td>
@@ -219,7 +220,9 @@ if(!$_REQUEST["action"]) {
             <select name="trailer_axles_front">
               <option name="trailer_axles_front_single" value="single"<?php if($_REQUEST["trailer_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
               <option name="trailer_axles_front_boggie" value="boggie"<?php if($_REQUEST["trailer_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
+              <!---
               <option name="trailer_axles_front_tripple" value="tripple"<?php if($_REQUEST["trailer_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
+              -->
             </select>
           </td>
           <td>&nbsp;</td>
