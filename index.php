@@ -1,11 +1,11 @@
 <?php
 // Values: 0-4
-$DEBUG = 0;
+$DEBUG = 3;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.15 2010-02-22 22:20:54 turbo Exp $
+// $Id: index.php,v 1.16 2010-02-22 22:34:40 turbo Exp $
 
-$VERSION = "$Revision: 1.15 $";
+$VERSION = "$Revision: 1.16 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -469,23 +469,34 @@ if(!$_REQUEST["action"]) {
 	  foreach(array("front", "back") as $location) {
 		$key1 = $type.'_axles_'.$location;
 		if($_REQUEST[$key1]) {
+		  $key2 = $type."_axle";
+
 		  if($_REQUEST[$key1] == 'tripple') {
-			// If the distance between the first and last axle in the tripple
+			// {{{ If the distance between the first and last axle in the tripple
 			// is > 5 meters, it's NOT a tripple, but a boggie!
-			$key2 = $type."_axle";
+			// EX: 3750+2990+2020
 			if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
 			  $dist = preg_split("/\+/", $_REQUEST[$key2]);
-			  $new_dist = $dist[0]+$dist[1]."+".$dist[2];
-			  $dist = $dist[1]+$dist[2];
 
-			  if($dist > 5000) {
+			  if(($dist[1]+$dist[2]) > 5000) {
 				$_REQUEST[$key1] = 'boggie';
-				$_REQUEST[$key2] = $new_dist;
+				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
 			  }
 			}
-//		  } elseif($_REQUEST[$key1] == 'boggie')
-// TODO (?)
-//
+			// }}}
+		  } elseif($_REQUEST[$key1] == 'boggie') {
+			// {{{ If the distance between the first and last axle in the boggie
+			// is > 2 meters, it's NOT a boggie, but a single!
+			// EX: 4900+2020
+			if(preg_match("/\+/", $_REQUEST[$key2])) {
+			  $dist = preg_split("/\+/", $_REQUEST[$key2]);
+
+			  if($dist[1] > 2000) {
+				$_REQUEST[$key1] = 'single';
+				$_REQUEST[$key2] = $dist[0] + $dist[1];
+			  }
+			}
+			// }}}
 		  }
 		}
 	  }
