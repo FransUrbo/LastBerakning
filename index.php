@@ -1,10 +1,11 @@
 <?php
+// Values: 0-4
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.11 2010-02-21 10:51:29 turbo Exp $
+// $Id: index.php,v 1.12 2010-02-22 17:05:34 turbo Exp $
 
-$VERSION = "$Revision: 1.11 $";
+$VERSION = "$Revision: 1.12 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -75,13 +76,13 @@ function parse_table($data, $distance, $bk = 0) {
 		  if(preg_match("/,/", $vals[2])) {
 			// => Boggie- or Trippleaxle
 			if($DEBUG >= 2)
-			  echo "&nbsp;&nbsp;matching boggie/tripple axle (".$vals[2].")<br>";
+			  echo "&nbsp;&nbsp;Matching boggie/tripple axle (".$vals[2].")<br>";
 
 			$real_vals = preg_split("/,/", $vals[2]);
 			$RET = $real_vals[$bk-1];
 		  } else {
 			if($DEBUG >= 2)
-			  echo "&nbsp;&nbsp;matching single axle (".$vals[2].")<br>";
+			  echo "&nbsp;&nbsp;Matching single axle (".$vals[2].")<br>";
 
 			$RET = $vals[2];
 		  }
@@ -175,7 +176,8 @@ if(!$_REQUEST["action"]) {
 		  <td>
 			<a class=info href="#">?
 			  <span>
-			    Vikt i ton fr&aring;n registrerings beviset
+			    Vikt i ton fr&aring;n registrerings beviset<br>
+			    Om trailer, skriv <b>0</b> som vikt
               </span>
             </a>
           </td>
@@ -412,6 +414,8 @@ if(!$_REQUEST["action"]) {
 
 
   // {{{ 2. $GROSS_BK
+  $TRAILER = 0;
+
   // Lookup BKx table value dep. on axle distance
   if($DEBUG)
 	echo "<b>Gross BK values (\$GROSS_BK)</b>:<br>";
@@ -420,27 +424,33 @@ if(!$_REQUEST["action"]) {
 	foreach(array("truck", "trailer") as $type) {
 	  $str = $type."_axles";
 	  
-	  if($_REQUEST[$str] == "single") {
-		// => SINGLE
+	  if(($type == 'trailer') and ($_REQUEST["trailer_load_front"] == '0')) {
+		// Trailer - no front axles!
+		$TRAILER = 1;
+	  } else {
+		// Trailer - with front axle!
+		if($_REQUEST[$str] == "single") {
+		  // => SINGLE
+		  if($DEBUG >= 2)
+			echo "Single axle ($bk / $type)<br>";
+		  
+		  $str1 = $type."_axle";
+		  if($_REQUEST[$str1])
+			$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $_REQUEST[$str1]);
+		} elseif(($_REQUEST[$str] == "boggie") or ($_REQUEST[$str] == "tripple")) {
+		  // => BOGGIE/TRIPPLE
+		  $str1 = $type."_axle";
+		  
+		  $dist = $_REQUEST[$str1];
+		  if($dist)
+			eval("\$dist = ".htmlspecialchars($dist).";");
+		  
+		  $GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+		}
+
 		if($DEBUG >= 2)
-		  echo "Single axle ($bk / $type)<br>";
-
-		$str1 = $type."_axle";
-		if($_REQUEST[$str1])
-		  $GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $_REQUEST[$str1]);
-	  } elseif(($_REQUEST[$str] == "boggie") or ($_REQUEST[$str] == "tripple")) {
-		// => BOGGIE/TRIPPLE
-		$str1 = $type."_axle";
-
-		$dist = $_REQUEST[$str1];
-		if($dist)
-		  eval("\$dist = ".htmlspecialchars($dist).";");
-
-		$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+		  echo "<br>";
 	  }
-
-	  if($DEBUG >= 2)
-		echo "<br>";
 	}
 
 	if($DEBUG >= 2)
@@ -459,19 +469,21 @@ if(!$_REQUEST["action"]) {
   for($bk = 1; $bk <= 3; $bk++) {
 	foreach(array("truck", "trailer") as $type) {
 	  // {{{ Get the lowest axle load allowed - front
-	  if($DEBUG >= 2)
-		echo "Single axle ($bk / $type)<br>";
-
-	  $str = $type.'_load_front';
-	  if($_REQUEST[$str]) {
-		if($DEBUG >= 3)
-		  echo "&nbsp;&nbsp;_REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][FRONT] (".$BK[$bk]["FRONT"].")<br>";
-
-		($_REQUEST[$str] <= $BK[$bk]["FRONT"]) ? $load_front = $_REQUEST[$str] : $load_front = $BK[$bk]["FRONT"];
-	  } else
-		$load_front = 0;
-	  if($DEBUG >= 2)
-		echo "Load front ($bk / $type): '$load_front'<br>";
+	  if(!$TRAILER) {
+		if($DEBUG >= 2)
+		  echo "Single axle ($bk / $type)<br>";
+		
+		$str = $type.'_load_front';
+		if($_REQUEST[$str]) {
+		  if($DEBUG >= 3)
+			echo "&nbsp;&nbsp;_REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][FRONT] (".$BK[$bk]["FRONT"].")<br>";
+		  
+		  ($_REQUEST[$str] <= $BK[$bk]["FRONT"]) ? $load_front = $_REQUEST[$str] : $load_front = $BK[$bk]["FRONT"];
+		} else
+		  $load_front = 0;
+		if($DEBUG >= 2)
+		  echo "Load front ($bk / $type): '$load_front'<br>";
+	  }
 	  // }}}
 
 	  // {{{ Get the lowest axle load allowed - back
@@ -486,7 +498,7 @@ if(!$_REQUEST["action"]) {
 		  ($_REQUEST[$str] <= $BK[$bk]["BACK"])  ? $load_back  = $_REQUEST[$str]  : $load_back  = $BK[$bk]["BACK"];
 		  // }}}
 		} else {
-		  // => Boggie/Tripple axle
+		  // {{{ => Boggie/Tripple axle
 		  $str1 = $type."_axles";
 		  if($_REQUEST[$str1] == "boggie")
 			$axle = "boggie";
@@ -518,6 +530,7 @@ if(!$_REQUEST["action"]) {
 			echo "&nbsp;&nbsp;Boggie/Tripple axle ($bk / $type): load ($load) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
 
 		  ($load <= $_REQUEST[$str]) ? $load_back = $load : $load_back = $_REQUEST[$str];
+		  // }}}
 		}
 	  } else
 		$load_back  = 0;
@@ -527,6 +540,8 @@ if(!$_REQUEST["action"]) {
 
 	  if($DEBUG >= 3)
 		echo "&nbsp;&nbsp;MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
+	  elseif(($DEBUG >= 1) and ($DEBUG <= 2))
+		echo "<br>";
 	  $MAX_AXLE[$bk][$type] = sprintf("%01.0f", ($load_front + $load_back));
 
 	  if($DEBUG >= 3)
@@ -582,14 +597,27 @@ if(!$_REQUEST["action"]) {
 	  $LOAD[$bk][$type] = sprintf("%01.02f", $LOAD[$bk][$type]);
 	  if($DEBUG >= 3)
 		echo "&nbsp;&nbsp;LOAD[$bk][$type] => '".$LOAD[$bk][$type]."'<br>";
+	  // }}}
 	}
-	// }}}
+
+	// c. train
+	if($TRAILER) {
+	  // Trailer - no front axle!
+
+	  // Get distance from frontaxle, truck to rear backaxle, trailer
+	  $dist = $_REQUEST["truck_link"] + $_REQUEST["trailer_link"];
+
+	  $LOAD[$bk]["train"] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+	  if($DEBUG)
+		echo "&nbsp;&nbsp;Train load (trailer, w/o front axle): '".$LOAD[$bk]["train"]."'<br>";
+	} else {
+	  $LOAD[$bk]["train"] = $LOAD[$bk]["truck"] + $LOAD[$bk]["trailer"];
+	  if($DEBUG)
+		echo "&nbsp;&nbsp;Train load (trailer, w/ front axle): '".$LOAD[$bk]["train"]."'<br>";
+	}
 
 	if($DEBUG >= 3)
 	  echo "<br>";
-
-	// c. train
-	$LOAD[$bk]["train"] = $LOAD[$bk]["truck"] + $LOAD[$bk]["trailer"];
   }
 
   if($DEBUG)
