@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.14 2010-02-22 21:04:31 turbo Exp $
+// $Id: index.php,v 1.15 2010-02-22 22:20:54 turbo Exp $
 
-$VERSION = "$Revision: 1.14 $";
+$VERSION = "$Revision: 1.15 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -499,7 +499,7 @@ if(!$_REQUEST["action"]) {
 		$_REQUEST["trailer_axles_front"] = 'single';
 		// }}}
 	  } else {
-		// {{{ Trailer - with front axle!
+		// {{{ Trailer - with front axle OR Truck!
 		if($_REQUEST[$str] == "single") {
 		  // {{{ => SINGLE
 		  if($DEBUG >= 2)
@@ -516,11 +516,16 @@ if(!$_REQUEST["action"]) {
 		  
 		  $str1 = $type."_axle";
 		  
-		  $dist = $_REQUEST[$str1];
-		  if($dist)
-			eval("\$dist = ".htmlspecialchars($dist).";");
-		  
-		  $GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+		  if($_REQUEST[$str1]) {
+			$dist = $_REQUEST[$str1];
+			if($dist)
+			  eval("\$dist = ".htmlspecialchars($dist).";");
+			
+			$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
+		  } elseif($DEBUG >= 2) {
+			  echo "&nbsp;&nbsp;n/a<br>";
+			  $GROSS_BK[$bk][$type] = 0;
+		  }
 		  // }}}
 		}
 		  
@@ -555,7 +560,7 @@ if(!$_REQUEST["action"]) {
 		  if($_REQUEST[$key] == 'single') {
 			// {{{ => Single axle
 			if($DEBUG >= 3)
-			  echo "Single axle ($bk / $type): _REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][".strtoupper($location)."] (".$BK[$bk][strtoupper($location)].")<br>";
+			  echo "Single axle (bk$bk / $type): _REQUEST[$str] (".$_REQUEST[$str].") <= BK[$bk][".strtoupper($location)."] (".$BK[$bk][strtoupper($location)].")<br>";
 			
 			($_REQUEST[$str] <= $BK[$bk][strtoupper($location)])  ? $$load  = $_REQUEST[$str]  : $$load  = $BK[$bk][strtoupper($location)];
 			// }}}
@@ -568,30 +573,53 @@ if(!$_REQUEST["action"]) {
 			  $axle = "tripple";
 			
 			if($DEBUG >= 2)
-			  echo "$axle axle ($bk / $type / $location)<br>";
+			  echo "$axle axle (bk$bk / $type / $location)<br>";
 			
+			// {{{ Extract axle distances from form
 			$str2 = $type."_axle";
-			if(preg_match("/\+.*\+/", $_REQUEST[$str2])) {
+			if(preg_match("/\+.*\+.*\+/", $_REQUEST[$str2])) {
+			  // {{{ Front boggie, back tripple
+			  // EX: 2020+3120+1360+1310
+			  if($axle == 'boggie') {
+				// => First one...
+				$dist = preg_split("/\+/", $_REQUEST[$str2]);
+				$dist = $dist[0];
+			  } elseif($axle == 'tripple') {
+				// => Last two...
+				$dist = preg_split("/\+/", $_REQUEST[$str2]);
+				$dist = $dist[2]+$dist[3];
+			  }
+			  // }}}
+			} elseif(preg_match("/\+.*\+/", $_REQUEST[$str2])) {
+			  // {{{ Front single, back tripple
+			  // EX: 3750+1360+1310
 			  $dist = preg_split("/\+/", $_REQUEST[$str2]);
 			  $dist = $dist[1]+$dist[2];
+			  // }}}
 			} elseif(preg_match("/\+/", $_REQUEST[$str2])) {
+			  // {{{ Front single, back boggie
 			  $dist = preg_split("/\+/", $_REQUEST[$str2]);
 			  $dist = $dist[1];
-			} else
-				$dist = $_REQUEST[$str2];
-			
+			  // }}}
+			} else {
+			  // {{{ Front single, back single
+			  $dist = $_REQUEST[$str2];
+			  // }}}
+			}
+
 			eval("\$dist = ".htmlspecialchars($dist).";");
 			if($DEBUG >= 2) {
 			  echo "&nbsp;&nbsp;dist: ".$_REQUEST[$str2]."=$dist<br>";
 			  echo "parse_table(TABLE_DATA[$axle], $dist, bk$bk)<br>";
 			}
+			// }}}
 
 			$tmp = parse_table($TABLE_DATA[$axle], $dist, $bk);
 			if($DEBUG >= 2)
 			  echo "&nbsp;&nbsp;load=$tmp<br>";
 			
 			if($DEBUG >= 3)
-			  echo "&nbsp;&nbsp;$axle axle ($bk / $type): load ($tmp) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
+			  echo "&nbsp;&nbsp;$axle axle (bk$bk / $type): load ($tmp) <= _REQUEST[$str] (".$_REQUEST[$str].")<br>";
 			
 			($tmp <= $_REQUEST[$str]) ? $$load = $tmp : $$load = $_REQUEST[$str];
 			// }}}
@@ -600,15 +628,20 @@ if(!$_REQUEST["action"]) {
 		  $$load  = 0;
 
 		if($DEBUG >= 2)
-		  echo "Load $location ($bk / $type): '".$$load."'<p>";
+		  echo "Load $location (bk$bk / $type): '".$$load."'<p>";
 	  }
 	  // }}}
 
-	  if($DEBUG >= 3)
-		echo "MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
-	  elseif(($DEBUG >= 1) and ($DEBUG <= 2))
-		echo "<br>";
-	  $MAX_AXLE[$bk][$type] = sprintf("%01.0f", ($load_front + $load_back));
+	  if($load_front and $load_back) {
+		if($DEBUG >= 3)
+		  echo "MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
+		elseif(($DEBUG >= 1) and ($DEBUG <= 2))
+		  echo "<br>";
+		$MAX_AXLE[$bk][$type] = sprintf("%01.0f", ($load_front + $load_back));
+	  } elseif($DEBUG >= 2) {
+		echo "&nbsp;&nbsp;n/a<br>";
+		$MAX_AXLE[$bk][$type] = 0;
+	  }
 
 	  if($DEBUG >= 3)
 		echo "<br>";
