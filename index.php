@@ -1,11 +1,11 @@
 <?php
 // Values: 0-4
-$DEBUG = 3;
+$DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.16 2010-02-22 22:34:40 turbo Exp $
+// $Id: index.php,v 1.17 2010-02-22 22:38:51 turbo Exp $
 
-$VERSION = "$Revision: 1.16 $";
+$VERSION = "$Revision: 1.17 $";
 
 // {{{ Defines
 // For Single axles only !!
