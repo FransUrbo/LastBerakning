@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.19 2010-02-22 23:46:04 turbo Exp $
+// $Id: index.php,v 1.20 2010-02-23 07:07:48 turbo Exp $
 
-$VERSION = "$Revision: 1.19 $";
+$VERSION = "$Revision: 1.20 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -201,9 +201,7 @@ if(!$_REQUEST["action"]) {
             <select name="truck_axles_front">
               <option name="truck_axles_front_single" value="single"<?php if($_REQUEST["truck_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
               <option name="truck_axles_front_boggie" value="boggie"<?php if($_REQUEST["truck_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
-              <!---
               <option name="truck_axles_front_tripple" value="tripple"<?php if($_REQUEST["truck_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
-              -->
             </select>
           </td>
           <td>&nbsp;</td>
@@ -220,9 +218,7 @@ if(!$_REQUEST["action"]) {
             <select name="trailer_axles_front">
               <option name="trailer_axles_front_single" value="single"<?php if($_REQUEST["trailer_axles_front"] == 'single') { echo " SELECTED"; } ?>>Enkelaxel</option>
               <option name="trailer_axles_front_boggie" value="boggie"<?php if($_REQUEST["trailer_axles_front"] == 'boggie') { echo " SELECTED"; } ?>>Boggie</option>
-              <!---
               <option name="trailer_axles_front_tripple" value="tripple"<?php if($_REQUEST["trailer_axles_front"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
-              -->
             </select>
           </td>
           <td>&nbsp;</td>
@@ -469,12 +465,45 @@ if(!$_REQUEST["action"]) {
 		if($_REQUEST[$key1] == 'tripple') {
 		  // {{{ If the distance between the first and last axle in the tripple
 		  // is > 5 meters, it's NOT a tripple, but a boggie!
-		  // EX: 3750+2990+2020
-		  if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+		  if(preg_match("/\+.*\+.*\+.*\+/", $_REQUEST[$key2])) {
+			// {{{ TRIPPLE + TRIPPLE
+			// EX: 1530+1530+4185+1360+1310
+			if($location == 'back') {
+			  if(($dist[0]+$dist[1]) > 5000) {
+				$_REQUEST[$key1] = 'boggie';
+				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
+			  }
+			} else {
+			  if(($dist[3]+$dist[4]) > 5000) {
+				$_REQUEST[$key1] = 'boggie';
+				$_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]."+".$dist[3]+$dist[4];
+			  }
+			}
+			// }}}
+		  } elseif(preg_match("/\+.*\+.*\+/", $_REQUEST[$key2])) {
+			// {{{ SINGLE/BOGGIE + BOGGIE/TRIPPLE
+			// EX: 2020+3120+1360+1310
+			if($location == 'back') {
+			  if(($dist[2]+$dist[3]) > 5000) {
+				$_REQUEST[$key1] = 'single';
+				$_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]+$dist[3];
+			  }
+
+			} else {
+			  if($dist[0] > 5000) {
+				$_REQUEST[$key1] = 'single';
+				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2]."+".$dist[3];
+			  }
+			}
+			// }}}
+		  } elseif(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			// {{{ SINGLE + BOGGIE
+			// EX: 3750+2990+2020
 			if(($dist[1]+$dist[2]) > 5000) {
 			  $_REQUEST[$key1] = 'boggie';
 			  $_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
 			}
+			// }}}
 		  }
 		  // }}}
 		} elseif($_REQUEST[$key1] == 'boggie') {
@@ -529,7 +558,7 @@ if(!$_REQUEST["action"]) {
 		  $dist = $_REQUEST[$key];
 		  
 		if($DEBUG >= 2)
-		  echo "Checking bk$bk / $type: raw dist = '".$_REQUEST[$key]."' ($dist)<br>";
+		  echo "Checking bk$bk / $type: '".$_REQUEST[$key]." = $dist' (raw distance)<br>";
 		$GROSS_BK[$bk][$type] = parse_table($TABLE_DATA[$bk], $dist, $bk);
 	  } else
 		$GROSS_BK[$bk][$type] = 0;
