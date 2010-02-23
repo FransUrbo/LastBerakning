@@ -15,3 +15,6 @@ a.info:hover span{ /*the span will display just on :hover state*/
     border:1px solid #000;
     background-color:#AC9D73; color:#000;
     text-align: left}
+
+tr.c1 { background: #f1f1f1; }
+tr.c2 { background: #bfbfbf; }

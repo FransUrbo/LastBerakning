@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.20 2010-02-23 07:07:48 turbo Exp $
+// $Id: index.php,v 1.21 2010-02-23 16:18:00 turbo Exp $
 
-$VERSION = "$Revision: 1.20 $";
+$VERSION = "$Revision: 1.21 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -128,15 +128,29 @@ if(!$_REQUEST["action"]) {
   <body>
     <table>
       <form method="post" name="berakning":
-        <tr>
-          <td colspan="4"><h1>Bil:</h1></td>
-          <td align="right"><input type="checkbox" name="truck_save">Spara</td>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td colspan="4"><h1>Sl&auml;p:</h1></td>
-          <td align="right"><input type="checkbox" name="trailer_save">Spara</td>
+        <tr bgcolor="white">
+          <td colspan="11">
+            <center>
+              <u>Lastber&auml;kning</u>
+            </center>
+          </td>
         </tr>
 
-        <tr>
+        <tr bgcolor="grey">
+          <td colspan="4">
+            <font size="+4">Bil:</font><br>
+            <input type="checkbox" name="truck_save">Spara
+          </td>
+          <td>&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td colspan="4">
+            <font size="+4">Sl&auml;p:</font><br>
+            <input type="checkbox" name="trailer_save">Spara</td>
+          </td>
+          <td>&nbsp;</td>
+        </tr>
+
+        <tr class="c1">
           <td>&nbsp;</td>
           <td>Tj&auml;nstevikt</td>
           <td>
@@ -162,7 +176,7 @@ if(!$_REQUEST["action"]) {
           <td>Ton</td>
         </tr>
 
-        <tr>
+        <tr class="c2">
           <td rowspan="2">Framaxel</td>
           <td>Max belastning</td>
           <td>
@@ -188,7 +202,7 @@ if(!$_REQUEST["action"]) {
           <td><input name="trailer_load_front" tabindex="12" value="<?php echo $_REQUEST["trailer_load_front"]; ?>" type="text"></td>
           <td>Ton</td>
         </tr>
-        <tr>
+        <tr class="c2">
           <td>Axeltyp</td>
           <td>
             <a class=info href="#">?
@@ -224,7 +238,7 @@ if(!$_REQUEST["action"]) {
           <td>&nbsp;</td>
         </tr>
 
-        <tr>
+        <tr class="c1">
           <td rowspan="2">Bakaxel</td>
           <td>Max belastning</td>
           <td>
@@ -249,8 +263,7 @@ if(!$_REQUEST["action"]) {
           <td><input type="text" name="trailer_load_back" tabindex="13" value="<?php echo $_REQUEST["trailer_load_back"]; ?>"></td>
           <td>Ton</td>
         </tr>
-
-        <tr>
+        <tr class="c1">
           <td>Axeltyp</td>
           <td>
             <a class=info href="#">?
@@ -283,9 +296,10 @@ if(!$_REQUEST["action"]) {
               <option name="trailer_axles_back_tripple" value="tripple"<?php if($_REQUEST["truck_axles_back"] == 'tripple') { echo " SELECTED"; } ?>>Trippleaxel</option>
             </select>
           </td>
+          <td>&nbsp;</td>
         </tr>
 
-        <tr>
+        <tr class="c2">
           <td>&nbsp;</td>
           <td>V&auml;gv&auml;nlig fj&auml;dring</td>
           <td>
@@ -302,9 +316,10 @@ if(!$_REQUEST["action"]) {
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
+          <td>&nbsp;</td>
         </tr>
 
-        <tr>
+        <tr class="c1">
           <td>&nbsp;</td>
           <td>Axelavst&aring;nd</td>
           <td>
@@ -360,7 +375,7 @@ if(!$_REQUEST["action"]) {
           <td>mm</td>
         </tr>
 
-        <tr>
+        <tr class="c2">
           <td>&nbsp;</td>
           <td>Kopplingsavst&aring;nd</td>
           <td>
@@ -666,7 +681,7 @@ if(!$_REQUEST["action"]) {
 		  echo "MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
 		elseif(($DEBUG >= 1) and ($DEBUG <= 2))
 		  echo "<br>";
-		$MAX_AXLE[$bk][$type] = sprintf("%01.0f", ($load_front + $load_back));
+		$MAX_AXLE[$bk][$type] = sprintf("%01.02f", ($load_front + $load_back));
 	  } elseif($DEBUG >= 2) {
 		echo "&nbsp;&nbsp;n/a<br>";
 		$MAX_AXLE[$bk][$type] = 0;
@@ -778,40 +793,57 @@ if(!$_REQUEST["action"]) {
   // {{{ 5. Present results
 ?>
 <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="tooltip.css">
+  </head>
+
   <body>
     <table>
       <tr bgcolor="grey">
-        <td colspan="3">Maximal bruttovikt, <?php
+        <td colspan="3"><font size="+3">Maximal bruttovikt<br><center><b><?php
    if($_REQUEST["truck_link"] and $_REQUEST["trailer_link"]) {
-	 echo "t&aring;g";
+	 echo "T&aring;g";
    } elseif(!$_REQUEST["truck_weight"] and  $_REQUEST["trailer_weight"]) {
-	echo "sl&auml;p";
+	echo "Sl&auml;p";
    } elseif( $_REQUEST["truck_weight"] and !$_REQUEST["trailer_weight"]) {
-	echo "bil";
-   } ?></td>
+	echo "Bil";
+   } ?></b></center></font></td>
+      </tr>
+
+      <tr bgcolor="lightgrey">
+        <td valign="top">V&auml;g</td>
+        <td>Maximal<br>bruttovikt</td>
+        <td valign="top">Maximal last<br>(Bil + Sl&auml;p = <b>T&aring;g)</b></td>
       </tr>
 
 <?php
+    $row = 'c1';
 	for($bk = 1; $bk <= 3; $bk++) {
 ?>
-      <tr>
+      <tr class="<?php echo $row ?>">
         <td>BK<?php echo "$bk"; ?></td>
         <td><?php echo $LOAD[$bk]["train"]?> ton</td>
-        <td>(<?php
-			 $max_load_truck = $LOAD[$bk]["truck"] -  $_REQUEST["truck_weight"];
-			 $max_load_train = ($LOAD[$bk]["train"] - ($_REQUEST["truck_weight"] + $_REQUEST["trailer_weight"]));
-			 $max_load_trail = $max_load_train - $max_load_truck;
-
-			 // Output...
-			 $str  = "";
-			 if($_REQUEST["truck_weight"] and $_REQUEST["trailer_weight"]) {
-			   $str .= $max_load_truck . " + ";
-			   $str .= $max_load_trail . " = ";
-			 }
-
-			 $str .= "<b>".$max_load_train."</b>";
-			 echo "$str";
-?> ton)
+        <td><?php
+	  $max_load_truck = $LOAD[$bk]["truck"] -  $_REQUEST["truck_weight"];
+	  $max_load_train = ($LOAD[$bk]["train"] - ($_REQUEST["truck_weight"] + $_REQUEST["trailer_weight"]));
+	  $max_load_trail = $max_load_train - $max_load_truck;
+	  
+	  // Output...
+	  $str  = "";
+	  if($_REQUEST["truck_weight"] and $_REQUEST["trailer_weight"]) {
+		$str .= sprintf("%02.02f", $max_load_truck) . " + ";
+		$str .= sprintf("%02.02f", $max_load_trail) . " = ";
+	  }
+	  
+	  $str .= "<b>".sprintf("%02.02f", $max_load_train)."</b>";
+	  echo "$str";
+	  
+	  if($row == 'c1')
+		$row = 'c2';
+	  else
+		$row = 'c1';
+?> ton
         </td>
       </tr>
 <?php
