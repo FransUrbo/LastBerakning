@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.1 2010-02-25 13:00:05 turbo Exp $
- * $Revision: 1.1 $
+ * $Id: screen.cpp,v 1.2 2010-02-25 16:44:12 turbo Exp $
+ * $Revision: 1.2 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -18,11 +18,11 @@ MyScreen::MyScreen(void) {
 	screens.add(new LabelScreen(this));
 	screens.add(new EditBoxScreen(this));
 
-	layout = createMainLayout("exit", "select");
+	layout = createMainLayout("Välj", "Avsluta");
 	listBox = (ListBox*) layout->getChildren()[0];
 
-	listBox->add(createLabel("Label / ListBox"));
-	listBox->add(createLabel("EditBox"));
+	listBox->add(createLabel("Hjälptexter"));
+	listBox->add(createLabel("Beräkna bruttovikt"));
 
 	// BUG/Counter-intuitive!!
 	// createMainLayout creates a listbox with wrapping=true.
@@ -44,7 +44,7 @@ void MyScreen::keyPressEvent(int keyCode) {
 
 		//A full list of the key constants is available at http://www.mosync.com/docs/2.0b1/html/maapi_8h.html
 		switch(keyCode) {
-			case MAK_SOFTLEFT:
+			case MAK_SOFTRIGHT:
 			case MAK_HASH:
 				// Hash (#) key - ask the moblet to close the application
 				maExit(0);
@@ -56,7 +56,7 @@ void MyScreen::keyPressEvent(int keyCode) {
 				break;
 
 			case MAK_5:
-			case MAK_SOFTRIGHT:
+			case MAK_SOFTLEFT:
 			case MAK_RIGHT:
 			case MAK_FIRE:
 				//Decide on the action you want to perform when an option is selected.
