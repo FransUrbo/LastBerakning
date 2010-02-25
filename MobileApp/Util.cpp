@@ -18,6 +18,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <MAUI/Label.h>
 #include <MAUI/Layout.h>
 #include <MAUI/ListBox.h>
+
+#include <conprint.h> /* lprintfln() */
+
 #include "Util.h"
 
 Font *gFont;
@@ -44,6 +47,7 @@ Widget* createSoftKeyBar(int height, const char *left, const char *right) {
 	Layout *layout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
 	Label *label;
 
+	lprintfln("Screen Width=%d, Height=%d, Left=%d", scrWidth, height, left);
 	label = new Label(0,0, scrWidth/2, height, NULL, left, 0, gFont);
 	label->setHorizontalAlignment(Label::HA_LEFT);
 	setLabelPadding(label);
@@ -62,7 +66,8 @@ Layout* createMainLayout(const char *left, const char *right) {
 	Layout *mainLayout = new Layout(0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 	Widget *softKeys = createSoftKeyBar(30, left, right);
-	ListBox* listBox = new ListBox(0, 0, scrWidth, scrHeight-softKeys->getHeight(), mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true);
+	ListBox* listBox = new ListBox(	0, 0, scrWidth, scrHeight-softKeys->getHeight(),
+									mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, true);
 	listBox->setSkin(gSkin);
 	listBox->setPaddingLeft(5);
 	listBox->setPaddingRight(5);
