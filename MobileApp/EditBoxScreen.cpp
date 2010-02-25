@@ -15,6 +15,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA.
 */
 
+/* Modified by Turbo Fredriksson <turbo@bayour.com>
+ *
+ * This screen is the main input data screen.
+ * $Id: EditBoxScreen.cpp,v 1.2 2010-02-25 16:40:34 turbo Exp $
+ */
+
 #include <conprint.h> /* lprintfln() */
 
 #include "EditBoxScreen.h"
