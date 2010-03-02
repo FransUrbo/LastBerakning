@@ -1,16 +1,16 @@
 .res RES_FONT
 .bin
-.include "Resources/pretty.mof"
+.include "Resorces/pretty.mof"
 
 .res RES_SELECTED
-.image "Resources/background_tile_sel.png"
+.image "Resorces/background_tile_sel.png"
 
 .res RES_UNSELECTED
-.image "Resources/background_tile_unsel.png"
+.image "Resorces/background_tile_unsel.png"
 
-//.res RES_CHECKBOX_CHECKED
-//.image "chechbox_checked.png"
+.res RES_CHECKBOX_CHECKED
+.image "Resorces/checkbox_checked.png"
 
-//.res RES_CHECKBOX_UNCHECKED
-//.image "chechbox_unchecked.png"
+.res RES_CHECKBOX_UNCHECKED
+.image "Resorces/checkbox_default.png"
     
