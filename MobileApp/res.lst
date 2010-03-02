@@ -2,10 +2,10 @@
 .bin
 .include "Resorces/pretty.mof"
 
-.res RES_SELECTED
+.res RES_TILE_SELECTED
 .image "Resorces/background_tile_sel.png"
 
-.res RES_UNSELECTED
+.res RES_TILE_UNSELECTED
 .image "Resorces/background_tile_unsel.png"
 
 .res RES_CHECKBOX_CHECKED

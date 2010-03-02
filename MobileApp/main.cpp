@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.1 2010-02-25 13:00:04 turbo Exp $
- * $Revision: 1.1 $
+ * $Id: main.cpp,v 1.2 2010-03-02 10:19:08 turbo Exp $
+ * $Revision: 1.2 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -25,7 +25,7 @@ public:
 	MAUIMoblet() {
 		// initialize
 		gFont = new MAUI::Font(RES_FONT);
-		gSkin = new WidgetSkin(RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, true, true);
+		gSkin = new WidgetSkin(RES_TILE_SELECTED, RES_TILE_UNSELECTED, 16, 32, 16, 32, true, true);
 
 		Engine& engine = Engine::getSingleton();
 
