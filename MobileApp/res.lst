@@ -13,4 +13,9 @@
 
 .res RES_CHECKBOX_UNCHECKED
 .image "Resorces/checkbox_default.png"
-    
+
+.res RES_RADIOBUTTON_SELECTED
+.image "Resorces/radiobutton_selected.png"
+
+.res RES_RADIOBUTTON_UNSELECTED
+.image "Resorces/radiobutton_unselected.png"
