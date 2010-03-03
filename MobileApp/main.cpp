@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.2 2010-03-02 10:19:08 turbo Exp $
- * $Revision: 1.2 $
+ * $Id: main.cpp,v 1.3 2010-03-03 13:48:26 turbo Exp $
+ * $Revision: 1.3 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -16,6 +16,8 @@
 #include "MAHeaders.h"
 #include "Util.h"
 #include "screen.h"
+#include "ScreenTransition.h"
+
 
 //This is the Moblet class. This manages the events your application will need, like getting
 //key presses and screen touches.
