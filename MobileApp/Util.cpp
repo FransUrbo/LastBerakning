@@ -37,7 +37,7 @@ void setLabelPadding(Widget *w) {
 
 Label* createLabel(const char *str, int height) {
 	Label *label;
-	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
+	label = new Label(0, 0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
 	label->setSkin(gSkin);
 	setLabelPadding(label);
 	return label;
