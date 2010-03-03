@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.2 2010-02-25 16:44:12 turbo Exp $
- * $Revision: 1.2 $
+ * $Id: screen.cpp,v 1.3 2010-03-03 13:49:40 turbo Exp $
+ * $Revision: 1.3 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -11,18 +11,22 @@
 #include "LabelScreen.h"
 #include "EditBoxScreen.h"
 #include "Util.h"
+#include "ScreenTransition.h"
 
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
 //MAUI::Screen base class. To put content on the screen, you have to add widgets to it.
 MyScreen::MyScreen(void) {
 	screens.add(new LabelScreen(this));
 	screens.add(new EditBoxScreen(this));
+	screens.add(new EditBoxScreen(this));
 
 	layout = createMainLayout("Välj", "Avsluta");
 	listBox = (ListBox*) layout->getChildren()[0];
 
 	listBox->add(createLabel("Hjälptexter"));
-	listBox->add(createLabel("Beräkna bruttovikt"));
+	listBox->add(createLabel("Information, Bil"));
+	listBox->add(createLabel("Information, Släp"));
+	//listBox->add(createLabel("Gör bruttovikts beräkning"));
 
 	// BUG/Counter-intuitive!!
 	// createMainLayout creates a listbox with wrapping=true.
@@ -63,7 +67,7 @@ void MyScreen::keyPressEvent(int keyCode) {
 				//You can get the selected option with
 				//listBox->getSelectedIndex();
 				lprintfln("Showing screen %d", listBox->getSelectedIndex());
-				screens[listBox->getSelectedIndex()]->show();
+				ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
 				break;
 
 			case MAK_8:
