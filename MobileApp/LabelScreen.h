@@ -25,6 +25,8 @@ class LabelScreen : public Screen {
 		void keyPressEvent(int keyCode, int nativeCode);
 
 	private:
+		void createTextField(const char *str);
+
 		Screen *previous;
 		ListBox *listBox;
 		Layout *mainLayout;
