@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.4 2010-03-04 18:34:14 turbo Exp $
- * $Revision: 1.4 $
+ * $Id: screen.cpp,v 1.5 2010-03-04 19:04:51 turbo Exp $
+ * $Revision: 1.5 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -62,14 +62,6 @@ void MyScreen::keyPressEvent(int keyCode) {
 			case MAK_SOFTLEFT:
 			case MAK_RIGHT:
 			case MAK_FIRE:
-				//Decide on the action you want to perform when an option is selected.
-				//You can get the selected option with
-				//listBox->getSelectedIndex();
-				if(listBox->getSelectedIndex() == 3) {
-					/* TODO: Do calculations !! */
-					lprintfln("Doing calculations...");
-				}
-
 				lprintfln("Showing screen %d", listBox->getSelectedIndex());
 				ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
 				break;
