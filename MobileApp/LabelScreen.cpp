@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.3 2010-03-03 13:47:34 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.4 2010-03-04 18:32:48 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -129,10 +129,7 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 		"att göra det på."
 	);
 
-	// BUG/Counter-intuitive!!
-	// createMainLayout creates a listbox with wrapping=true.
-	// This don't work!! Works if I change to 'false' though!!
-	listBox->setWrapping(false);
+	listBox->setWrapping(WRAPPING);
 
 	this->setMain(mainLayout);
 }
@@ -172,5 +169,6 @@ void LabelScreen::createTextField(const char *str)
 	label->setAutoSizeY();
 	label->setSkin(gSkin);
 	label->setMultiLine(true);
+
 	listBox->add(label);
 }

@@ -27,6 +27,12 @@ using namespace MAUI;
 
 #define PADDING 5
 
+// BUG/Counter-intuitive!!
+// createMainLayout creates a listbox with wrapping=true.
+// This don't work!! Works if I change to 'false' though!!
+// NOTE: When bug fixed, change this to 'true'
+#define WRAPPING false
+
 void setLabelPadding(Widget *w);
 Label* createLabel(const char *str, int height=32);
 Widget* createSoftKeyBar(int height, const char *left, const char *right);
