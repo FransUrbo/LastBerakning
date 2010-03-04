@@ -28,10 +28,6 @@
 
 using namespace MAUI;
 
-/**
- *  The screen class used for demonstrating how to
- *  use \a EditBoxes and their different modes.
- */
 class EditBoxScreen : public Screen, WidgetListener {
 	public:
 		/**
