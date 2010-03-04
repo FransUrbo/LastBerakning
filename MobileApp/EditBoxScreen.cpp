@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.3 2010-03-03 13:46:49 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.4 2010-03-04 18:31:13 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -38,6 +38,8 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	listBox = (ListBox*) mainLayout->getChildren()[0];
 
 	/* Create the different label/input fields */
+
+	/* ---------------------------------- */
 	label = createLabel("Tjänstevikt", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
 							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
@@ -45,6 +47,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label->addWidgetListener(this);
 	listBox->add(label);
 
+	/* ---------------------------------- */
 	label = createLabel("Max belastning, framaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
 							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
@@ -56,24 +59,22 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label = createLabel("Axeltyp, framaxel", (32+(3*(32+PADDING))));
 	listBox_select1 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
 									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	RadioButtonGroup* group = new RadioButtonGroup();
+	RadioButtonGroup* group1 = new RadioButtonGroup();
 
 	for(int i = 0; i < 3; i++) {
 		select1.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
 									32, listBox_select1, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
-		group->addRadioButton(select1[i]);
+		group1->addRadioButton(select1[i]);
 	}
 
 	select1[0]->setCaption("Enkelaxel");
 	select1[1]->setCaption("Boggieaxel");
 	select1[2]->setCaption("Trippelaxel");
 
-	group->setSelectedButton(0);
-
+	group1->setSelectedButton(0);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-
 	label = createLabel("Max belastning, bakaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
 							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
@@ -81,15 +82,32 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label->addWidgetListener(this);
 	listBox->add(label);
 
-	label = createLabel("Axeltyp, bakaxel", 32);
-	// TODO
+	/* ---------------------------------- */
+	label = createLabel("Axeltyp, bakaxel", (32+(3*(32+PADDING))));
+	listBox_select2 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
+									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
+	RadioButtonGroup* group2 = new RadioButtonGroup();
+
+	for(int i = 0; i < 3; i++) {
+		select2.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
+									32, listBox_select2, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
+		group2->addRadioButton(select2[i]);
+	}
+
+	select2[0]->setCaption("Enkelaxel");
+	select2[1]->setCaption("Boggieaxel");
+	select2[2]->setCaption("Trippelaxel");
+
+	group2->setSelectedButton(0);
 	listBox->add(label);
 
+	/* ---------------------------------- */
 	label = createLabel("Vägvänlig fjädring", 32);
 	checkBox.add(new CheckBox(scrWidth - 50, 2, 16, 16, label));
 	checkBox[0]->setResources(RES_CHECKBOX_UNCHECKED, RES_CHECKBOX_CHECKED);
 	listBox->add(label);
 
+	/* ---------------------------------- */
 	label = createLabel("Axelavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
 							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
@@ -97,6 +115,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label->addWidgetListener(this);
 	listBox->add(label);
 
+	/* ---------------------------------- */
 	label = createLabel("Kopplingsavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
 							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
@@ -104,10 +123,8 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label->addWidgetListener(this);
 	listBox->add(label);
 
-	// BUG/Counter-intuitive!!
-	// createMainLayout creates a listbox with wrapping=true.
-	// This don't work!! Works if I change to 'false' though!!
-	listBox->setWrapping(false);
+	/* ---------------------------------- */
+	listBox->setWrapping(WRAPPING);
 
 	this->setMain(mainLayout);
 }
@@ -143,13 +160,13 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_LEFT:
-			if(listBox->getSelectedIndex() == 2)
+			if((listBox->getSelectedIndex() == 2) || (listBox->getSelectedIndex() == 4))
 				listBox->selectPreviousItem();
 			break;
 
 		case MAK_RIGHT:
 		case MAK_FIRE:
-			if(listBox->getSelectedIndex() == 2)
+			if((listBox->getSelectedIndex() == 2) || (listBox->getSelectedIndex() == 4))
 				listBox->selectNextItem();
 			else if (listBox->getSelectedIndex() == 5) {
 				lprintfln("Flipping checkbox...");
@@ -157,6 +174,7 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 				cb->flip();
 				lprintfln("flipped...");
 			}
+			break;
 
 		case MAK_SOFTLEFT:
 			editBox[listBox->getSelectedIndex()]->deletePreviousCharacter();
@@ -171,6 +189,8 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			lprintfln("selectPreviousItem()");
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() > 0))
 				listBox_select1->selectPreviousItem();
+			else if((listBox->getSelectedIndex() == 4) && (listBox_select2->getSelectedIndex() > 0))
+				listBox_select2->selectPreviousItem();
 			else
 				listBox->selectPreviousItem();
 			break;
@@ -179,6 +199,8 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			lprintfln("selectNextItem()");
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() < 2))
 				listBox_select1->selectNextItem();
+			else if((listBox->getSelectedIndex() == 4) && (listBox_select2->getSelectedIndex() < 2))
+				listBox_select2->selectNextItem();
 			else
 				listBox->selectNextItem();
 			break;
