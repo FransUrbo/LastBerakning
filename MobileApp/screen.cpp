@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.3 2010-03-03 13:49:40 turbo Exp $
- * $Revision: 1.3 $
+ * $Id: screen.cpp,v 1.4 2010-03-04 18:34:14 turbo Exp $
+ * $Revision: 1.4 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -10,6 +10,7 @@
 #include "screen.h"
 #include "LabelScreen.h"
 #include "EditBoxScreen.h"
+#include "ResultScreen.h"
 #include "Util.h"
 #include "ScreenTransition.h"
 
@@ -19,6 +20,7 @@ MyScreen::MyScreen(void) {
 	screens.add(new LabelScreen(this));
 	screens.add(new EditBoxScreen(this));
 	screens.add(new EditBoxScreen(this));
+	screens.add(new ResultScreen(this));
 
 	layout = createMainLayout("Välj", "Avsluta");
 	listBox = (ListBox*) layout->getChildren()[0];
@@ -26,12 +28,9 @@ MyScreen::MyScreen(void) {
 	listBox->add(createLabel("Hjälptexter"));
 	listBox->add(createLabel("Information, Bil"));
 	listBox->add(createLabel("Information, Släp"));
-	//listBox->add(createLabel("Gör bruttovikts beräkning"));
+	listBox->add(createLabel("Gör bruttovikts beräkning"));
 
-	// BUG/Counter-intuitive!!
-	// createMainLayout creates a listbox with wrapping=true.
-	// This don't work!! Works if I change to 'false' though!!
-	listBox->setWrapping(false);
+	listBox->setWrapping(WRAPPING);
 
 	//Set this widget as the main widget to be shown on this screen
 	this->setMain(layout);
@@ -66,6 +65,11 @@ void MyScreen::keyPressEvent(int keyCode) {
 				//Decide on the action you want to perform when an option is selected.
 				//You can get the selected option with
 				//listBox->getSelectedIndex();
+				if(listBox->getSelectedIndex() == 3) {
+					/* TODO: Do calculations !! */
+					lprintfln("Doing calculations...");
+				}
+
 				lprintfln("Showing screen %d", listBox->getSelectedIndex());
 				ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
 				break;
