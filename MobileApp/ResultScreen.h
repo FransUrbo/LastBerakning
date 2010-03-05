@@ -1,7 +1,7 @@
 /*
  * ResultScreen.h
  *
- * $Id: ResultScreen.h,v 1.2 2010-03-04 19:05:38 turbo Exp $
+ * $Id: ResultScreen.h,v 1.3 2010-03-05 20:44:05 turbo Exp $
  */
 
 #ifndef RESULTSCREEN_H_
@@ -12,12 +12,14 @@
 #include <MAUI/ListBox.h>
 #include <MAUI/Layout.h>
 
+#include "screen.h"
+
 using namespace MAUI;
 
 class ResultScreen : public Screen, WidgetListener {
 	public:
 		/* Constructor */
-		ResultScreen(Screen *previous);
+		ResultScreen(MyScreen *previous);
 
 		/* Destructor */
 		~ResultScreen();
@@ -31,7 +33,7 @@ class ResultScreen : public Screen, WidgetListener {
 	private:
 		void hide();
 		void ResultScreen::createTextField(const char *leader, float value, Widget *parent);
-		void ResultScreen::doCalculations();
+		void ResultScreen::doCalculations(MyScreen *);
 
 		Screen *previous;
 		Layout* mainLayout;

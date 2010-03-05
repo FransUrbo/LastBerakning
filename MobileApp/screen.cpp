@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.5 2010-03-04 19:04:51 turbo Exp $
- * $Revision: 1.5 $
+ * $Id: screen.cpp,v 1.6 2010-03-05 20:44:05 turbo Exp $
+ * $Revision: 1.6 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -11,8 +11,8 @@
 #include "LabelScreen.h"
 #include "EditBoxScreen.h"
 #include "ResultScreen.h"
-#include "Util.h"
 #include "ScreenTransition.h"
+#include "Util.h"
 
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
 //MAUI::Screen base class. To put content on the screen, you have to add widgets to it.
@@ -21,6 +21,8 @@ MyScreen::MyScreen(void) {
 	screens.add(new EditBoxScreen(this));
 	screens.add(new EditBoxScreen(this));
 	screens.add(new ResultScreen(this));
+
+	lprintfln("Tjänstevikt, bil: %s", this->screens[1]->editBox[0]->getText());
 
 	layout = createMainLayout("Välj", "Avsluta");
 	listBox = (ListBox*) layout->getChildren()[0];
@@ -72,3 +74,8 @@ void MyScreen::keyPressEvent(int keyCode) {
 				break;
 		}
 }
+
+void MyScreen::getTruckWeight() {
+	lprintfln("getTruckWeight()");
+}
+

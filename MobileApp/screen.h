@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.1 2010-02-25 13:00:05 turbo Exp $
- * $Revision: 1.1 $
+ * $Id: screen.h,v 1.2 2010-03-05 20:44:05 turbo Exp $
+ * $Revision: 1.2 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -28,10 +28,13 @@ class MyScreen : public Screen {
 		~MyScreen();
 		void keyPressEvent(int keyCode);
 
-	private:
+		void MyScreen::getTruckWeight();
+
 		Vector<Screen*> screens;
-		ListBox* listBox;
+
+	private:
 		Layout* layout;
+		ListBox* listBox;
 };
 
 #endif /* SCREEN_H_ */

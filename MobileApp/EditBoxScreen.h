@@ -63,6 +63,8 @@ class EditBoxScreen : public Screen, WidgetListener {
 		 */
 		void show();
 
+		Vector<EditBox*> editBox;
+
 	private:
 		void hide();
 
@@ -74,7 +76,6 @@ class EditBoxScreen : public Screen, WidgetListener {
 
 		Layout* mainLayout;
 
-		Vector<EditBox*> editBox;
 		Vector<CheckBox*> checkBox;
 		Vector<RadioButton*> select1;
 		Vector<RadioButton*> select2;

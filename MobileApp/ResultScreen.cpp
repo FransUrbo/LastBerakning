@@ -3,22 +3,26 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.2 2010-03-04 19:03:37 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.3 2010-03-05 20:44:05 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
 #include <MAUtil/String.h>
 
+#include "screen.h"
+#include "EditBoxScreen.h"
 #include "ResultScreen.h"
 #include "ScreenTransition.h"
 #include "Util.h"
 
-ResultScreen::ResultScreen(Screen *previous) : previous(previous) {
+ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	Label *label;
 	ListBox *field;
 
 	/* ---------------------------------- */
-	doCalculations();
+	//doCalculations(previous);
+//	lprintfln("Tjänstevikt, bil: %f", previous->screens[1]->
+//			editBox[0]);
 
 	/* Create the main work/text area */
 	mainLayout = createMainLayout("Radera", "Tillbaka");
@@ -104,7 +108,7 @@ void ResultScreen::createTextField(const char *leader, float value, Widget *pare
 	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);
 }
 
-void ResultScreen::doCalculations() {
+void ResultScreen::doCalculations(MyScreen *previous) {
 	/* TODO: Do calculations !! */
 	lprintfln("Doing calculations...");
 
