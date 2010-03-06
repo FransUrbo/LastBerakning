@@ -9,7 +9,7 @@
 <property key="build.prefs:additional.include.paths/Release" value=""/>
 <property key="build.prefs:additional.libraries" value="MAUtil.lib,MAUI.lib"/>
 <property key="build.prefs:additional.libraries/Debug" value="MAUtilD.lib,MAUID.lib"/>
-<property key="build.prefs:additional.libraries/Release" value="MAUtil.lib,MAUI.lib"/>
+<property key="build.prefs:additional.libraries/Release" value="MAUtil.lib,MAUI.lib,MAFS.lib"/>
 <property key="build.prefs:additional.library.paths/Release" value=""/>
 <property key="build.prefs:extra.link.sw/Release" value="-lc"/>
 <property key="build.prefs:extra.res.sw/Release" value=""/>
