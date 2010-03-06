@@ -6,6 +6,8 @@
  *      Author: sjp
  */
 
+#include <conprint.h> /* lprintfln() */
+
 #include "RadioButton.h"
 #include "Util.h"
 
@@ -40,6 +42,15 @@ void RadioButton::setSelected(bool selected)
 		_button->setResource(_sel);
 	if(!_selected && _unsel != NULL)
 		_button->setResource(_unsel);
+}
+
+bool RadioButton::checkSelected(int sel)
+{
+	lprintfln("  checkSelected(%d) == %d", sel, _selected);
+	if(_selected)
+		return(true);
+	else
+		return(false);
 }
 
 void RadioButton::setResources(MAHandle selectedImage, MAHandle unselectedImage)

@@ -22,6 +22,7 @@ class RadioButtonGroup
 
         void addRadioButton(RadioButton* rb);
         void setSelectedButton(int index);
+        int getSelectedButton();
 
       private:
         Vector<RadioButton*> _buttons;

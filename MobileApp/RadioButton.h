@@ -25,12 +25,15 @@ class RadioButton : public Widget
         void drawWidget();
 
         void setSelected(bool selected);
+        bool checkSelected(int sel);
         void setCaption(const char *caption);
 
       private:
         Image* _button;
         Label* _label;
+
         bool _selected;
+
         MAHandle _sel;
         MAHandle _unsel;
 };
