@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.4 2010-03-04 18:31:13 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.5 2010-03-06 13:30:58 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -59,7 +59,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label = createLabel("Axeltyp, framaxel", (32+(3*(32+PADDING))));
 	listBox_select1 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
 									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	RadioButtonGroup* group1 = new RadioButtonGroup();
+	group1 = new RadioButtonGroup();
 
 	for(int i = 0; i < 3; i++) {
 		select1.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
@@ -86,7 +86,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	label = createLabel("Axeltyp, bakaxel", (32+(3*(32+PADDING))));
 	listBox_select2 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
 									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	RadioButtonGroup* group2 = new RadioButtonGroup();
+	group2 = new RadioButtonGroup();
 
 	for(int i = 0; i < 3; i++) {
 		select2.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
