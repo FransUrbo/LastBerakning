@@ -20,22 +20,6 @@
 .res RES_RADIOBUTTON_UNSELECTED
 .image "Resorces/radiobutton_unselected.png"
 
-.res RES_TABLE_BK1
+.res RES_TABLE_FS
 .ubin
-.include "Resources/table-bk1.bun"
-
-.res RES_TABLE_BK2
-.ubin
-.include "Resources/table-bk2.bun"
-
-.res RES_TABLE_BK3
-.ubin
-.include "Resources/table-bk3.bun"
-
-.res RES_TABLE_BOGGIE
-.ubin
-.include "Resources/table-boggie.bun"
-
-.res RES_TABLE_TRIPPLE
-.ubin
-.include "Resources/table-tripple.bun"
+.include "Resources/tables.bun"
