@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.5 2010-03-06 13:36:47 turbo Exp $
- * $Revision: 1.5 $
+ * $Id: screen.h,v 1.6 2010-03-06 16:02:29 turbo Exp $
+ * $Revision: 1.6 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -36,6 +36,7 @@ class MyScreen : public Screen {
 
 	private:
 		void MyScreen::doCalculations();
+		bool MyScreen::openTable(const char *name);
 
 		Vector<EditBoxScreen*> editBoxScreens;
 		Vector<Screen*> screens;
