@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.7 2010-03-06 00:17:43 turbo Exp $
- * $Revision: 1.7 $
+ * $Id: screen.cpp,v 1.8 2010-03-06 00:22:45 turbo Exp $
+ * $Revision: 1.8 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -91,17 +91,21 @@ void MyScreen::keyPressEvent(int keyCode) {
 
 void MyScreen::doCalculations() {
 	/* TODO: Do calculations !! */
+	lprintfln("------------------");
 	lprintfln("Doing calculations...");
 
+	/* ---------------------------------- */
 	weight_bk1 = 18.0; weight_bk2 = 16.7; weight_bk3 = 14.7;
 	load_bk1   =  8.3; load_bk2   =  7.0; load_bk3 =  5.0;
 
-	getTruckWeight();
+	/* ---------------------------------- */
+	weight_bk1 = getTruckWeight();
+
+	lprintfln("Tjänstevikt, bil: %f", weight_bk1);
+	lprintfln("------------------");
 }
 
-void MyScreen::getTruckWeight() {
-	lprintfln("------------------");
-	weight_bk1 = (float)atof((const char *)editBoxScreens[0]->editBox[0]->getText().c_str());
-	lprintfln("Tjänstevikt, bil: '%s' (%f)", editBoxScreens[0]->editBox[0]->getText().c_str(), weight_bk1);
-	lprintfln("------------------");
+float MyScreen::getTruckWeight() {
+	float value = (float)atof((const char *)editBoxScreens[0]->editBox[0]->getText().c_str());
+	return(value);
 }

@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.3 2010-03-06 00:17:43 turbo Exp $
- * $Revision: 1.3 $
+ * $Id: screen.h,v 1.4 2010-03-06 00:22:45 turbo Exp $
+ * $Revision: 1.4 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -36,7 +36,7 @@ class MyScreen : public Screen {
 
 	private:
 		void MyScreen::doCalculations();
-		void MyScreen::getTruckWeight();
+		float MyScreen::getTruckWeight();
 
 		Vector<EditBoxScreen*> editBoxScreens;
 		Vector<Screen*> screens;
