@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.3 2010-03-05 20:44:05 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.4 2010-03-06 00:17:43 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -19,11 +19,6 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	Label *label;
 	ListBox *field;
 
-	/* ---------------------------------- */
-	//doCalculations(previous);
-//	lprintfln("Tjänstevikt, bil: %f", previous->screens[1]->
-//			editBox[0]);
-
 	/* Create the main work/text area */
 	mainLayout = createMainLayout("Radera", "Tillbaka");
 	listBox = (ListBox*) mainLayout->getChildren()[0];
@@ -32,18 +27,18 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	label = createLabel("Max bruttovikt", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", weight_bk1, field);
-	createTextField("BK2", weight_bk2, field);
-	createTextField("BK3", weight_bk3, field);
+	createTextField("BK1", previous->weight_bk1, field);
+	createTextField("BK2", previous->weight_bk2, field);
+	createTextField("BK3", previous->weight_bk3, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
 	label = createLabel("Max Last", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", load_bk1, field);
-	createTextField("BK2", load_bk2, field);
-	createTextField("BK3", load_bk3, field);
+	createTextField("BK1", previous->load_bk1, field);
+	createTextField("BK2", previous->load_bk2, field);
+	createTextField("BK3", previous->load_bk3, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
@@ -97,7 +92,7 @@ void ResultScreen::createTextField(const char *leader, float value, Widget *pare
 {
 	Label *label;
 	String string;
-	char *str;
+	char str[40];
 
 	/* NOTE: There's probably a much better way to do this, but... */
 	sprintf(str, "%02.02f", value);
@@ -105,14 +100,7 @@ void ResultScreen::createTextField(const char *leader, float value, Widget *pare
 	string += ": ";
 	string += str;
 
+	lprintfln("Value: '%s' (%f)", str, value);
+
 	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);
-}
-
-void ResultScreen::doCalculations(MyScreen *previous) {
-	/* TODO: Do calculations !! */
-	lprintfln("Doing calculations...");
-
-	weight_bk1 = 18.0; weight_bk2 = 16.7; weight_bk3 = 14.7;
-	load_bk1   =  8.3; load_bk2   =  7.0; load_bk3 =  5.0;
-
 }

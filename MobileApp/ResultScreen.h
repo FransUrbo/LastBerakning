@@ -1,7 +1,7 @@
 /*
  * ResultScreen.h
  *
- * $Id: ResultScreen.h,v 1.3 2010-03-05 20:44:05 turbo Exp $
+ * $Id: ResultScreen.h,v 1.4 2010-03-06 00:17:43 turbo Exp $
  */
 
 #ifndef RESULTSCREEN_H_
@@ -33,14 +33,10 @@ class ResultScreen : public Screen, WidgetListener {
 	private:
 		void hide();
 		void ResultScreen::createTextField(const char *leader, float value, Widget *parent);
-		void ResultScreen::doCalculations(MyScreen *);
 
 		Screen *previous;
 		Layout* mainLayout;
 		ListBox* listBox;
-
-		float weight_bk1, weight_bk2, weight_bk3;
-		float load_bk1, load_bk2, load_bk3;
 };
 
 #endif /* RESULTSCREEN_H_ */

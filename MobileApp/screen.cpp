@@ -1,11 +1,13 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.6 2010-03-05 20:44:05 turbo Exp $
- * $Revision: 1.6 $
+ * $Id: screen.cpp,v 1.7 2010-03-06 00:17:43 turbo Exp $
+ * $Revision: 1.7 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
+
+#include <madmath.h>
 
 #include "screen.h"
 #include "LabelScreen.h"
@@ -17,21 +19,26 @@
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
 //MAUI::Screen base class. To put content on the screen, you have to add widgets to it.
 MyScreen::MyScreen(void) {
+	/* ---------------------------------- */
 	screens.add(new LabelScreen(this));
-	screens.add(new EditBoxScreen(this));
-	screens.add(new EditBoxScreen(this));
-	screens.add(new ResultScreen(this));
 
-	lprintfln("Tjänstevikt, bil: %s", this->screens[1]->editBox[0]->getText());
+	editBoxScreens.add(new EditBoxScreen(this));
+	screens.add(editBoxScreens[0]);
 
+	editBoxScreens.add(new EditBoxScreen(this));
+	screens.add(editBoxScreens[1]);
+
+	/* ---------------------------------- */
 	layout = createMainLayout("Välj", "Avsluta");
 	listBox = (ListBox*) layout->getChildren()[0];
 
+	/* ---------------------------------- */
 	listBox->add(createLabel("Hjälptexter"));
 	listBox->add(createLabel("Information, Bil"));
 	listBox->add(createLabel("Information, Släp"));
 	listBox->add(createLabel("Gör bruttovikts beräkning"));
 
+	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);
 
 	//Set this widget as the main widget to be shown on this screen
@@ -64,6 +71,13 @@ void MyScreen::keyPressEvent(int keyCode) {
 			case MAK_SOFTLEFT:
 			case MAK_RIGHT:
 			case MAK_FIRE:
+				/* ---------------------------------- */
+				doCalculations();
+
+				/* ---------------------------------- */
+				screens[3] = new ResultScreen(this);
+
+				/* ---------------------------------- */
 				lprintfln("Showing screen %d", listBox->getSelectedIndex());
 				ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
 				break;
@@ -75,7 +89,19 @@ void MyScreen::keyPressEvent(int keyCode) {
 		}
 }
 
-void MyScreen::getTruckWeight() {
-	lprintfln("getTruckWeight()");
+void MyScreen::doCalculations() {
+	/* TODO: Do calculations !! */
+	lprintfln("Doing calculations...");
+
+	weight_bk1 = 18.0; weight_bk2 = 16.7; weight_bk3 = 14.7;
+	load_bk1   =  8.3; load_bk2   =  7.0; load_bk3 =  5.0;
+
+	getTruckWeight();
 }
 
+void MyScreen::getTruckWeight() {
+	lprintfln("------------------");
+	weight_bk1 = (float)atof((const char *)editBoxScreens[0]->editBox[0]->getText().c_str());
+	lprintfln("Tjänstevikt, bil: '%s' (%f)", editBoxScreens[0]->editBox[0]->getText().c_str(), weight_bk1);
+	lprintfln("------------------");
+}
