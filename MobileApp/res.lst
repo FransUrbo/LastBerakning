@@ -22,4 +22,4 @@
 
 .res RES_TABLE_FS
 .ubin
-.include "Resources/tables.bun"
+.include "Resorces/tables.bun"
