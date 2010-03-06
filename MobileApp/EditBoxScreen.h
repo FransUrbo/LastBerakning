@@ -25,6 +25,7 @@
 
 #include "CheckBox.h"
 #include "RadioButton.h"
+#include "RadioButtonGroup.h"
 
 using namespace MAUI;
 
@@ -64,6 +65,10 @@ class EditBoxScreen : public Screen, WidgetListener {
 		void show();
 
 		Vector<EditBox*> editBox;
+		Vector<CheckBox*> checkBox;
+
+		RadioButtonGroup* group1;
+		RadioButtonGroup* group2;
 
 	private:
 		void hide();
@@ -76,7 +81,6 @@ class EditBoxScreen : public Screen, WidgetListener {
 
 		Layout* mainLayout;
 
-		Vector<CheckBox*> checkBox;
 		Vector<RadioButton*> select1;
 		Vector<RadioButton*> select2;
 };
