@@ -46,7 +46,9 @@ void RadioButton::setSelected(bool selected)
 
 bool RadioButton::checkSelected(int sel)
 {
+#ifdef DEBUG1
 	lprintfln("  checkSelected(%d) == %d", sel, _selected);
+#endif
 	if(_selected)
 		return(true);
 	else

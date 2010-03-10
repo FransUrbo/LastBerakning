@@ -22,6 +22,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <conprint.h> /* lprintfln() */
 
 #include "Util.h"
+#include "screen.h"
 
 Font *gFont;
 WidgetSkin *gSkin;
@@ -47,7 +48,9 @@ Widget* createSoftKeyBar(int height, const char *left, const char *right) {
 	Layout *layout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
 	Label *label;
 
+#ifdef DEBUG2
 	lprintfln("Screen Width=%d, Height=%d, Left=%d", scrWidth, height, left);
+#endif
 	label = new Label(0,0, scrWidth/2, height, NULL, left, 0, gFont);
 	label->setHorizontalAlignment(Label::HA_LEFT);
 	setLabelPadding(label);

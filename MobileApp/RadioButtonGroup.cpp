@@ -27,10 +27,10 @@ int RadioButtonGroup::getSelectedButton()
 	int ctr = 0;
 
 	Vector_each(RadioButton*, itr, _buttons) {
-		lprintfln("getSelectedButton: ctr=%d", ctr);
+//		lprintfln("getSelectedButton: ctr=%d", ctr);
 
 		if((*itr)->checkSelected(ctr)) {
-			lprintfln("getSelectedButton: => %d", ctr);
+//			lprintfln("getSelectedButton: => %d", ctr);
 			return(ctr);
 		}
 
