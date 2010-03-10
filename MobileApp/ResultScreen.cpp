@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.4 2010-03-06 00:17:43 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.5 2010-03-10 13:58:12 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -24,21 +24,21 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	listBox = (ListBox*) mainLayout->getChildren()[0];
 
 	/* ---------------------------------- */
-	label = createLabel("Max bruttovikt", (32+(3*20)));
+	label = createLabel("Max bruttovikt, TÅG (ton)", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", previous->weight_bk1, field);
-	createTextField("BK2", previous->weight_bk2, field);
-	createTextField("BK3", previous->weight_bk3, field);
+	createTextField("BK1", previous->result_weight[BK1], field);
+	createTextField("BK2", previous->result_weight[BK2], field);
+	createTextField("BK3", previous->result_weight[BK3], field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max Last", (32+(3*20)));
+	label = createLabel("Max Last, TÅG (ton)", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", previous->load_bk1, field);
-	createTextField("BK2", previous->load_bk2, field);
-	createTextField("BK3", previous->load_bk3, field);
+	createTextField("BK1", previous->result_load[BK1], field);
+	createTextField("BK2", previous->result_load[BK2], field);
+	createTextField("BK3", previous->result_load[BK3], field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
@@ -61,7 +61,9 @@ void ResultScreen::hide() {
 }
 
 void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
+#ifdef DEBUG1
 	lprintfln("Index: %d", listBox->getSelectedIndex());
+#endif
 
 	switch(keyCode) {
 		case MAK_HASH:
@@ -71,21 +73,29 @@ void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
 
 		case MAK_LEFT:
 		case MAK_SOFTRIGHT:
+#ifdef DEBUG1
 			lprintfln("Showing previous screen...");
+#endif
 			ScreenTransition::makeTransition(this, previous, -1, 400);
 			break;
 
 		case MAK_UP:
+#ifdef DEBUG1
 			lprintfln("selectPreviousItem()");
+#endif
 			listBox->selectPreviousItem();
 			break;
 
 		case MAK_DOWN:
+#ifdef DEBUG1
 			lprintfln("selectNextItem()");
+#endif
 			listBox->selectNextItem();
 			break;
 	}
+#ifdef DEBUG1
 	lprintfln("keyPressEvent() done...");
+#endif
 }
 
 void ResultScreen::createTextField(const char *leader, float value, Widget *parent)
@@ -100,7 +110,9 @@ void ResultScreen::createTextField(const char *leader, float value, Widget *pare
 	string += ": ";
 	string += str;
 
+#ifdef DEBUG1
 	lprintfln("Value: '%s' (%f)", str, value);
+#endif
 
 	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);
 }
