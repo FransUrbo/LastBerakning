@@ -6,16 +6,23 @@
 <filter profiles="" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="MicroEmulator,Motorola,Nokia,Samsung,Siemens,Sony-Ericsson"/>
 </criteria>
 <properties>
+<property key="build.prefs:additional.include.paths/Debug" value=""/>
 <property key="build.prefs:additional.include.paths/Release" value=""/>
 <property key="build.prefs:additional.libraries" value="MAUtil.lib,MAUI.lib"/>
-<property key="build.prefs:additional.libraries/Debug" value="MAUtilD.lib,MAUID.lib"/>
+<property key="build.prefs:additional.libraries/Debug" value="MAUtilD.lib,MAUID.lib,MAFSD.lib"/>
 <property key="build.prefs:additional.libraries/Release" value="MAUtil.lib,MAUI.lib,MAFS.lib"/>
+<property key="build.prefs:additional.library.paths/Debug" value=""/>
 <property key="build.prefs:additional.library.paths/Release" value=""/>
+<property key="build.prefs:extra.link.sw/Debug" value=""/>
 <property key="build.prefs:extra.link.sw/Release" value="-lc"/>
+<property key="build.prefs:extra.res.sw/Debug" value=""/>
 <property key="build.prefs:extra.res.sw/Release" value=""/>
+<property key="build.prefs:gcc.warnings/Debug" value="0"/>
 <property key="build.prefs:gcc.warnings/Release" value="0"/>
-<property key="build.prefs:memory.data/Release" value="128"/>
-<property key="build.prefs:memory.heap/Release" value="64"/>
+<property key="build.prefs:memory.data/Debug" value="128"/>
+<property key="build.prefs:memory.data/Release" value="256"/>
+<property key="build.prefs:memory.heap/Debug" value="64"/>
+<property key="build.prefs:memory.heap/Release" value="128"/>
 <property key="build.prefs:memory.stack/Release" value="2"/>
 <property key="build.prefs:project.type" value=""/>
 <property key="dependency.strategy" value="0"/>
