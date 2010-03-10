@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.22 2010-03-10 10:54:32 turbo Exp $
+// $Id: index.php,v 1.23 2010-03-10 14:18:01 turbo Exp $
 
-$VERSION = "$Revision: 1.22 $";
+$VERSION = "$Revision: 1.23 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -690,11 +690,12 @@ if(!$_REQUEST["action"]) {
 	  if($load_front and $load_back) {
 		if($DEBUG >= 3)
 		  echo "MAX_AXLE[$bk][$type] = '$load_front + $load_back = ".($load_front + $load_back)."'<br>";
-		elseif(($DEBUG >= 1) and ($DEBUG <= 2))
+		elseif($DEBUG >= 2)
 		  echo "<br>";
 		$MAX_AXLE[$bk][$type] = sprintf("%01.02f", ($load_front + $load_back));
 	  } elseif($DEBUG >= 2) {
 		echo "&nbsp;&nbsp;n/a<br>";
+	  } else {
 		$MAX_AXLE[$bk][$type] = 0;
 	  }
 
@@ -801,7 +802,7 @@ if(!$_REQUEST["action"]) {
   // }}}
 
 
-  // {{{ 5. Present results
+  // {{{ 6. Present results
 ?>
 <html>
   <head>
