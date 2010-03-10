@@ -3,7 +3,7 @@
 <build.cfg id="Debug"/>
 <build.cfg id="Release"/>
 <criteria>
-<filter profiles="" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="MicroEmulator,Motorola,Nokia,Samsung,Siemens,Sony-Ericsson"/>
+<filter profiles="" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="Alcatel,Google,HTC,LG,MicroEmulator,MobileSorcery,Motorola,NEC,Nokia,Qtek,Sagem,Samsung,Sharp,Siemens,Sony-Ericsson,Vodafone"/>
 </criteria>
 <properties>
 <property key="build.prefs:additional.include.paths/Debug" value=""/>
