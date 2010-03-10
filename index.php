@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.21 2010-02-23 16:18:00 turbo Exp $
+// $Id: index.php,v 1.22 2010-03-10 10:54:32 turbo Exp $
 
-$VERSION = "$Revision: 1.21 $";
+$VERSION = "$Revision: 1.22 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -475,72 +475,83 @@ if(!$_REQUEST["action"]) {
 	  $key1 = $type.'_axles_'.$location;
 	  if($_REQUEST[$key1]) {
 		$key2 = $type."_axle";
-		$dist = preg_split("/\+/", $_REQUEST[$key2]);
-		
-		if($_REQUEST[$key1] == 'tripple') {
-		  // {{{ If the distance between the first and last axle in the tripple
-		  // is > 5 meters, it's NOT a tripple, but a boggie!
-		  if(preg_match("/\+.*\+.*\+.*\+/", $_REQUEST[$key2])) {
-			// {{{ TRIPPLE + TRIPPLE
-			// EX: 1530+1530+4185+1360+1310
-			if($location == 'back') {
-			  if(($dist[0]+$dist[1]) > 5000) {
+
+		if($_REQUEST[$key2]) {
+		  $dist = preg_split("/\+/", $_REQUEST[$key2]);
+		  
+		  if($_REQUEST[$key1] == 'tripple') {
+			// {{{ If the distance between the first and last axle in the tripple
+			// is > 5 meters, it's NOT a tripple, but a boggie!
+			if(preg_match("/\+.*\+.*\+.*\+/", $_REQUEST[$key2])) {
+			  // {{{ TRIPPLE + TRIPPLE
+			  // EX: 1530+1530+4185+1360+1310
+			  if($location == 'front') {
+				if(($dist[0]+$dist[1]) > 5000) {
+				  // NOT tripple axle!
+				  if($dist[0] > 2000) {
+					// NOT boogie either - SINGLE
+					$_REQUEST[$key1] = 'single';
+					$_REQUEST[$key2] = $dist[0]+$dist[1]+$dist[2]."+".$dist[3]."+".$dist[4];
+				  } else { 
+					// IS boggie
+					$_REQUEST[$key1] = 'boggie';
+					$_REQUEST[$key2] = $dist[0]."+".$dist[1]+$dist[2]."+".$dist[3]."+".$dist[4];
+				  }
+				}
+			  } else {
+				if(($dist[3]+$dist[4]) > 5000) {
+				  $_REQUEST[$key1] = 'boggie';
+				  $_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]."+".$dist[3]+$dist[4];
+				}
+			  }
+			  // }}}
+			} elseif(preg_match("/\+.*\+.*\+/", $_REQUEST[$key2])) {
+			  // {{{ SINGLE/BOGGIE + BOGGIE/TRIPPLE
+			  // EX: 2020+3120+1360+1310
+			  if($location == 'back') {
+				if(($dist[2]+$dist[3]) > 5000) {
+				  $_REQUEST[$key1] = 'single';
+				  $_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]+$dist[3];
+				}
+				
+			  } else {
+				if($dist[0] > 5000) {
+				  $_REQUEST[$key1] = 'single';
+				  $_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2]."+".$dist[3];
+				}
+			  }
+			  // }}}
+			} elseif(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			  // {{{ SINGLE + BOGGIE
+			  // EX: 3750+2990+2020
+			  if(($dist[1]+$dist[2]) > 5000) {
 				$_REQUEST[$key1] = 'boggie';
 				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
 			  }
-			} else {
-			  if(($dist[3]+$dist[4]) > 5000) {
-				$_REQUEST[$key1] = 'boggie';
-				$_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]."+".$dist[3]+$dist[4];
-			  }
+			  // }}}
 			}
 			// }}}
-		  } elseif(preg_match("/\+.*\+.*\+/", $_REQUEST[$key2])) {
-			// {{{ SINGLE/BOGGIE + BOGGIE/TRIPPLE
-			// EX: 2020+3120+1360+1310
-			if($location == 'back') {
-			  if(($dist[2]+$dist[3]) > 5000) {
+		  } elseif($_REQUEST[$key1] == 'boggie') {
+			// {{{ If the distance between the first and last axle in the boggie
+			// is > 2 meters, it's NOT a boggie, but a single!
+			if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
+			  // Boggie + Boggie
+			  // EX: 2020+4480+1310
+			  
+			  if($dist[0] > 2000) {
 				$_REQUEST[$key1] = 'single';
-				$_REQUEST[$key2] = $dist[0]."+".$dist[1]."+".$dist[2]+$dist[3];
+				$_REQUEST[$key2] = $dist[0] + $dist[1];
 			  }
-
-			} else {
-			  if($dist[0] > 5000) {
+			} elseif(preg_match("/\+/", $_REQUEST[$key2])) {
+			  // EX: 4900+2020
+			  
+			  if($dist[1] > 2000) {
 				$_REQUEST[$key1] = 'single';
-				$_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2]."+".$dist[3];
+				$_REQUEST[$key2] = $dist[0] + $dist[1];
 			  }
-			}
-			// }}}
-		  } elseif(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
-			// {{{ SINGLE + BOGGIE
-			// EX: 3750+2990+2020
-			if(($dist[1]+$dist[2]) > 5000) {
-			  $_REQUEST[$key1] = 'boggie';
-			  $_REQUEST[$key2] = $dist[0]+$dist[1]."+".$dist[2];
 			}
 			// }}}
 		  }
-		  // }}}
-		} elseif($_REQUEST[$key1] == 'boggie') {
-		  // {{{ If the distance between the first and last axle in the boggie
-		  // is > 2 meters, it's NOT a boggie, but a single!
-		  if(preg_match("/\+.*\+/", $_REQUEST[$key2])) {
-			// Boggie + Boggie
-			// EX: 2020+4480+1310
-			
-			if($dist[0] > 2000) {
-			  $_REQUEST[$key1] = 'single';
-			  $_REQUEST[$key2] = $dist[0] + $dist[1];
-			}
-		  } elseif(preg_match("/\+/", $_REQUEST[$key2])) {
-			// EX: 4900+2020
-			
-			if($dist[1] > 2000) {
-			  $_REQUEST[$key1] = 'single';
-			  $_REQUEST[$key2] = $dist[0] + $dist[1];
-			}
-		  }
-		  // }}}
 		}
 	  }
 	}
