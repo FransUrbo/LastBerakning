@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.10 2010-03-06 16:02:07 turbo Exp $
- * $Revision: 1.10 $
+ * $Id: screen.cpp,v 1.11 2010-03-10 13:59:12 turbo Exp $
+ * $Revision: 1.11 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -17,6 +17,15 @@
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
 //MAUI::Screen base class. To put content on the screen, you have to add widgets to it.
 MyScreen::MyScreen(void) {
+	/* ---------------------------------- */
+	// Open data tables
+	TABLE_DATA.resize(5);
+	TABLE_DATA[0] = openTable("table-bk1.txt");
+	TABLE_DATA[1] = openTable("table-bk2.txt");
+	TABLE_DATA[2] = openTable("table-bk3.txt");
+	TABLE_DATA[3] = openTable("table-boggie.txt");
+	TABLE_DATA[4] = openTable("table-tripple.txt");
+
 	/* ---------------------------------- */
 	screens.add(new LabelScreen(this));
 
@@ -50,7 +59,9 @@ MyScreen::~MyScreen(void) {
 }
 
 void MyScreen::keyPressEvent(int keyCode) {
+#ifdef DEBUG2
 		lprintfln("Keycode='%x'", keyCode);
+#endif
 
 		//A full list of the key constants is available at http://www.mosync.com/docs/2.0b1/html/maapi_8h.html
 		switch(keyCode) {
