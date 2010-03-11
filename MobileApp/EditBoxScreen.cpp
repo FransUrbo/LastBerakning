@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.5 2010-03-06 13:30:58 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.6 2010-03-11 15:14:13 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -42,7 +42,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Tjänstevikt", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
 	editBox[0]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -50,7 +50,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Max belastning, framaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
 	editBox[1]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -77,7 +77,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Max belastning, bakaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
 	editBox[2]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -110,7 +110,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Axelavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
 	editBox[3]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -118,7 +118,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Kopplingsavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
 	editBox[4]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -151,7 +151,9 @@ void EditBoxScreen::hide() {
 }
 
 void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
+#ifdef DEBUG1
 	lprintfln("Index: %d", listBox->getSelectedIndex());
+#endif
 
 	switch(keyCode) {
 		case MAK_HASH:
@@ -169,10 +171,14 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			if((listBox->getSelectedIndex() == 2) || (listBox->getSelectedIndex() == 4))
 				listBox->selectNextItem();
 			else if (listBox->getSelectedIndex() == 5) {
+#ifdef DEBUG1
 				lprintfln("Flipping checkbox...");
+#endif
 				CheckBox * cb = (CheckBox *)((Label*)listBox->getChildren()[listBox->getSelectedIndex()])->getChildren()[0];
 				cb->flip();
+#ifdef DEBUG1
 				lprintfln("flipped...");
+#endif
 			}
 			break;
 
@@ -181,12 +187,16 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_SOFTRIGHT:
+#ifdef DEBUG1
 			lprintfln("Showing previous screen...");
+#endif
 			ScreenTransition::makeTransition(this, previous, -1, 400);
 			break;
 
 		case MAK_UP:
+#ifdef DEBUG1
 			lprintfln("selectPreviousItem()");
+#endif
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() > 0))
 				listBox_select1->selectPreviousItem();
 			else if((listBox->getSelectedIndex() == 4) && (listBox_select2->getSelectedIndex() > 0))
@@ -196,7 +206,9 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_DOWN:
+#ifdef DEBUG1
 			lprintfln("selectNextItem()");
+#endif
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() < 2))
 				listBox_select1->selectNextItem();
 			else if((listBox->getSelectedIndex() == 4) && (listBox_select2->getSelectedIndex() < 2))
@@ -205,5 +217,7 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 				listBox->selectNextItem();
 			break;
 	}
+#ifdef DEBUG1
 	lprintfln("keyPressEvent() done...");
+#endif
 }
