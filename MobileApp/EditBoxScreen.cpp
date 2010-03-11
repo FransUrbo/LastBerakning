@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.6 2010-03-11 15:14:13 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.7 2010-03-11 17:33:28 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "RadioButton.h"
 #include "RadioButtonGroup.h"
 #include "ScreenTransition.h"
+#include "screen.h"
 
 EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	Label *label;
@@ -152,7 +153,7 @@ void EditBoxScreen::hide() {
 
 void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 #ifdef DEBUG1
-	lprintfln("Index: %d", listBox->getSelectedIndex());
+	lprintfln("Index: %d (%d / %d)", listBox->getSelectedIndex(), keyCode, nativeCode);
 #endif
 
 	switch(keyCode) {
