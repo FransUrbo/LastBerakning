@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.3 2010-03-11 15:13:18 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.4 2010-03-11 15:32:00 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -508,7 +508,6 @@ void MyScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool fr
 	}
 }
 
-
 // Load table files from 'builtin' FS
 // http://www.mosync.com/documentation/manualpages/mafs-library-cc
 // http://www.mosync.com/docs/r341/html/index.html
@@ -615,7 +614,6 @@ double MyScreen::parseTable(Vector<String> data, double dist, int road)
     	}
     }
 }
-
 
 // Split a string
 //   Input:   String of needles to look for
