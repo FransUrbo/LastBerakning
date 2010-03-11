@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.2 2010-03-11 14:48:34 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.3 2010-03-11 15:13:18 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -667,13 +667,17 @@ Vector<double> MyScreen::split(const char *needles, char *heystack)
 #endif
 		}
 
+#ifdef DEBUG1
 		lprintfln("ret_str.size(): %d, value.find(): %d", ret_str.size(), value.find("+", 0));
+#endif
 		if((ret_str.size() == 0) && (value.find("+", 0) == -1)) {
 			sub = value;
 			val = sub.c_str();
 
 			ret_str.add(atof(val));
+#ifdef DEBUG1
 			lprintfln("ret_str[0]: %Lf", ret_str[0]);
+#endif
 		}
 	}
 
