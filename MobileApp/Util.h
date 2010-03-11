@@ -36,7 +36,7 @@ using namespace MAUI;
 void setLabelPadding(Widget *w);
 Label* createLabel(const char *str, int height=32);
 Widget* createSoftKeyBar(int height, const char *left, const char *right);
-Layout* createMainLayout(const char *left, const char *right);
+Layout* createMainLayout(const char *left, const char *right, int offset_x=0, int offset_y=0);
 
 extern Font *gFont;
 extern WidgetSkin *gSkin;
