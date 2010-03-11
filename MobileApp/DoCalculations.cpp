@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.4 2010-03-11 15:32:00 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.5 2010-03-11 17:32:31 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -131,7 +131,6 @@ void MyScreen::doCalculations() {
 #ifdef DEBUG1
 						lprintfln("  boggie axle");
 #endif
-
 						int cnt = weicle_dists[type].size();
 						if(location == 0) {
 							// FRONT
@@ -144,7 +143,6 @@ void MyScreen::doCalculations() {
 #ifdef DEBUG1
 						lprintfln("  tripple axle");
 #endif
-
 						int cnt = weicle_dists[type].size();
 						if(location == 0) {
 							// FRONT
@@ -168,7 +166,7 @@ void MyScreen::doCalculations() {
 			// Calculate 'axle dist' for train (front of truck to back of trailer)
 			MAX_AXLE[type][bk] = (load[FRONT] + load[BACK]) / 1000;
 #ifdef DEBUG1
-			lprintfln("MAX_AXLE[%d][BK%d]: %0.Lf+%0.Lf=%0.Lf", type, bk+1, load[FRONT]/1000, load[BACK]/1000, MAX_AXLE[type][bk]);
+			lprintfln("MAX_AXLE[%d][BK%d]: %02.02Lf+%02.02Lf=%02.02Lf", type, bk+1, load[FRONT]/1000, load[BACK]/1000, MAX_AXLE[type][bk]);
 			lprintfln("");
 #endif
 		}
@@ -222,6 +220,9 @@ void MyScreen::doCalculations() {
 				LOAD[type][bk] = GROSS_BK[type][bk];
 			else
 				LOAD[type][bk] = MAX_AXLE[type][bk];
+#ifdef DEBUG1
+			lprintfln("LOAD[%d][BK%d]: %02.02Lf", type, bk+1, LOAD[type][bk]);
+#endif
 
 			/* ---------------------------------- */
 			// Check for common limitations
@@ -256,10 +257,11 @@ void MyScreen::doCalculations() {
 
 		/* ---------------------------------- */
 		// Calculate train load
-		if(weicle_link[TRUCK] && weicle_link[TRAILER])
+		if(weicle_link[TRUCK] && weicle_link[TRAILER] && !weicle_load[TRAILER][FRONT])
+			// Trailer - no front axle
 			LOAD[TRAIN][bk] = parseTable(TABLE_DATA[bk], (weicle_link[TRUCK] + weicle_link[TRAILER]), bk+1);
-		else
-			LOAD[TRAIN][bk] = LOAD[TRUCK][bk] + LOAD[TRAILER][bk];
+
+		LOAD[TRAIN][bk] = LOAD[TRUCK][bk] + LOAD[TRAILER][bk];
 #ifdef DEBUG1
 		lprintfln("=> LOAD[%d][BK%d]: %02.02Lf", TRAIN, bk+1, LOAD[TRAIN][bk]);
 #endif
@@ -665,7 +667,7 @@ Vector<double> MyScreen::split(const char *needles, char *heystack)
 #endif
 		}
 
-#ifdef DEBUG1
+#ifdef DEBUG2
 		lprintfln("ret_str.size(): %d, value.find(): %d", ret_str.size(), value.find("+", 0));
 #endif
 		if((ret_str.size() == 0) && (value.find("+", 0) == -1)) {
