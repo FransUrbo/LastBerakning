@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.1 2010-03-10 14:02:23 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.2 2010-03-11 14:48:34 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -41,13 +41,13 @@ void MyScreen::doCalculations() {
 
 	/* ---------------------------------- */
 	// Default values for debugging purposes
-	result_weight[BK1] = 18.0; result_weight[BK2] = 16.7; result_weight[BK3] = 14.7;
-	result_load[BK1]   =  8.3; result_load[BK2]   =  7.0; result_load[BK3]   =  5.0;
-
-	truck_weight = 17800; road_nice[TRUCK] = TRUE; weicle_link[TRUCK] = 9935;
-	weicle_load[TRUCK][FRONT] = 24000; weicle_load[TRUCK][BACK] = 24000;
-	axle_type[TRUCK][FRONT] = AXLE_TRIPPLE; axle_type[TRUCK][BACK] = AXLE_TRIPPLE;
-	truck_axle = "2520+2540+4185+1360+1310"; // => 11915
+//	result_weight[BK1] = 18.0; result_weight[BK2] = 16.7; result_weight[BK3] = 14.7;
+//	result_load[BK1]   =  8.3; result_load[BK2]   =  7.0; result_load[BK3]   =  5.0;
+//
+//	truck_weight = 17800; road_nice[TRUCK] = TRUE; weicle_link[TRUCK] = 9935;
+//	weicle_load[TRUCK][FRONT] = 24000; weicle_load[TRUCK][BACK] = 24000;
+//	axle_type[TRUCK][FRONT] = AXLE_TRIPPLE; axle_type[TRUCK][BACK] = AXLE_TRIPPLE;
+//	truck_axle = "2520+2540+4185+1360+1310"; // => 11915
 //	truck_axle = "2020+3120+1360+1310";      // =>  7810
 //	truck_axle = "1310+1360+3120+2020";      // =>  7810
 
@@ -665,6 +665,15 @@ Vector<double> MyScreen::split(const char *needles, char *heystack)
 #ifdef DEBUG2
 			lprintfln("    Rest of string: '%Lf' (%s)", ret_str[j], val);
 #endif
+		}
+
+		lprintfln("ret_str.size(): %d, value.find(): %d", ret_str.size(), value.find("+", 0));
+		if((ret_str.size() == 0) && (value.find("+", 0) == -1)) {
+			sub = value;
+			val = sub.c_str();
+
+			ret_str.add(atof(val));
+			lprintfln("ret_str[0]: %Lf", ret_str[0]);
 		}
 	}
 
