@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.11 2010-03-10 13:59:12 turbo Exp $
- * $Revision: 1.11 $
+ * $Id: screen.cpp,v 1.12 2010-03-11 20:46:08 turbo Exp $
+ * $Revision: 1.12 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -19,6 +19,7 @@
 MyScreen::MyScreen(void) {
 	/* ---------------------------------- */
 	// Open data tables
+	main_screen_loaded = FALSE;
 	TABLE_DATA.resize(5);
 	TABLE_DATA[0] = openTable("table-bk1.txt");
 	TABLE_DATA[1] = openTable("table-bk2.txt");
@@ -47,6 +48,7 @@ MyScreen::MyScreen(void) {
 
 	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);
+	main_screen_loaded = TRUE;
 
 	//Set this widget as the main widget to be shown on this screen
 	this->setMain(layout);
