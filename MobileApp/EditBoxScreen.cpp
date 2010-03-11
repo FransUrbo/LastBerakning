@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.7 2010-03-11 17:33:28 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.8 2010-03-11 22:42:36 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -43,7 +43,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Tjänstevikt", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[0]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -51,7 +51,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Max belastning, framaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[1]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -78,7 +78,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Max belastning, bakaxel", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[2]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -111,7 +111,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Axelavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, true, false, 64, EditBox::IM_NUMBERS));
 	editBox[3]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -119,7 +119,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	/* ---------------------------------- */
 	label = createLabel("Kopplingsavstånd", 64);
 	editBox.add(new EditBox(0, 24, label->getWidth()-PADDING*2, 64-24-PADDING*2,
-							label, "", 0, gFont, false, false, 8, EditBox::IM_NUMBERS));
+							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[4]->setDrawBackground(false);
 	label->addWidgetListener(this);
 	listBox->add(label);
@@ -184,7 +184,12 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_SOFTLEFT:
-			editBox[listBox->getSelectedIndex()]->deletePreviousCharacter();
+			// Remove index for Axle types and road nice checkbox...
+			int index = listBox->getSelectedIndex();
+			if(index >= 3) index -= 1;
+			if(index >= 5) index -= 2;
+
+			editBox[index]->deletePreviousCharacter();
 			break;
 
 		case MAK_SOFTRIGHT:
