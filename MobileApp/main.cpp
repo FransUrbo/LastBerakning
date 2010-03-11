@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.4 2010-03-10 13:58:22 turbo Exp $
- * $Revision: 1.4 $
+ * $Id: main.cpp,v 1.5 2010-03-11 20:47:06 turbo Exp $
+ * $Revision: 1.5 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -15,6 +15,7 @@
 
 #include "MAHeaders.h"
 #include "Util.h"
+#include "LoadScreen.h"
 #include "screen.h"
 #include "ScreenTransition.h"
 
@@ -37,7 +38,12 @@ public:
 		scrWidth = EXTENT_X(screenSize);
 		scrHeight = EXTENT_Y(screenSize);
 
+		// TODO: Get this working...
+		LoadScreen* ls = new LoadScreen();
+		ls->show();
+
 		screen = new MyScreen();
+		while(!screen->main_screen_loaded);
 		screen->show();
 	}
 
@@ -54,7 +60,7 @@ public:
 	~MAUIMoblet() {
 		delete screen;
 	}
-	
+
 };
 
 //This is where your application starts. It creates a new instance of MAUIMoblet (see above)
