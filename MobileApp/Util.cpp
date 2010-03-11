@@ -79,7 +79,7 @@ Layout* createMainLayout(const char *left, const char *right, int offset_x, int 
 	listBox->setPaddingTop(15);
 	listBox->setPaddingBottom(15);
 
-//	mainLayout->add(softKeys);
+	mainLayout->add(softKeys);
 
 	return mainLayout;
 }
