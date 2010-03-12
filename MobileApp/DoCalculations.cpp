@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.6 2010-03-12 10:50:55 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.7 2010-03-12 11:53:06 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -280,10 +280,13 @@ void MyScreen::doCalculations() {
 #endif
 	for(int bk = 0; bk <= 2; bk++) {
 		result_weight[bk] = LOAD[TRAIN][bk];
-		result_load[bk]   = result_weight[bk] - (weight[TRUCK] + weight[TRAILER]);
 
+		result_load[TRUCK][bk]   = LOAD[TRUCK][bk] - weight[TRUCK];
+		result_load[TRAILER][bk] = LOAD[TRAILER][bk] - weight[TRAILER];
+		result_load[TRAIN][bk]   = result_weight[bk] - (weight[TRUCK] + weight[TRAILER]);
 #ifdef DEBUG1
-		lprintfln("result_weight[BK%d]: %02.02Lf (%02.02Lf)", bk+1, result_weight[bk], result_load[bk]);
+		lprintfln("result_weight[TRAIN][BK%d]: %02.02Lf + %02.02Lf = %02.02Lf",
+				bk+1, result_load[TRUCK][bk], result_load[TRAILER][bk], result_load[TRAIN][bk]);
 #endif
 	}
 

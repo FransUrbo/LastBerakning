@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.5 2010-03-10 13:58:12 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.6 2010-03-12 11:53:06 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -36,9 +36,9 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	label = createLabel("Max Last, TÅG (ton)", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", previous->result_load[BK1], field);
-	createTextField("BK2", previous->result_load[BK2], field);
-	createTextField("BK3", previous->result_load[BK3], field);
+	createTextField("BK1", previous->result_load[TRAIN][BK1], field);
+	createTextField("BK2", previous->result_load[TRAIN][BK2], field);
+	createTextField("BK3", previous->result_load[TRAIN][BK3], field);
 	listBox->add(label);
 
 	/* ---------------------------------- */

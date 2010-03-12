@@ -6,3 +6,4 @@
    FIXED. Just waiting for next nightly build...
 
 3. Doesn't show 'max load: truck + trailer = train', only 'max load: train'.
+   Half way done - the calculation is, but not the presentation.
