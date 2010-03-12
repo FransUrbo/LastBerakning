@@ -20,9 +20,6 @@
 .res RES_RADIOBUTTON_UNSELECTED
 .image "Resorces/radiobutton_unselected.png"
 
-.res RES_LOADING_PLEASE_WAIT
-.image "Resorces/loading_please-wait.png"
-
 .res RES_TABLE_FS
 .ubin
 .include "Resorces/tables.bun"
