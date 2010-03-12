@@ -4,7 +4,7 @@
  * This is part of the MyScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.5 2010-03-11 17:32:31 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.6 2010-03-12 10:50:55 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -40,7 +40,7 @@ void MyScreen::doCalculations() {
 	fetchValues();
 
 	/* ---------------------------------- */
-	// Default values for debugging purposes
+// Default values for debugging purposes
 //	result_weight[BK1] = 18.0; result_weight[BK2] = 16.7; result_weight[BK3] = 14.7;
 //	result_load[BK1]   =  8.3; result_load[BK2]   =  7.0; result_load[BK3]   =  5.0;
 //
