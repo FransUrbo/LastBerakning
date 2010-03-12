@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.7 2010-03-12 14:00:17 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.8 2010-03-12 14:23:26 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -23,6 +23,9 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	/* Create the main work/text area */
 	mainLayout = createMainLayout("Radera", "Tillbaka");
 	listBox = (ListBox*) mainLayout->getChildren()[0];
+
+	label = createLabel("Väg:  Bil  +  Släp = Tåg", 32);
+	listBox->add(label);
 
 	/* ---------------------------------- */
 	label = createLabel("Max bruttovikt, TÅG (ton)", (32+(3*20)));
