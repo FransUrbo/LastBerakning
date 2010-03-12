@@ -1,36 +1,26 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.1 2010-03-11 20:43:56 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.2 2010-03-12 10:49:56 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
 
 #include <conprint.h> /* lprintfln() */
 
+#include "MAHeaders.h"
 #include "MAUIex.h"
 #include "LoadScreen.h"
 #include "Util.h"
 
 LoadScreen::LoadScreen(void) {
-	Label *label;
+	maSetDrawTarget(HANDLE_SCREEN);
 
-    MAExtent screenSize = maGetScrSize();
-    int offset = EXTENT_Y(screenSize) / 2;
+	maSetColor(0xffffff);
+	maDrawText(PADDING*2, 40, "Var god vänta några sekunder...");
+	maDrawText(PADDING*2, 60, "Laddar bruttoviktstabellerna.");
 
-	/* Create the main work/text area */
-	mainLayout = createMainLayout("", "", 0, 160);
-	listBox = (ListBox*) mainLayout->getChildren()[0];
-
-	/* Create the different label/input fields */
-
-	/* ---------------------------------- */
-	label = createLabel("Laddar. Var god vänta...", 32);
-	listBox->add(label);
-
-	listBox->setWrapping(WRAPPING);
-
-	this->setMain(mainLayout);
+	maUpdateScreen();
 }
 
 LoadScreen::~LoadScreen(void) {
