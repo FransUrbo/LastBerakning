@@ -4,6 +4,4 @@
 2. One second delay for each char entered in ListBox'es
    http://www.mosync.com/forum/viewtopic.php?f=19&t=630&p=1289#p1289
 
-3. Show LoadScreen while MyScreen loads/creates.
-
-4. Doesn't show 'max load: truck + trailer = train', only 'max load: train'.
+3. Doesn't show 'max load: truck + trailer = train', only 'max load: train'.
