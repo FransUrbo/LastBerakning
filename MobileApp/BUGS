@@ -4,6 +4,3 @@
 2. One second delay for each char entered in ListBox'es
    http://www.mosync.com/forum/viewtopic.php?f=19&t=630&p=1289#p1289
    FIXED. Just waiting for next nightly build...
-
-3. Doesn't show 'max load: truck + trailer = train', only 'max load: train'.
-   Half way done - the calculation is, but not the presentation.

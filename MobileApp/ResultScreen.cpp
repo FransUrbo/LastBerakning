@@ -3,11 +3,12 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.6 2010-03-12 11:53:06 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.7 2010-03-12 14:00:17 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
 #include <MAUtil/String.h>
+#include <MAUtil/util.h>
 
 #include "screen.h"
 #include "EditBoxScreen.h"
@@ -27,18 +28,14 @@ ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
 	label = createLabel("Max bruttovikt, TÅG (ton)", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", previous->result_weight[BK1], field);
-	createTextField("BK2", previous->result_weight[BK2], field);
-	createTextField("BK3", previous->result_weight[BK3], field);
+	createTextFields(previous->result_weight, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
 	label = createLabel("Max Last, TÅG (ton)", (32+(3*20)));
 	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
-	createTextField("BK1", previous->result_load[TRAIN][BK1], field);
-	createTextField("BK2", previous->result_load[TRAIN][BK2], field);
-	createTextField("BK3", previous->result_load[TRAIN][BK3], field);
+	createTextFields(previous->result_load, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
@@ -98,20 +95,32 @@ void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
 #endif
 }
 
-void ResultScreen::createTextField(const char *leader, float value, Widget *parent)
+void ResultScreen::createTextFields(double value[3][3], Widget *parent) {
+	String prefix;
+	char *valstr;
+
+	for(int bk = 0; bk < 3; bk++) {
+		prefix  = "BK";
+		prefix += integerToString(bk+1);
+
+		sprintf(valstr, "%02.02Lf + %02.02Lf = %02.02Lf",
+				value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+
+		createTextField(prefix.c_str(), valstr, parent);
+	}
+}
+
+void ResultScreen::createTextField(const char *leader, const char *value, Widget *parent)
 {
 	Label *label;
 	String string;
-	char str[40];
 
-	/* NOTE: There's probably a much better way to do this, but... */
-	sprintf(str, "%02.02f", value);
 	string += leader;
 	string += ": ";
-	string += str;
+	string += value;
 
 #ifdef DEBUG1
-	lprintfln("Value: '%s' (%f)", str, value);
+	lprintfln("Value: '%s'", string.c_str());
 #endif
 
 	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);

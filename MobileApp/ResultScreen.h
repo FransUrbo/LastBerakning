@@ -1,7 +1,7 @@
 /*
  * ResultScreen.h
  *
- * $Id: ResultScreen.h,v 1.4 2010-03-06 00:17:43 turbo Exp $
+ * $Id: ResultScreen.h,v 1.5 2010-03-12 14:00:17 turbo Exp $
  */
 
 #ifndef RESULTSCREEN_H_
@@ -32,7 +32,8 @@ class ResultScreen : public Screen, WidgetListener {
 
 	private:
 		void hide();
-		void ResultScreen::createTextField(const char *leader, float value, Widget *parent);
+		void ResultScreen::createTextFields(double value[3][3], Widget *parent);
+		void ResultScreen::createTextField(const char *leader, const char *value, Widget *parent);
 
 		Screen *previous;
 		Layout* mainLayout;
