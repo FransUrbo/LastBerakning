@@ -4,6 +4,7 @@
 <build.cfg id="Release"/>
 <criteria>
 <filter profiles="" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="Alcatel,Google,HTC,LG,MicroEmulator,MobileSorcery,Motorola,NEC,Nokia,Qtek,Sagem,Samsung,Sharp,Siemens,Sony-Ericsson,Vodafone"/>
+<filter profiles="Nokia/5310_XpressMusic,Samsung/SGH-U700,Sony-Ericsson/C903,Sony-Ericsson/Satio,Sony-Ericsson/W995" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="MicroEmulator"/>
 </criteria>
 <properties>
 <property key="build.prefs:additional.include.paths/Debug" value=""/>
@@ -14,6 +15,7 @@
 <property key="build.prefs:additional.library.paths/Debug" value=""/>
 <property key="build.prefs:additional.library.paths/Release" value=""/>
 <property key="build.prefs:app.output.path/Release" value="Release/"/>
+<property key="build.prefs:dead.code.elim/Release" value="false"/>
 <property key="build.prefs:extra.link.sw/Debug" value=""/>
 <property key="build.prefs:extra.link.sw/Release" value=""/>
 <property key="build.prefs:extra.res.sw/Debug" value=""/>
@@ -21,10 +23,10 @@
 <property key="build.prefs:gcc.warnings/Debug" value="0"/>
 <property key="build.prefs:gcc.warnings/Release" value="0"/>
 <property key="build.prefs:memory.data/Debug" value="128"/>
-<property key="build.prefs:memory.data/Release" value="256"/>
+<property key="build.prefs:memory.data/Release" value="128"/>
 <property key="build.prefs:memory.heap/Debug" value="64"/>
-<property key="build.prefs:memory.heap/Release" value="128"/>
-<property key="build.prefs:memory.stack/Release" value="2"/>
+<property key="build.prefs:memory.heap/Release" value="64"/>
+<property key="build.prefs:memory.stack/Release" value="8"/>
 <property key="build.prefs:project.type" value=""/>
 <property key="dependency.strategy" value="0"/>
 <property key="symbian.uids:uid.s60v2uid" value="0x0787f26d"/>
