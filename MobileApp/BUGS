@@ -1,6 +1,2 @@
 1. Linked ListBox'es
    http://code.google.com/p/mosync/issues/detail?id=574
-   
-2. One second delay for each char entered in ListBox'es
-   http://www.mosync.com/forum/viewtopic.php?f=19&t=630&p=1289#p1289
-   FIXED. Just waiting for next nightly build...
