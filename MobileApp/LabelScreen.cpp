@@ -18,12 +18,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.4 2010-03-04 18:32:48 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.5 2010-03-13 23:32:13 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
 
-#include "MAUIex.h"
 #include "LabelScreen.h"
 #include "Util.h"
 #include "ScreenTransition.h"

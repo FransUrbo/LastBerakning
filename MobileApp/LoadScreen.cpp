@@ -1,7 +1,7 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.3 2010-03-12 11:06:01 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.4 2010-03-13 23:32:13 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
@@ -9,7 +9,6 @@
 #include <conprint.h> /* lprintfln() */
 
 #include "MAHeaders.h"
-#include "MAUIex.h"
 #include "LoadScreen.h"
 #include "Util.h"
 #include "Version.h"

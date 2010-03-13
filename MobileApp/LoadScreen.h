@@ -1,7 +1,7 @@
 /*
  * LoadScreen.h
  *
- * $Id: LoadScreen.h,v 1.1 2010-03-11 20:43:56 turbo Exp $
+ * $Id: LoadScreen.h,v 1.2 2010-03-13 23:32:13 turbo Exp $
  */
 
 #ifndef LOADSCREEN_H_
@@ -9,6 +9,11 @@
 
 #include <MAUI/Screen.h>
 #include <MAUI/ListBox.h>
+#include <MAUI/Screen.h>
+#include <MAUI/Label.h>
+#include <MAUI/ListBox.h>
+
+using namespace MAUI;
 
 class LoadScreen : public Screen {
 	public:

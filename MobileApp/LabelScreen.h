@@ -18,6 +18,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef _LABELSCREEN_H_
 #define _LABELSCREEN_H_
 
+#include <MAUI/Screen.h>
+#include <MAUI/Label.h>
+#include <MAUI/ListBox.h>
+
+using namespace MAUI;
+
 class LabelScreen : public Screen {
 	public:
 		LabelScreen(Screen *previous);
