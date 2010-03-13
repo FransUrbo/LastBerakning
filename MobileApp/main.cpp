@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.5 2010-03-11 20:47:06 turbo Exp $
- * $Revision: 1.5 $
+ * $Id: main.cpp,v 1.6 2010-03-13 23:06:13 turbo Exp $
+ * $Revision: 1.6 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -38,7 +38,6 @@ public:
 		scrWidth = EXTENT_X(screenSize);
 		scrHeight = EXTENT_Y(screenSize);
 
-		// TODO: Get this working...
 		LoadScreen* ls = new LoadScreen();
 		ls->show();
 
