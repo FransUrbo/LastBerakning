@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.15 2010-03-16 13:31:20 turbo Exp $
- * $Revision: 1.15 $
+ * $Id: screen.cpp,v 1.16 2010-03-16 14:31:03 turbo Exp $
+ * $Revision: 1.16 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -20,13 +20,23 @@
 MainScreen::MainScreen(void) {
 	/* ---------------------------------- */
 	// Open data tables
-	main_screen_loaded = FALSE;
+	main_screen_loaded = 0;
 	TABLE_DATA.resize(5);
+
 	TABLE_DATA[0] = openTable("table-bk1.txt");
+	main_screen_loaded++;
+
 	TABLE_DATA[1] = openTable("table-bk2.txt");
+	main_screen_loaded++;
+
 	TABLE_DATA[2] = openTable("table-bk3.txt");
+	main_screen_loaded++;
+
 	TABLE_DATA[3] = openTable("table-boggie.txt");
+	main_screen_loaded++;
+
 	TABLE_DATA[4] = openTable("table-tripple.txt");
+	main_screen_loaded++;
 
 	/* ---------------------------------- */
 	screens.add(new InfoScreen(this));
@@ -52,10 +62,11 @@ MainScreen::MainScreen(void) {
 
 	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);
-	main_screen_loaded = TRUE;
 
 	//Set this widget as the main widget to be shown on this screen
 	this->setMain(layout);
+
+	main_screen_loaded = 10;
 }
 
 MainScreen::~MainScreen(void) {

@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.8 2010-03-16 13:55:45 turbo Exp $
- * $Revision: 1.8 $
+ * $Id: main.cpp,v 1.9 2010-03-16 14:31:03 turbo Exp $
+ * $Revision: 1.9 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -41,10 +41,12 @@ public:
 		LoadScreen* ls = new LoadScreen();
 		ls->show();
 
-		//ls->drawText(80, "line 2.", 0xffffff);
-
 		screen = new MainScreen();
-		while(!screen->main_screen_loaded);
+
+		/* ------------- */
+		ls->drawText(80, "+ Laddar programmet.", 0xffffff);
+
+		while(screen->main_screen_loaded != 10);
 		screen->show();
 	}
 

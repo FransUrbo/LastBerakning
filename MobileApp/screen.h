@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.11 2010-03-16 13:30:19 turbo Exp $
- * $Revision: 1.11 $
+ * $Id: screen.h,v 1.12 2010-03-16 14:31:03 turbo Exp $
+ * $Revision: 1.12 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -52,7 +52,7 @@ class MainScreen : public Screen {
 		void keyPressEvent(int keyCode);
 
 		double result_weight[3][3], result_load[3][3];
-		bool main_screen_loaded;
+		int main_screen_loaded;
 
 	private:
 		void MainScreen::doCalculations();

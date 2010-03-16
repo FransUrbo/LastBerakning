@@ -1,7 +1,7 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.5 2010-03-16 13:55:45 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.6 2010-03-16 14:31:03 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
@@ -22,7 +22,7 @@ LoadScreen::LoadScreen(void) {
 
 	/* ---------------------------------- */
 	drawText(40, "Var god vänta några sekunder...", 0xffffff);
-	drawText(60, "Laddar bruttoviktstabellerna.", 0xffffff);
+	drawText(60, "+ Laddar bruttoviktstabellerna.", 0xffffff);
 
 	/* ---------------------------------- */
 	String str("Version: ");
