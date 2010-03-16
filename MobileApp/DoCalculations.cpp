@@ -1,10 +1,10 @@
 /*
  * DoCalculations.cpp
  *
- * This is part of the MyScreen/screen.cpp class,
+ * This is part of the MainScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.8 2010-03-12 14:00:17 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.9 2010-03-16 13:30:19 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -17,7 +17,7 @@
 #include "screen.h"
 
 // Main calculation method
-void MyScreen::doCalculations() {
+void MainScreen::doCalculations() {
 #ifdef DEBUG2
 	lprintfln("------------------");
 #endif
@@ -300,7 +300,7 @@ void MyScreen::doCalculations() {
 }
 
 // Get values from EditBox'es
-void MyScreen::fetchValues()
+void MainScreen::fetchValues()
 {
 	/* ---------------------------------- */
 	// Get values we need - truck
@@ -338,7 +338,7 @@ void MyScreen::fetchValues()
 }
 
 // Check if front/back axle of truck is really tripple/boggie
-void MyScreen::checkAxleTypeTruck()
+void MainScreen::checkAxleTypeTruck()
 {
 	if(weicle_dists[TRUCK].size() && axle_type[TRUCK][FRONT] && axle_type[TRUCK][BACK]) {
 		// Check if front axle type really is what user claims (check distances
@@ -364,7 +364,7 @@ void MyScreen::checkAxleTypeTruck()
 }
 
 // Check if front/back axle of trailer is really tripple/boggie
-void MyScreen::checkAxleTypeTrailer()
+void MainScreen::checkAxleTypeTrailer()
 {
 	if(weicle_dists[TRAILER].size() && axle_type[TRAILER][FRONT] && axle_type[TRAILER][BACK]) {
 		// Check if front axle type really is what user claims (check distances
@@ -389,7 +389,7 @@ void MyScreen::checkAxleTypeTrailer()
 	}
 }
 
-void MyScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool front)
+void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool front)
 {
 	Vector<double> new_dist; // Temp variable
 #ifdef DEBUG1
@@ -520,7 +520,7 @@ void MyScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool fr
 // Load table files from 'builtin' FS
 // http://www.mosync.com/documentation/manualpages/mafs-library-cc
 // http://www.mosync.com/docs/r341/html/index.html
-Vector<String> MyScreen::openTable(const char *name)
+Vector<String> MainScreen::openTable(const char *name)
 {
 	char line[32];
 	Vector<String> FILE_CONTENT;
@@ -555,7 +555,7 @@ Vector<String> MyScreen::openTable(const char *name)
 }
 
 // Parse table and find maximum load for 'dist' axle distance
-double MyScreen::parseTable(Vector<String> data, double dist, int road)
+double MainScreen::parseTable(Vector<String> data, double dist, int road)
 {
 	Vector<double> vals;
 
@@ -632,7 +632,7 @@ double MyScreen::parseTable(Vector<String> data, double dist, int road)
 //   Example: 00.00<01.00=11.50
 //            22.00<+0.20=37.50+00.25
 //            1310+1360+3120+2020
-Vector<double> MyScreen::split(const char *needles, char *heystack)
+Vector<double> MainScreen::split(const char *needles, char *heystack)
 {
 	Vector<double> ret_str;
 	const char *val;

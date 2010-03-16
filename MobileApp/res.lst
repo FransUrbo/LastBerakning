@@ -23,3 +23,9 @@
 .res RES_TABLE_FS
 .ubin
 .include "Resorces/tables.bun"
+
+.res RES_SAVED_TRUCK
+.placeholder
+
+.res RES_SAVED_TRAILER
+.placeholder

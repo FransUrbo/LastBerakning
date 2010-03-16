@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.13 2010-03-16 13:12:00 turbo Exp $
- * $Revision: 1.13 $
+ * $Id: screen.cpp,v 1.14 2010-03-16 13:30:19 turbo Exp $
+ * $Revision: 1.14 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -17,7 +17,7 @@
 
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
 //MAUI::Screen base class. To put content on the screen, you have to add widgets to it.
-MyScreen::MyScreen(void) {
+MainScreen::MyScreen(void) {
 	/* ---------------------------------- */
 	// Open data tables
 	main_screen_loaded = FALSE;
@@ -58,13 +58,13 @@ MyScreen::MyScreen(void) {
 	this->setMain(layout);
 }
 
-MyScreen::~MyScreen(void) {
+MainScreen::~MyScreen(void) {
 	delete layout;
 	for(int i = 0; i < screens.size(); i++)
 		delete screens[i];
 }
 
-void MyScreen::keyPressEvent(int keyCode) {
+void MainScreen::keyPressEvent(int keyCode) {
 #ifdef DEBUG2
 		lprintfln("Keycode='%x'", keyCode);
 #endif

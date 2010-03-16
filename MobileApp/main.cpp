@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.6 2010-03-13 23:06:13 turbo Exp $
- * $Revision: 1.6 $
+ * $Id: main.cpp,v 1.7 2010-03-16 13:30:19 turbo Exp $
+ * $Revision: 1.7 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -21,7 +21,7 @@
 
 //This is the Moblet class. This manages the events your application will need, like getting
 //key presses and screen touches.
-//It also creates an instance of the MAUI::Screen class 'MyScreen', and shows it on screen.
+//It also creates an instance of the MAUI::Screen class 'MainScreen', and shows it on screen.
 class MAUIMoblet : public Moblet {
 public:
 	MAUIMoblet() {
@@ -41,7 +41,7 @@ public:
 		LoadScreen* ls = new LoadScreen();
 		ls->show();
 
-		screen = new MyScreen();
+		screen = new MainScreen();
 		while(!screen->main_screen_loaded);
 		screen->show();
 	}
@@ -54,7 +54,7 @@ public:
 		// todo: handle key releases
 	}
 
-	MyScreen* screen;
+	MainScreen* screen;
 
 	~MAUIMoblet() {
 		delete screen;

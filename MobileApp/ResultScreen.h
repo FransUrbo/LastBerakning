@@ -1,7 +1,7 @@
 /*
  * ResultScreen.h
  *
- * $Id: ResultScreen.h,v 1.5 2010-03-12 14:00:17 turbo Exp $
+ * $Id: ResultScreen.h,v 1.6 2010-03-16 13:30:19 turbo Exp $
  */
 
 #ifndef RESULTSCREEN_H_
@@ -19,7 +19,7 @@ using namespace MAUI;
 class ResultScreen : public Screen, WidgetListener {
 	public:
 		/* Constructor */
-		ResultScreen(MyScreen *previous);
+		ResultScreen(MainScreen *previous);
 
 		/* Destructor */
 		~ResultScreen();

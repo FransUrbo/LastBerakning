@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.8 2010-03-12 14:23:26 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.9 2010-03-16 13:30:19 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -16,7 +16,7 @@
 #include "ScreenTransition.h"
 #include "Util.h"
 
-ResultScreen::ResultScreen(MyScreen *previous) : previous(previous) {
+ResultScreen::ResultScreen(MainScreen *previous) : previous(previous) {
 	Label *label;
 	ListBox *field;
 
