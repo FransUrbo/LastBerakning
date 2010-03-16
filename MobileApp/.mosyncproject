@@ -23,9 +23,9 @@
 <property key="build.prefs:gcc.warnings/Debug" value="0"/>
 <property key="build.prefs:gcc.warnings/Release" value="0"/>
 <property key="build.prefs:memory.data/Debug" value="128"/>
-<property key="build.prefs:memory.data/Release" value="128"/>
+<property key="build.prefs:memory.data/Release" value="256"/>
 <property key="build.prefs:memory.heap/Debug" value="64"/>
-<property key="build.prefs:memory.heap/Release" value="64"/>
+<property key="build.prefs:memory.heap/Release" value="128"/>
 <property key="build.prefs:memory.stack/Release" value="8"/>
 <property key="build.prefs:project.type" value=""/>
 <property key="dependency.strategy" value="0"/>
