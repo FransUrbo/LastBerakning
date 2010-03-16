@@ -1,7 +1,7 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.4 2010-03-13 23:32:13 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.5 2010-03-16 13:55:45 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
@@ -21,19 +21,15 @@ LoadScreen::LoadScreen(void) {
 	int scrHeight = EXTENT_Y(screenSize);
 
 	/* ---------------------------------- */
-	maSetColor(0xffffff);
-	maDrawText(PADDING*2, 40, "Var god vänta några sekunder...");
-	maDrawText(PADDING*2, 60, "Laddar bruttoviktstabellerna.");
+	drawText(40, "Var god vänta några sekunder...", 0xffffff);
+	drawText(60, "Laddar bruttoviktstabellerna.", 0xffffff);
 
 	/* ---------------------------------- */
 	String str("Version: ");
 	str.append(VERSION, strlen(VERSION));
 
-	maSetColor(0xff7700);
-	maDrawText(PADDING*2, scrHeight-16, (const char *)str.c_str());
-
 	/* ---------------------------------- */
-	maUpdateScreen();
+	drawText(scrHeight-16, (const char*)str.c_str(), 0xff7700);
 }
 
 LoadScreen::~LoadScreen(void) {
@@ -41,3 +37,10 @@ LoadScreen::~LoadScreen(void) {
 }
 
 void LoadScreen::keyPressEvent(int keyCode, int nativeCode) { }
+
+void LoadScreen::drawText(int y, const char *string, int rgb)
+{
+	maSetColor(rgb);
+	maDrawText(PADDING*2, y, string);
+	maUpdateScreen();
+}
