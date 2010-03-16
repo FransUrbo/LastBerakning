@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.10 2010-03-12 14:00:17 turbo Exp $
- * $Revision: 1.10 $
+ * $Id: screen.h,v 1.11 2010-03-16 13:30:19 turbo Exp $
+ * $Revision: 1.11 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -45,24 +45,24 @@
 using namespace MAUI;
 using namespace MAUtil;
 
-class MyScreen : public Screen {
+class MainScreen : public Screen {
 	public:
-		MyScreen();
-		~MyScreen();
+		MainScreen();
+		~MainScreen();
 		void keyPressEvent(int keyCode);
 
 		double result_weight[3][3], result_load[3][3];
 		bool main_screen_loaded;
 
 	private:
-		void MyScreen::doCalculations();
-		void MyScreen::fetchValues();
-		void MyScreen::checkAxleTypeTruck();
-		void MyScreen::checkAxleTypeTrailer();
-		void MyScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool front);
-		Vector<String> MyScreen::openTable(const char *name);
-		double MyScreen::parseTable(Vector<String> data, double dist, int road);
-		Vector<double> MyScreen::split(const char *needles, char *heystack);
+		void MainScreen::doCalculations();
+		void MainScreen::fetchValues();
+		void MainScreen::checkAxleTypeTruck();
+		void MainScreen::checkAxleTypeTrailer();
+		void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool front);
+		Vector<String> MainScreen::openTable(const char *name);
+		double MainScreen::parseTable(Vector<String> data, double dist, int road);
+		Vector<double> MainScreen::split(const char *needles, char *heystack);
 
 		Vector<EditBoxScreen*> editBoxScreens;
 		Vector<Screen*> screens;
