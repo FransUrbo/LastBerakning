@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.12 2010-03-11 20:46:08 turbo Exp $
- * $Revision: 1.12 $
+ * $Id: screen.cpp,v 1.13 2010-03-16 13:12:00 turbo Exp $
+ * $Revision: 1.13 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -11,6 +11,7 @@
 #include "LabelScreen.h"
 #include "EditBoxScreen.h"
 #include "ResultScreen.h"
+#include "InfoScreen.h"
 #include "ScreenTransition.h"
 #include "Util.h"
 
@@ -28,6 +29,8 @@ MyScreen::MyScreen(void) {
 	TABLE_DATA[4] = openTable("table-tripple.txt");
 
 	/* ---------------------------------- */
+	screens.add(new InfoScreen(this));
+
 	screens.add(new LabelScreen(this));
 
 	editBoxScreens.add(new EditBoxScreen(this));
@@ -41,6 +44,7 @@ MyScreen::MyScreen(void) {
 	listBox = (ListBox*) layout->getChildren()[0];
 
 	/* ---------------------------------- */
+	listBox->add(createLabel("Program information"));
 	listBox->add(createLabel("Hjälptexter"));
 	listBox->add(createLabel("Information, Bil"));
 	listBox->add(createLabel("Information, Släp"));
@@ -82,12 +86,12 @@ void MyScreen::keyPressEvent(int keyCode) {
 			case MAK_SOFTLEFT:
 			case MAK_RIGHT:
 			case MAK_FIRE:
-				if(listBox->getSelectedIndex() == 3) {
+				if(listBox->getSelectedIndex() == 4) {
 					/* ---------------------------------- */
 					doCalculations();
 
 					/* ---------------------------------- */
-					screens[3] = new ResultScreen(this);
+					screens[4] = new ResultScreen(this);
 				}
 
 				/* ---------------------------------- */

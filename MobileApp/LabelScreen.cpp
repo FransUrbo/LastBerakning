@@ -1,24 +1,7 @@
-/* Copyright (C) 2009 Mobile Sorcery AB
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License, version 2, as published by
-the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; see the file COPYING.  If not, write to the Free
-Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-02111-1307, USA.
-*/
-
-/* Modified by Turbo Fredriksson <turbo@bayour.com>
+/* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.5 2010-03-13 23:32:13 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.6 2010-03-16 13:12:00 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -31,10 +14,10 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	mainLayout = createMainLayout("", "Tillbaka");
 	listBox = (ListBox*) mainLayout->getChildren()[0];
 
-	createTextField("Vikter skrivs direkt i kilogram!");
+	createTextField(listBox, "Vikter skrivs direkt i kilogram!");
 
 	createTextField
-	(
+	(	listBox,
 		"Programmet stöder:\n"
 		"Enkelaxlade fordon (2 axlar - en fram "
 		"och en bak),\n"
@@ -45,24 +28,25 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Programmet stödjer också en kombination av detta (enkel axlat, "
 		"boggie eller trippelaxel fram och ditto bak) etc i alla "
 		"möjliga variationer. Som max sex axlar (trippelaxel fram "
 		"och trippelaxel bak)."
 	);
 
-	createTextField("Axelavstånd skrivs i millimeter (från registreringsbeviset).");
+	createTextField(listBox,
+					"Axelavstånd skrivs i millimeter (från registreringsbeviset).");
 
 	createTextField
-	(
+	(	listBox,
 		"Enkelaxel\n"
 		"Avståndet mellan framaxel och bakaxel.\n"
 		"Exempel: 5900"
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Boggieaxel\n"
 		"Avståndet mellan framaxel och första bakaxeln + "
 		"avståndet mellan första och sista bakaxeln.\n"
@@ -70,7 +54,7 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Trippelaxel\n"
 		"Avståndet mellan framaxel och första bakaxeln "
 		"+ avståndet mellan första och andra bakaxeln + "
@@ -79,39 +63,39 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Trippel fram och Trippel bak\n"
 		"Exempel: 1530+1530+4185+1360+1310"
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Programmet räknar automatiskt ut dom avstånd det "
 		"behöver från dessa värden..."
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Kopplingsavståndet är avståndet från (för lastbilen) "
 		"första axeln och kopplingspunkten. För släpfordon är "
 		"det avståndet från kopplingspunkten och sista axeln."
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Vägvänlig fjädring är en axel som har tvillingmontage och "
 		"luftfjädring."
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"LastBeräkning tar hänsyn till 'Allmänna begränsningar för "
 		"fordon' (maximal fordonsvikt beroende på antal axlar och "
 		"deras inbördes avstånd)."
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"Detta program förstår också maximala avståndet för "
 		"att en 'axel' ska räknas som boggie (max 2 meter) "
 		"eller trippel (max 5 meter mellan första och sista "
@@ -119,7 +103,7 @@ LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	);
 
 	createTextField
-	(
+	(	listBox,
 		"OBSERVERA!\n"
 		"När du valt Axeltyp, så måste du gå åt HÖGER (för att gå neråt) "
 		"eller VÄNSTER (för att gå uppåt) för att få valet att stanna kvar. "
@@ -160,7 +144,7 @@ void LabelScreen::keyPressEvent(int keyCode, int nativeCode) {
 	}
 }
 
-void LabelScreen::createTextField(const char *str)
+void LabelScreen::createTextField(ListBox *&listBox, const char *str)
 {
 	Label *label;
 
