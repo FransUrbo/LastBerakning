@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.9 2010-03-16 13:30:19 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.10 2010-03-17 10:12:28 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -127,4 +127,5 @@ void ResultScreen::createTextField(const char *leader, const char *value, Widget
 #endif
 
 	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);
+	label->setSkin(false);
 }

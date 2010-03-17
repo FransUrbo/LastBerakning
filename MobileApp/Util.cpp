@@ -52,11 +52,13 @@ Widget* createSoftKeyBar(int height, const char *left, const char *right) {
 	lprintfln("Screen Width=%d, Height=%d, Left=%d", scrWidth, height, left);
 #endif
 	label = new Label(0,0, scrWidth/2, height, NULL, left, 0, gFont);
+	label->setSkin(false);
 	label->setHorizontalAlignment(Label::HA_LEFT);
 	setLabelPadding(label);
 	layout->add(label);
 
 	label = new Label(0,0, scrWidth/2, height, NULL, right, 0, gFont);
+	label->setSkin(false);
 	label->setHorizontalAlignment(Label::HA_RIGHT);
 	setLabelPadding(label);
 	layout->add(label);

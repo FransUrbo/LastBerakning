@@ -1,7 +1,7 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.6 2010-03-16 13:12:00 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.7 2010-03-17 10:12:28 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -150,7 +150,7 @@ void LabelScreen::createTextField(ListBox *&listBox, const char *str)
 
 	label = createLabel( str, 32 );
 	label->setAutoSizeY();
-	label->setSkin(gSkin);
+	label->setSkin(false);
 	label->setMultiLine(true);
 
 	listBox->add(label);

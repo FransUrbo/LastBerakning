@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.8 2010-03-11 22:42:36 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.9 2010-03-17 10:12:28 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -57,20 +57,20 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Axeltyp, framaxel", (32+(3*(32+PADDING))));
+	label = createLabel("Axeltyp, framaxel", (32+(3*(20+PADDING))));
 	listBox_select1 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
 									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	group1 = new RadioButtonGroup();
 
 	for(int i = 0; i < 3; i++) {
-		select1.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
-									32, listBox_select1, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
+		select1.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*20), label->getWidth()-PADDING*2,
+									20, listBox_select1, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
 		group1->addRadioButton(select1[i]);
 	}
 
-	select1[0]->setCaption("Enkelaxel");
-	select1[1]->setCaption("Boggieaxel");
-	select1[2]->setCaption("Trippelaxel");
+	select1[0]->setCaption("Enkelaxel");		select1[0]->setSkin(false);
+	select1[1]->setCaption("Boggieaxel");		select1[1]->setSkin(false);
+	select1[2]->setCaption("Trippelaxel");		select1[2]->setSkin(false);
 
 	group1->setSelectedButton(0);
 	listBox->add(label);
@@ -84,20 +84,20 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Axeltyp, bakaxel", (32+(3*(32+PADDING))));
+	label = createLabel("Axeltyp, bakaxel", (32+(3*(20+PADDING))));
 	listBox_select2 = new ListBox(	0, 32, label->getWidth()-PADDING*2, label->getHeight(),
 									label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	group2 = new RadioButtonGroup();
 
 	for(int i = 0; i < 3; i++) {
-		select2.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*32), label->getWidth()-PADDING*2,
-									32, listBox_select2, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
+		select2.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*20), label->getWidth()-PADDING*2,
+									20, listBox_select2, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
 		group2->addRadioButton(select2[i]);
 	}
 
-	select2[0]->setCaption("Enkelaxel");
-	select2[1]->setCaption("Boggieaxel");
-	select2[2]->setCaption("Trippelaxel");
+	select2[0]->setCaption("Enkelaxel");		select2[0]->setSkin(false);
+	select2[1]->setCaption("Boggieaxel");		select2[1]->setSkin(false);
+	select2[2]->setCaption("Trippelaxel");		select2[2]->setSkin(false);
 
 	group2->setSelectedButton(0);
 	listBox->add(label);
