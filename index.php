@@ -3,9 +3,9 @@
 $DEBUG = 0;
 
 // Calculate max load and gross load on truck and/or trailer
-// $Id: index.php,v 1.23 2010-03-10 14:18:01 turbo Exp $
+// $Id: index.php,v 1.24 2010-03-17 10:26:23 turbo Exp $
 
-$VERSION = "$Revision: 1.23 $";
+$VERSION = "$Revision: 1.24 $";
 
 // {{{ Defines
 // For Single axles only !!
@@ -381,7 +381,8 @@ if(!$_REQUEST["action"]) {
           <td>
             <a class=info href="#">?
               <span>
-                Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+                Avst&aring;nd fr&aring;n framaxel till kopplingspunkt.<br>
+                * Endast n&ouml;dv&auml;ndig om sl&auml;p &auml;r trailer (utan framaxel)
               </span>
             </a>
           </td>
@@ -393,7 +394,8 @@ if(!$_REQUEST["action"]) {
           <td>
             <a class=info href="#">?
               <span>
-                Avst&aring;nd fr&aring;n framaxel till kopplingspunkt. Endast n&ouml;dv&auml;ndig om fordonst&aring;g ber&auml;knas
+                Avst&aring;nd fr&aring;n kopplingspunkt till bakersta axeln.<br>
+                * Endast n&ouml;dv&auml;ndig om sl&auml;p &auml;r trailer (utan framaxel)
               </span>
             </a>
           </td>
