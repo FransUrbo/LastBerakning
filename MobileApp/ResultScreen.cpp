@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.11 2010-04-18 10:36:36 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.12 2010-04-18 20:34:41 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -100,14 +100,17 @@ void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
 
 void ResultScreen::createTextFields(double value[3][3], Widget *parent) {
 	String prefix;
-	char *valstr;
+	char valstr[64];
 
 	for(int bk = 0; bk < 3; bk++) {
 		prefix  = "BK";
 		prefix += integerToString(bk+1);
 
-		sprintf(valstr, "%02.02Lf + %02.02Lf =              %02.02Lf",
-				value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+		lprintfln("BK%d => %02.02Lf + %02.02Lf =              %02.02Lf",
+				  bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+
+		sprintf(valstr, "BK%d => %02.02Lf + %02.02Lf =              %02.02Lf",
+				bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
 
 		createTextField(prefix.c_str(), valstr, parent);
 	}
