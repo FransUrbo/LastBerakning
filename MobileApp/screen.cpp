@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.16 2010-03-16 14:31:03 turbo Exp $
- * $Revision: 1.16 $
+ * $Id: screen.cpp,v 1.17 2010-04-18 10:42:46 turbo Exp $
+ * $Revision: 1.17 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -51,14 +51,14 @@ MainScreen::MainScreen(void) {
 
 	/* ---------------------------------- */
 	layout = createMainLayout("Välj", "Avsluta");
-	listBox = (ListBox*) layout->getChildren()[0];
+	listBox = (TouchListBox*)layout->getChildren()[FIRSTCHILD];
 
 	/* ---------------------------------- */
 	listBox->add(createLabel("Program information"));
 	listBox->add(createLabel("Hjälptexter"));
 	listBox->add(createLabel("Information, Bil"));
 	listBox->add(createLabel("Information, Släp"));
-	listBox->add(createLabel("Gör bruttovikts beräkning"));
+	listBox->add(createLabel("Gör bruttovikts beräkning", FONTHEIGHT*2));
 
 	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);
@@ -115,4 +115,29 @@ void MainScreen::keyPressEvent(int keyCode) {
 				listBox->selectNextItem(true); //Select the next item on the menu
 				break;
 		}
+}
+
+void MainScreen::pointerPressEvent(MAPoint2d point) {
+	Point p;
+	p.set(point.x, point.y);
+
+	for(int i = 0; i < listBox->getChildren().size(); i++) {
+		if(listBox->getChildren()[i]->contains(p)) {
+			listBox->setSelectedIndex(i);
+
+			if(listBox->getSelectedIndex() == 4) {
+				/* ---------------------------------- */
+				doCalculations();
+
+				/* ---------------------------------- */
+				screens[4] = new ResultScreen(this);
+			}
+
+			/* ---------------------------------- */
+			lprintfln("Showing screen (touch) %d", listBox->getSelectedIndex());
+			ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
+
+			break;
+		}
+	}
 }
