@@ -1,6 +1,6 @@
 .res RES_FONT
 .bin
-.include "Resorces/pretty.mof"
+.include "Resorces/LastBerakning.mof"
 
 .res RES_TILE_SELECTED
 .image "Resorces/background_tile_sel.png"
