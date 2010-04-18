@@ -1,7 +1,7 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.7 2010-03-17 10:12:28 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.8 2010-04-18 10:24:14 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -12,7 +12,7 @@
 
 LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
 	mainLayout = createMainLayout("", "Tillbaka");
-	listBox = (ListBox*) mainLayout->getChildren()[0];
+	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
 	createTextField(listBox, "Vikter skrivs direkt i kilogram!");
 

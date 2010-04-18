@@ -1,7 +1,7 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the program info screen.
- * $Id: InfoScreen.cpp,v 1.1 2010-03-16 13:11:59 turbo Exp $
+ * $Id: InfoScreen.cpp,v 1.2 2010-04-18 10:24:14 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -13,7 +13,7 @@
 
 InfoScreen::InfoScreen(Screen *previous) : LabelScreen(previous) {
 	mainLayout = createMainLayout("", "Tillbaka");
-	listBox = (ListBox*) mainLayout->getChildren()[0];
+	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
 	createTextField(listBox, "LastBeräkning av Turbo Fredriksson!");
 
