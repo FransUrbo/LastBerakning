@@ -2,6 +2,8 @@
  * http://www.mosync.com/forum/viewtopic.php?f=12&t=594&p=1214&hilit=touch+screen#p1214
  */
 
+#include <conprint.h> /* lprintfln() */
+
 #include "TouchListBox.h"
 
 TouchListBox::TouchListBox(int x, int y, int width, int height, Widget* parent) : ListBox(x, y, width, height, parent, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true) {
