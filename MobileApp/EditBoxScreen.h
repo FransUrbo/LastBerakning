@@ -31,37 +31,12 @@ using namespace MAUI;
 
 class EditBoxScreen : public Screen, WidgetListener {
 	public:
-		/**
-		 * Constructor
-		 * Sets up the UI hierarchy for this screen, filling
-		 * it with a number of \a EditBoxes.
-		 * @param previous a pointer to the screen to return to
-		*/
 		EditBoxScreen(Screen *previous);
-
-		/**
-		 * Destructor
-		 */
 		~EditBoxScreen();
 
-		/**
-		 * Recieves key presses and performs appropriate interaction
-		 * with the UI.
-		 */
 		void keyPressEvent(int keyCode, int nativeCode);
-
-		/**
-		 * Implementation of a \a WidgetListener callback, which
-		 * is notified whenever the selection state of a \a widget
-		 * it's listeting to changes. I our case, we make sure that
-		 * whenever a widget is selected, we make its first child
-		 * selected instead.
-		 */
+		void EditBoxScreen::pointerPressEvent(MAPoint2d point);
 		void selectionChanged(Widget *widget, bool selected);
-
-		/**
-		 * Overload of MAUI::Screen::show().
-		 */
 		void show();
 
 		Vector<EditBox*> editBox;
