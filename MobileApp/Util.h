@@ -18,20 +18,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#include <MAUI/Widget.h>
-#include <MAUI/Label.h>
 #include <MAUI/Layout.h>
+#include <MAUI/Label.h>
+#include <MAUI/Widget.h>
+#include <MAUI/ListBox.h>
 #include <MAUI/Font.h>
 
 using namespace MAUI;
 
 #define PADDING 5
+#define FONTHEIGHT 35
+#define RADIOHEIGHT 25
+#define FIRSTCHILD 0
 
 // BUG/Counter-intuitive!!
 // createMainLayout creates a listbox with wrapping=true.
 // This don't work!! Works if I change to 'false' though!!
 // NOTE: When bug fixed, change this to 'true'
-#define WRAPPING false
+#define WRAPPING true
 
 void setLabelPadding(Widget *w);
 Label* createLabel(const char *str, int height=32);
