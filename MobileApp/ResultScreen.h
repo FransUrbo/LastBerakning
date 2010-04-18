@@ -1,7 +1,7 @@
 /*
  * ResultScreen.h
  *
- * $Id: ResultScreen.h,v 1.6 2010-03-16 13:30:19 turbo Exp $
+ * $Id: ResultScreen.h,v 1.7 2010-04-18 19:38:29 turbo Exp $
  */
 
 #ifndef RESULTSCREEN_H_
@@ -18,24 +18,19 @@ using namespace MAUI;
 
 class ResultScreen : public Screen, WidgetListener {
 	public:
-		/* Constructor */
 		ResultScreen(MainScreen *previous);
-
-		/* Destructor */
 		~ResultScreen();
-
-		/*  Recieves key presses and performs appropriate interaction */
 		void keyPressEvent(int keyCode, int nativeCode);
 
-		/* Overload of MAUI::Screen::show(). */
 		void show();
 
 	private:
 		void hide();
-		void ResultScreen::createTextFields(double value[3][3], Widget *parent);
-		void ResultScreen::createTextField(const char *leader, const char *value, Widget *parent);
+		void createTextFields(double value[3][3], Widget *parent);
+		void createTextField(const char *leader, const char *value, Widget *parent);
 
 		Screen *previous;
+
 		Layout* mainLayout;
 		ListBox* listBox;
 };
