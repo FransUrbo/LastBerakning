@@ -15,10 +15,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA.
 */
 
-#include <MAUI/Label.h>
-#include <MAUI/Layout.h>
-#include <MAUI/ListBox.h>
-
 #include <conprint.h> /* lprintfln() */
 
 #include "Util.h"
@@ -38,43 +34,51 @@ void setLabelPadding(Widget *w) {
 
 Label* createLabel(const char *str, int height) {
 	Label *label;
+
 	label = new Label(0, 0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
 	label->setSkin(gSkin);
+	label->setMultiLine(true);
 	setLabelPadding(label);
+
 	return label;
 }
 
 Widget* createSoftKeyBar(int height, const char *left, const char *right) {
-	Layout *layout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
+	Layout *mainLayout;
 	Label *label;
-
+	TouchListBox *listBoxL, *listBoxR;
 #ifdef DEBUG2
-	lprintfln("Screen Width=%d, Height=%d, Left=%d", scrWidth, height, left);
+	lprintfln("Screen Width=%d, Height=%d, Left=%s, Right=%s", scrWidth, height, left, right);
 #endif
-	label = new Label(0,0, scrWidth/2, height, NULL, left, 0, gFont);
+
+	/* ---------------------------------- */
+	mainLayout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
+
+	/* ---------------------------------- */
+	label = new Label(PADDING, 0, (scrWidth/2)-10, height, NULL, left, 0, gFont);
 	label->setSkin(false);
 	label->setHorizontalAlignment(Label::HA_LEFT);
 	setLabelPadding(label);
-	layout->add(label);
+	mainLayout->add(label);
 
-	label = new Label(0,0, scrWidth/2, height, NULL, right, 0, gFont);
+	/* ---------------------------------- */
+	label = new Label(0, 0, scrWidth/2, height, NULL, right, 0, gFont);
 	label->setSkin(false);
 	label->setHorizontalAlignment(Label::HA_RIGHT);
 	setLabelPadding(label);
-	layout->add(label);
+	mainLayout->add(label);
 
-	return layout;
+	return mainLayout;
 }
 
-// first child is listbox
+// first and second child is the SoftKeys
+// third child is listbox
 Layout* createMainLayout(const char *left, const char *right, int offset_x, int offset_y) {
 	Layout *mainLayout = new Layout(offset_x, offset_y, scrWidth-offset_x, scrHeight-offset_y, NULL, 1, 2);
 
-	Widget *softKeys = createSoftKeyBar(30, left, right);
+	Widget *softKeys = createSoftKeyBar(FONTHEIGHT+5, left, right);
 
-	ListBox* listBox = new ListBox(	0, 0, scrWidth, scrHeight-softKeys->getHeight(),
-									mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, true);
-
+	TouchListBox* listBox = new TouchListBox(0, 0, scrWidth, scrHeight-(softKeys->getHeight()), mainLayout);
 	listBox->setSkin(gSkin);
 	listBox->setPaddingLeft(5);
 	listBox->setPaddingRight(5);
