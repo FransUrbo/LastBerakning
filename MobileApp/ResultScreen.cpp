@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.10 2010-03-17 10:12:28 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.11 2010-04-18 10:36:36 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -22,21 +22,21 @@ ResultScreen::ResultScreen(MainScreen *previous) : previous(previous) {
 
 	/* Create the main work/text area */
 	mainLayout = createMainLayout("Radera", "Tillbaka");
-	listBox = (ListBox*) mainLayout->getChildren()[0];
+	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
-	label = createLabel("Väg:  Bil  +  Släp = Tåg", 32);
+	label = createLabel("Väg:  Bil   +  Släp = Tåg", (FONTHEIGHT*2));
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max bruttovikt, TÅG (ton)", (32+(3*20)));
-	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
+	label = createLabel("Max bruttovikt, TÅG (ton)", (FONTHEIGHT*7)-(PADDING*8));
+	field = new ListBox(	0, (FONTHEIGHT*2)-(PADDING*4), label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	createTextFields(previous->result_weight, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max Last, TÅG (ton)", (32+(3*20)));
-	field = new ListBox(	0, 20, label->getWidth()-PADDING*2, label->getHeight(),
+	label = createLabel("Max Last, TÅG (ton)", (FONTHEIGHT*7)-(PADDING*9));
+	field = new ListBox(	0, FONTHEIGHT-PADDING, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	createTextFields(previous->result_load, field);
 	listBox->add(label);
@@ -106,7 +106,7 @@ void ResultScreen::createTextFields(double value[3][3], Widget *parent) {
 		prefix  = "BK";
 		prefix += integerToString(bk+1);
 
-		sprintf(valstr, "%02.02Lf + %02.02Lf = %02.02Lf",
+		sprintf(valstr, "%02.02Lf + %02.02Lf =              %02.02Lf",
 				value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
 
 		createTextField(prefix.c_str(), valstr, parent);
@@ -126,6 +126,7 @@ void ResultScreen::createTextField(const char *leader, const char *value, Widget
 	lprintfln("Value: '%s'", string.c_str());
 #endif
 
-	label = new Label(0, 0, scrWidth-PADDING*2, 20, parent, string, 0, gFont);
+	label = new Label(0, 0, scrWidth-PADDING*2, RADIOHEIGHT*2, parent, string, 0, gFont);
+	label->setMultiLine(true);
 	label->setSkin(false);
 }
