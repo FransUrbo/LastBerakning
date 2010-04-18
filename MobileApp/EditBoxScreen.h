@@ -34,6 +34,7 @@ class EditBoxScreen : public Screen, WidgetListener {
 		EditBoxScreen(Screen *previous);
 		~EditBoxScreen();
 
+		void selectionChanged(Widget *widget, bool selected);
 		void keyPressEvent(int keyCode, int nativeCode);
 		void pointerPressEvent(MAPoint2d point);
 

@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.11 2010-04-18 19:33:55 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.12 2010-04-18 20:33:13 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -131,6 +131,14 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 }
 
 EditBoxScreen::~EditBoxScreen() {
+}
+
+void EditBoxScreen::selectionChanged(Widget *widget, bool selected) {
+       if(selected) {
+               widget->getChildren()[0]->setSelected(true);
+       } else {
+               widget->getChildren()[0]->setSelected(false);
+       }
 }
 
 void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
