@@ -3,8 +3,7 @@
 <build.cfg id="Debug"/>
 <build.cfg id="Release"/>
 <criteria>
-<filter profiles="" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="Alcatel,Google,HTC,LG,MicroEmulator,MobileSorcery,Motorola,NEC,Nokia,Qtek,Sagem,Samsung,Sharp,Siemens,Sony-Ericsson,Vodafone"/>
-<filter profiles="Nokia/5310_XpressMusic,Samsung/SGH-U700,Sony-Ericsson/C903,Sony-Ericsson/Satio,Sony-Ericsson/W995" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="MicroEmulator"/>
+<filter profiles="Acer/E101,HTC/Bravo,HTC/Diamond,HTC/Dream,HTC/Excalibur,HTC/G1,HTC/G1_1.1,HTC/HD2 T8585,HTC/Hermes,HTC/Hero,HTC/Himalaya,HTC/Magic,HTC/Mega,HTC/P3600,HTC/P3650,HTC/P3700,HTC/P4550,HTC/Polaris,HTC/S620,HTC/S621,HTC/S720,HTC/ST7377,HTC/Salsa,HTC/Snap,HTC/StarTrek,HTC/T7272,HTC/T8282,HTC/Tattoo,HTC/Tide,HTC/Tilt,HTC/Titan,HTC/Tornado,HTC/Touch2,HTC/TouchCruise,HTC/TouchPro,HTC/Trinity,HTC/TyTN,HTC/Universal,HTC/Vox,HTC/Wizard,Imate/Jam,Imate/Jamin,Imate/JasJar,Imate/K-Jam,Imate/SP3K,Imate/SP5" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="Alcatel,BenQ,Gigabyte,Google,Huawei,LG,Mio,MobileSorcery,Moblin,Motorola,NEC,Nokia,O2,Palm,Qtek,Sagem,Samsung,Sharp,Siemens,Sony-Ericsson,T-Mobile,Verizon,Vertu,Vodafone"/>
 </criteria>
 <properties>
 <property key="build.prefs:additional.include.paths/Debug" value=""/>
@@ -29,6 +28,7 @@
 <property key="build.prefs:memory.stack/Release" value="8"/>
 <property key="build.prefs:project.type" value=""/>
 <property key="dependency.strategy" value="0"/>
+<property key="excludes/Release" value=""/>
 <property key="symbian.uids:uid.s60v2uid" value="0x0787f26d"/>
 <property key="symbian.uids:uid.s60v3uid" value="0xe8f4e01d"/>
 <property key="template.id" value="project.maui"/>
