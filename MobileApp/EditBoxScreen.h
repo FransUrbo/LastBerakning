@@ -35,9 +35,7 @@ class EditBoxScreen : public Screen, WidgetListener {
 		~EditBoxScreen();
 
 		void keyPressEvent(int keyCode, int nativeCode);
-		void EditBoxScreen::pointerPressEvent(MAPoint2d point);
-		void selectionChanged(Widget *widget, bool selected);
-		void show();
+		void pointerPressEvent(MAPoint2d point);
 
 		Vector<EditBox*> editBox;
 		Vector<CheckBox*> checkBox;
@@ -46,8 +44,6 @@ class EditBoxScreen : public Screen, WidgetListener {
 		RadioButtonGroup* group2;
 
 	private:
-		void hide();
-
 		Screen *previous;
 
 		ListBox* listBox;
