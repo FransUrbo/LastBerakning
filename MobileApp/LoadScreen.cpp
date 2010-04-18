@@ -1,7 +1,7 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.6 2010-03-16 14:31:03 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.7 2010-04-18 19:42:04 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
@@ -33,10 +33,11 @@ LoadScreen::LoadScreen(void) {
 }
 
 LoadScreen::~LoadScreen(void) {
-	delete mainLayout;
 }
 
-void LoadScreen::keyPressEvent(int keyCode, int nativeCode) { }
+void LoadScreen::keyPressEvent(int keyCode, int nativeCode) {
+
+}
 
 void LoadScreen::drawText(int y, const char *string, int rgb)
 {
