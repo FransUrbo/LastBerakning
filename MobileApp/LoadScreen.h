@@ -1,7 +1,7 @@
 /*
  * LoadScreen.h
  *
- * $Id: LoadScreen.h,v 1.3 2010-03-16 13:55:45 turbo Exp $
+ * $Id: LoadScreen.h,v 1.4 2010-04-18 19:35:59 turbo Exp $
  */
 
 #ifndef LOADSCREEN_H_
@@ -20,12 +20,13 @@ class LoadScreen : public Screen {
 		LoadScreen();
 		~LoadScreen();
 		void keyPressEvent(int keyCode, int nativeCode);
-		void LoadScreen::drawText(int y, const char *string, int rgb);
+		void drawText(int y, const char *string, int rgb);
 
 	private:
 		Screen *previous;
-		ListBox *listBox;
+
 		Layout *mainLayout;
+		ListBox *listBox;
 };
 
 #endif /* LOADSCREEN_H_ */
