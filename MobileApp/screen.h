@@ -1,8 +1,8 @@
 /*
  * screen.h
  *
- * $Id: screen.h,v 1.12 2010-03-16 14:31:03 turbo Exp $
- * $Revision: 1.12 $
+ * $Id: screen.h,v 1.13 2010-04-18 10:43:29 turbo Exp $
+ * $Revision: 1.13 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -22,6 +22,7 @@
 
 #include "screen.h"
 #include "EditBoxScreen.h"
+#include "TouchListBox.h"
 
 #define AXLE_SINGLE		0
 #define AXLE_BOGGIE		1
@@ -50,6 +51,7 @@ class MainScreen : public Screen {
 		MainScreen();
 		~MainScreen();
 		void keyPressEvent(int keyCode);
+		void MainScreen::pointerPressEvent(MAPoint2d point);
 
 		double result_weight[3][3], result_load[3][3];
 		int main_screen_loaded;
@@ -68,7 +70,7 @@ class MainScreen : public Screen {
 		Vector<Screen*> screens;
 
 		Layout* layout;
-		ListBox* listBox;
+		TouchListBox* listBox;
 
 		// FILE[0] : BK1
 		// FILE[1] : BK2
