@@ -1,6 +1,6 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
- * $Id: LabelScreen.h,v 1.4 2010-03-16 13:12:00 turbo Exp $
+ * $Id: LabelScreen.h,v 1.5 2010-04-18 19:35:09 turbo Exp $
 */
 
 #ifndef _LABELSCREEN_H_
@@ -21,6 +21,7 @@ class LabelScreen : public Screen {
 
 	private:
 		Screen *previous;
+
 		ListBox *listBox;
 		Layout *mainLayout;
 };
