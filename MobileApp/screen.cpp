@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.17 2010-04-18 10:42:46 turbo Exp $
- * $Revision: 1.17 $
+ * $Id: screen.cpp,v 1.18 2010-04-24 09:27:17 turbo Exp $
+ * $Revision: 1.18 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -13,6 +13,7 @@
 #include "ResultScreen.h"
 #include "InfoScreen.h"
 #include "ScreenTransition.h"
+#include "SaveScreen.h"
 #include "Util.h"
 
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
@@ -43,11 +44,17 @@ MainScreen::MainScreen(void) {
 
 	screens.add(new LabelScreen(this));
 
+	trailer_screen = FALSE;
 	editBoxScreens.add(new EditBoxScreen(this));
 	screens.add(editBoxScreens[0]);
 
+	trailer_screen = TRUE;
 	editBoxScreens.add(new EditBoxScreen(this));
 	screens.add(editBoxScreens[1]);
+
+	screens.add(NULL); // ResultScreen
+
+	screens.add(new SaveScreen(this));
 
 	/* ---------------------------------- */
 	layout = createMainLayout("Välj", "Avsluta");
@@ -59,6 +66,7 @@ MainScreen::MainScreen(void) {
 	listBox->add(createLabel("Information, Bil"));
 	listBox->add(createLabel("Information, Släp"));
 	listBox->add(createLabel("Gör bruttovikts beräkning", FONTHEIGHT*2));
+//	listBox->add(createLabel("Save Information"));
 
 	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);
@@ -76,45 +84,49 @@ MainScreen::~MainScreen(void) {
 }
 
 void MainScreen::keyPressEvent(int keyCode) {
-#ifdef DEBUG2
+#if DEBUG >= 2
 		lprintfln("Keycode='%x'", keyCode);
 #endif
 
-		//A full list of the key constants is available at http://www.mosync.com/docs/2.0b1/html/maapi_8h.html
-		switch(keyCode) {
-			case MAK_SOFTRIGHT:
-			case MAK_HASH:
-				// Hash (#) key - ask the moblet to close the application
-				maExit(0);
-				break;
+	//A full list of the key constants is available at http://www.mosync.com/docs/2.0b1/html/maapi_8h.html
+	switch(keyCode) {
+		case MAK_SOFTRIGHT:
+		case MAK_HASH:
+			// Hash (#) key - ask the moblet to close the application
+			maExit(0);
+			break;
 
-			case MAK_2:
-			case MAK_UP:
-				listBox->selectPreviousItem(true); //Select the previous item on the menu
-				break;
+		case MAK_2:
+		case MAK_UP:
+			listBox->selectPreviousItem(true); //Select the previous item on the menu
+			break;
 
-			case MAK_5:
-			case MAK_SOFTLEFT:
-			case MAK_RIGHT:
-			case MAK_FIRE:
-				if(listBox->getSelectedIndex() == 4) {
-					/* ---------------------------------- */
-					doCalculations();
+		case MAK_5:
+		case MAK_SOFTLEFT:
+		case MAK_RIGHT:
+		case MAK_FIRE:
+			int index = listBox->getSelectedIndex();
 
-					/* ---------------------------------- */
-					screens[4] = new ResultScreen(this);
-				}
+			if(index == 4) {
+				/* ---------------------------------- */
+				doCalculations();
 
 				/* ---------------------------------- */
-				lprintfln("Showing screen %d", listBox->getSelectedIndex());
-				ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
-				break;
+				screens[4] = new ResultScreen(this);
+			}
 
-			case MAK_8:
-			case MAK_DOWN:
-				listBox->selectNextItem(true); //Select the next item on the menu
-				break;
-		}
+			/* ---------------------------------- */
+#if DEBUG >= 2
+			lprintfln("Showing screen %d", index);
+#endif
+			ScreenTransition::makeTransition(this, screens[index], 1, 400);
+			break;
+
+		case MAK_8:
+		case MAK_DOWN:
+			listBox->selectNextItem(true); //Select the next item on the menu
+			break;
+	}
 }
 
 void MainScreen::pointerPressEvent(MAPoint2d point) {
@@ -134,7 +146,9 @@ void MainScreen::pointerPressEvent(MAPoint2d point) {
 			}
 
 			/* ---------------------------------- */
+#if DEBUG >= 2
 			lprintfln("Showing screen (touch) %d", listBox->getSelectedIndex());
+#endif
 			ScreenTransition::makeTransition(this, screens[listBox->getSelectedIndex()], 1, 400);
 
 			break;
