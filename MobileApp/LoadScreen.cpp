@@ -1,7 +1,7 @@
 /*
  * LoadingScreen.cpp
  *
- * $Id: LoadScreen.cpp,v 1.7 2010-04-18 19:42:04 turbo Exp $
+ * $Id: LoadScreen.cpp,v 1.8 2010-04-24 11:54:57 turbo Exp $
  */
 
 #include <MAUtil/Moblet.h>
@@ -10,8 +10,9 @@
 
 #include "MAHeaders.h"
 #include "LoadScreen.h"
-#include "Util.h"
 #include "Version.h"
+#include "Language.h"
+#include "Util.h"
 
 LoadScreen::LoadScreen(void) {
 	/* ---------------------------------- */
@@ -21,11 +22,11 @@ LoadScreen::LoadScreen(void) {
 	int scrHeight = EXTENT_Y(screenSize);
 
 	/* ---------------------------------- */
-	drawText(40, "Var god vänta några sekunder...", 0xffffff);
-	drawText(60, "+ Laddar bruttoviktstabellerna.", 0xffffff);
+	drawText(40, LANG_PLEASE_WAIT, 0xffffff);
+	drawText(60, LANG_LOADING_TABLES, 0xffffff);
 
 	/* ---------------------------------- */
-	String str("Version: ");
+	String str(LANG_VERSION);
 	str.append(VERSION, strlen(VERSION));
 
 	/* ---------------------------------- */

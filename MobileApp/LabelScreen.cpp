@@ -1,20 +1,21 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.10 2010-04-24 09:24:11 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.11 2010-04-24 11:54:57 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
 
 #include "LabelScreen.h"
-#include "Util.h"
 #include "ScreenTransition.h"
+#include "Language.h"
+#include "Util.h"
 
 LabelScreen::LabelScreen(Screen *previous) : previous(previous) {
-	mainLayout = createMainLayout("", "Tillbaka");
+	mainLayout = createMainLayout("", LANG_BACK);
 	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
-	createTextField(listBox, "Vikter skrivs direkt i kilogram!");
+	createTextField(listBox, LANG_LABEL_KILO);
 
 	createTextField
 	(	listBox,

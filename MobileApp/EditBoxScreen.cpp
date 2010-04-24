@@ -18,14 +18,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.13 2010-04-24 09:23:10 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.14 2010-04-24 11:54:57 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
 
 #include "MAHeaders.h"
-#include "Util.h"
 #include "EditBoxScreen.h"
+#include "Language.h"
+#include "Util.h"
 #include "screen.h"
 
 EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
@@ -33,13 +34,13 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	int i, radio_buttons = 3;
 
 	/* Create the main work/text area */
-	mainLayout = createMainLayout("Radera", "Tillbaka");
+	mainLayout = createMainLayout(LANG_ERASE, LANG_BACK);
 	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
 	/* Create the different label/input fields */
 
 	/* ---------------------------------- */
-	label = createLabel("Tjänstevikt", (FONTHEIGHT*2)-(PADDING*2));
+	label = createLabel(LANG_KERB_WEIGHT, (FONTHEIGHT*2)-(PADDING*2));
 	editBox.add(new EditBox(0, FONTHEIGHT-(PADDING*2), label->getWidth()-PADDING*2, (FONTHEIGHT*2)-FONTHEIGHT-(PADDING*2),
 							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[0]->setDrawBackground(false);
@@ -47,7 +48,7 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max belastning, framaxel", (FONTHEIGHT*3)-(PADDING*3));
+	label = createLabel(LANG_MAXLOAD_FRONT, (FONTHEIGHT*3)-(PADDING*3));
 	editBox.add(new EditBox(0, (FONTHEIGHT*2)-(PADDING*4), label->getWidth()-PADDING*2, (FONTHEIGHT*2)-FONTHEIGHT-(PADDING*2),
 							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[1]->setDrawBackground(false);
@@ -58,7 +59,7 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	if(previous->trailer_screen)
 		radio_buttons = 4;
 
-	label = createLabel("Axeltyp, framaxel", (FONTHEIGHT+(radio_buttons*(RADIOHEIGHT+PADDING))));
+	label = createLabel(LANG_AXLETYPE_FRONT, (FONTHEIGHT+(radio_buttons*(RADIOHEIGHT+PADDING))));
 	listBox_select1 = new TouchListBox(	0, FONTHEIGHT, label->getWidth()-PADDING*2, label->getHeight(), label);
 	listBox_select1->setEnabled(true);
 	group1 = new RadioButtonGroup();
@@ -71,11 +72,11 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 
 	i = 0;
 	if(previous->trailer_screen) {
-		select1[i]->setCaption("Trailer");		select1[i]->setSkin(false);	i++;
+		select1[i]->setCaption(LANG_TRAILER_TYPE1);	select1[i]->setSkin(false);	i++;
 	}
-	select1[i]->setCaption("Enkelaxel");		select1[i]->setSkin(false);	i++;
-	select1[i]->setCaption("Boggieaxel");		select1[i]->setSkin(false);	i++;
-	select1[i]->setCaption("Trippelaxel");		select1[i]->setSkin(false);	i++;
+	select1[i]->setCaption(LANG_AXLETYPE_SINGLE);		select1[i]->setSkin(false);	i++;
+	select1[i]->setCaption(LANG_AXLETYPE_BOGGIE);		select1[i]->setSkin(false);	i++;
+	select1[i]->setCaption(LANG_AXLETYPE_TRIPPLE);		select1[i]->setSkin(false);	i++;
 
 	if(previous->trailer_screen)
 		group1->setSelectedButton(1);
@@ -84,7 +85,7 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max belastning, bakaxel", (FONTHEIGHT*3)-(PADDING*3));
+	label = createLabel(LANG_MAXLOAD_BACK, (FONTHEIGHT*3)-(PADDING*3));
 	editBox.add(new EditBox(0, (FONTHEIGHT*2)-(PADDING*4), label->getWidth()-PADDING*2, (FONTHEIGHT*2)-FONTHEIGHT-(PADDING*2),
 							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[2]->setDrawBackground(false);
@@ -92,7 +93,7 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Axeltyp, bakaxel", (FONTHEIGHT+(3*(RADIOHEIGHT+PADDING))));
+	label = createLabel(LANG_AXLETYPE_BACK, (FONTHEIGHT+(3*(RADIOHEIGHT+PADDING))));
 	listBox_select2 = new TouchListBox(	0, FONTHEIGHT, label->getWidth()-PADDING*2, label->getHeight(), label);
 	listBox_select2->setEnabled(true);
 	group2 = new RadioButtonGroup();
@@ -103,21 +104,21 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 		group2->addRadioButton(select2[i]);
 	}
 
-	select2[0]->setCaption("Enkelaxel");		select2[0]->setSkin(false);
-	select2[1]->setCaption("Boggieaxel");		select2[1]->setSkin(false);
-	select2[2]->setCaption("Trippelaxel");		select2[2]->setSkin(false);
+	select2[0]->setCaption(LANG_AXLETYPE_SINGLE);	select2[0]->setSkin(false);
+	select2[1]->setCaption(LANG_AXLETYPE_BOGGIE);	select2[1]->setSkin(false);
+	select2[2]->setCaption(LANG_AXLETYPE_TRIPPLE);	select2[2]->setSkin(false);
 
 	group2->setSelectedButton(0);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Vägvänlig fjädring", FONTHEIGHT);
+	label = createLabel(LANG_ROAD_FRIENDLY, FONTHEIGHT);
 	checkBox.add(new CheckBox(scrWidth - 50, 2, 16, 16, label));
 	checkBox[0]->setResources(RES_CHECKBOX_UNCHECKED, RES_CHECKBOX_CHECKED);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Axelavstånd", (FONTHEIGHT*2)-(PADDING*2));
+	label = createLabel(LANG_AXLE_DISTANCE, (FONTHEIGHT*2)-(PADDING*2));
 	editBox.add(new EditBox(0, FONTHEIGHT-(PADDING*2), label->getWidth()-PADDING*2, (FONTHEIGHT*2)-FONTHEIGHT-(PADDING*2),
 							label, "", 0, gFont, true, false, (FONTHEIGHT*2), EditBox::IM_NUMBERS));
 	editBox[3]->setDrawBackground(false);
@@ -125,7 +126,7 @@ EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Kopplingsavstånd", (FONTHEIGHT*2)-(PADDING*2));
+	label = createLabel(LANG_HITCH_TO_AXLE_DISTANCE, (FONTHEIGHT*2)-(PADDING*2));
 	editBox.add(new EditBox(0, FONTHEIGHT-(PADDING*2), label->getWidth()-PADDING*2, (FONTHEIGHT*2)-FONTHEIGHT-(PADDING*2),
 							label, "", 0, gFont, true, false, 8, EditBox::IM_NUMBERS));
 	editBox[4]->setDrawBackground(false);

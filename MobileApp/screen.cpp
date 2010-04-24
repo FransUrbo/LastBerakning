@@ -1,8 +1,8 @@
 /*
  * screen.cpp
  *
- * $Id: screen.cpp,v 1.18 2010-04-24 09:27:17 turbo Exp $
- * $Revision: 1.18 $
+ * $Id: screen.cpp,v 1.19 2010-04-24 11:54:57 turbo Exp $
+ * $Revision: 1.19 $
  *
  * Copyright Turbo Fredriksson <turbo@bayour.com>
  */
@@ -14,6 +14,7 @@
 #include "InfoScreen.h"
 #include "ScreenTransition.h"
 #include "SaveScreen.h"
+#include "Language.h"
 #include "Util.h"
 
 //This is the Screen class. This is what you'll see displayed on your phone. It inherits from
@@ -40,33 +41,33 @@ MainScreen::MainScreen(void) {
 	main_screen_loaded++;
 
 	/* ---------------------------------- */
+	// Create menu layout
+	layout = createMainLayout(LANG_CHOOSE, LANG_QUIT);
+	listBox = (TouchListBox*)layout->getChildren()[FIRSTCHILD];
+
+	/* ---------------------------------- */
+	// Create screens
+	listBox->add(createLabel(LANG_INFO));
 	screens.add(new InfoScreen(this));
 
+	listBox->add(createLabel(LANG_HELP));
 	screens.add(new LabelScreen(this));
 
+	listBox->add(createLabel(LANG_INFO_TRUCK));
 	trailer_screen = FALSE;
 	editBoxScreens.add(new EditBoxScreen(this));
 	screens.add(editBoxScreens[0]);
 
+	listBox->add(createLabel(LANG_INFO_TRAILER));
 	trailer_screen = TRUE;
 	editBoxScreens.add(new EditBoxScreen(this));
 	screens.add(editBoxScreens[1]);
 
-	screens.add(NULL); // ResultScreen
+	listBox->add(createLabel(LANG_CALCULATE, FONTHEIGHT*2));
+	screens.add(NULL);
 
+//	listBox->add(createLabel(LANG_INFO_SAVE));
 	screens.add(new SaveScreen(this));
-
-	/* ---------------------------------- */
-	layout = createMainLayout("Välj", "Avsluta");
-	listBox = (TouchListBox*)layout->getChildren()[FIRSTCHILD];
-
-	/* ---------------------------------- */
-	listBox->add(createLabel("Program information"));
-	listBox->add(createLabel("Hjälptexter"));
-	listBox->add(createLabel("Information, Bil"));
-	listBox->add(createLabel("Information, Släp"));
-	listBox->add(createLabel("Gör bruttovikts beräkning", FONTHEIGHT*2));
-//	listBox->add(createLabel("Save Information"));
 
 	/* ---------------------------------- */
 	listBox->setWrapping(WRAPPING);

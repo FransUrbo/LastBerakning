@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.13 2010-04-24 09:25:19 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.14 2010-04-24 11:54:57 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -14,6 +14,7 @@
 #include "EditBoxScreen.h"
 #include "ResultScreen.h"
 #include "ScreenTransition.h"
+#include "Language.h"
 #include "Util.h"
 
 ResultScreen::ResultScreen(MainScreen *previous) : previous(previous) {
@@ -21,22 +22,22 @@ ResultScreen::ResultScreen(MainScreen *previous) : previous(previous) {
 	ListBox *field;
 
 	/* Create the main work/text area */
-	mainLayout = createMainLayout("Radera", "Tillbaka");
+	mainLayout = createMainLayout(LANG_ERASE, LANG_BACK);
 	listBox = (ListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
-	label = createLabel("Väg:  Bil   +  Släp = Tåg", (FONTHEIGHT*2));
+	label = createLabel(LANG_RESULT_HEADER, (FONTHEIGHT*2));
 	listBox->add(label);
 	listBox->setEnabled(false);
 
 	/* ---------------------------------- */
-	label = createLabel("Max bruttovikt, TÅG (ton)", (FONTHEIGHT*7)-(PADDING*8));
+	label = createLabel(LANG_RESULT_MAXGROSS, (FONTHEIGHT*7)-(PADDING*8));
 	field = new ListBox(	0, (FONTHEIGHT*2)-(PADDING*4), label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	createTextFields(previous->result_weight, field);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Max Last, TÅG (ton)", (FONTHEIGHT*7)-(PADDING*9));
+	label = createLabel(LANG_RESULT_MAXLOAD, (FONTHEIGHT*7)-(PADDING*9));
 	field = new ListBox(	0, FONTHEIGHT-PADDING, label->getWidth()-PADDING*2, label->getHeight(),
 							label, ListBox::LBO_VERTICAL, ListBox::LBA_NONE, false);
 	createTextFields(previous->result_load, field);
@@ -104,12 +105,12 @@ void ResultScreen::createTextFields(double value[3][3], Widget *parent) {
 	char valstr[64];
 
 	for(int bk = 0; bk < 3; bk++) {
-		prefix  = "BK";
+		prefix  = LANG_LOAD_CLASS;
 		prefix += integerToString(bk+1);
 
 #if DEBUG >= 0
-		lprintfln("BK%d => %02.02Lf + %02.02Lf = %02.02Lf",
-				  bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+		lprintfln("%s%d => %02.02Lf + %02.02Lf = %02.02Lf",
+				  prefix.c_str(), bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
 #endif
 
 		sprintf(valstr, "%02.02Lf + %02.02Lf = %02.02Lf",

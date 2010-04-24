@@ -1,8 +1,8 @@
 /*
  * main.cpp
  *
- * $Id: main.cpp,v 1.9 2010-03-16 14:31:03 turbo Exp $
- * $Revision: 1.9 $
+ * $Id: main.cpp,v 1.10 2010-04-24 11:54:57 turbo Exp $
+ * $Revision: 1.10 $
  *
  * Program to do BKx road calculations in Sweden (EU?)
  * Copyright Turbo Fredriksson <turbo@bayour.com>
@@ -14,10 +14,11 @@
 #include <MAUtil/Moblet.h>
 
 #include "MAHeaders.h"
-#include "Util.h"
 #include "LoadScreen.h"
-#include "screen.h"
 #include "ScreenTransition.h"
+#include "Language.h"
+#include "screen.h"
+#include "Util.h"
 
 //This is the Moblet class. This manages the events your application will need, like getting
 //key presses and screen touches.
@@ -44,7 +45,7 @@ public:
 		screen = new MainScreen();
 
 		/* ------------- */
-		ls->drawText(80, "+ Laddar programmet.", 0xffffff);
+		ls->drawText(80, LANG_LOADING_PROGRAM, 0xffffff);
 
 		while(screen->main_screen_loaded != 10);
 		screen->show();

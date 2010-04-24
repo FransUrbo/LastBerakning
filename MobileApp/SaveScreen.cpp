@@ -2,28 +2,29 @@
  *
  * This screen is the save info screen.
  *
- * $Id: SaveScreen.cpp,v 1.1 2010-04-24 09:29:25 turbo Exp $
+ * $Id: SaveScreen.cpp,v 1.2 2010-04-24 11:54:57 turbo Exp $
  */
 
 #include "SaveScreen.h"
+#include "Language.h"
 
 SaveScreen::SaveScreen(Screen *previous) : previous(previous) {
 	Label *label;
 
 	/* Create the main work/text area */
-	mainLayout = createMainLayout("", "Tillbaka");
+	mainLayout = createMainLayout("", LANG_BACK);
 	listBox = (TouchListBox*) mainLayout->getChildren()[FIRSTCHILD];
 
 	/* Create the different label/input fields */
 
 	/* ---------------------------------- */
-	label = createLabel("Spara bil", FONTHEIGHT);
+	label = createLabel(LANG_SAVE_TRUCK, FONTHEIGHT);
 	checkBox.add(new CheckBox(scrWidth - 50, 2, 16, 16, label));
 	checkBox[0]->setResources(RES_CHECKBOX_UNCHECKED, RES_CHECKBOX_CHECKED);
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Spara släp", FONTHEIGHT);
+	label = createLabel(LANG_SAVE_TRAILER, FONTHEIGHT);
 	checkBox.add(new CheckBox(scrWidth - 50, 2, 16, 16, label));
 	checkBox[1]->setResources(RES_CHECKBOX_UNCHECKED, RES_CHECKBOX_CHECKED);
 	listBox->add(label);
