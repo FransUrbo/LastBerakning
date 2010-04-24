@@ -3,7 +3,7 @@
  *
  * Code to do the actuall calculations!
  *
- * $Id: ResultScreen.cpp,v 1.12 2010-04-18 20:34:41 turbo Exp $
+ * $Id: ResultScreen.cpp,v 1.13 2010-04-24 09:25:19 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -26,6 +26,7 @@ ResultScreen::ResultScreen(MainScreen *previous) : previous(previous) {
 
 	label = createLabel("Väg:  Bil   +  Släp = Tåg", (FONTHEIGHT*2));
 	listBox->add(label);
+	listBox->setEnabled(false);
 
 	/* ---------------------------------- */
 	label = createLabel("Max bruttovikt, TÅG (ton)", (FONTHEIGHT*7)-(PADDING*8));
@@ -61,7 +62,7 @@ void ResultScreen::hide() {
 }
 
 void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
-#ifdef DEBUG1
+#if DEBUG >= 2
 	lprintfln("Index: %d", listBox->getSelectedIndex());
 #endif
 
@@ -73,27 +74,27 @@ void ResultScreen::keyPressEvent(int keyCode, int nativeCode) {
 
 		case MAK_LEFT:
 		case MAK_SOFTRIGHT:
-#ifdef DEBUG1
+#if DEBUG >= 2
 			lprintfln("Showing previous screen...");
 #endif
 			ScreenTransition::makeTransition(this, previous, -1, 400);
 			break;
 
 		case MAK_UP:
-#ifdef DEBUG1
+#if DEBUG >= 2
 			lprintfln("selectPreviousItem()");
 #endif
 			listBox->selectPreviousItem();
 			break;
 
 		case MAK_DOWN:
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("selectNextItem()");
 #endif
 			listBox->selectNextItem();
 			break;
 	}
-#ifdef DEBUG1
+#if DEBUG >= 2
 	lprintfln("keyPressEvent() done...");
 #endif
 }
@@ -106,11 +107,13 @@ void ResultScreen::createTextFields(double value[3][3], Widget *parent) {
 		prefix  = "BK";
 		prefix += integerToString(bk+1);
 
-		lprintfln("BK%d => %02.02Lf + %02.02Lf =              %02.02Lf",
+#if DEBUG >= 0
+		lprintfln("BK%d => %02.02Lf + %02.02Lf = %02.02Lf",
 				  bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+#endif
 
-		sprintf(valstr, "BK%d => %02.02Lf + %02.02Lf =              %02.02Lf",
-				bk+1, value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
+		sprintf(valstr, "%02.02Lf + %02.02Lf = %02.02Lf",
+				value[TRUCK][bk], value[TRAILER][bk], value[TRAIN][bk]);
 
 		createTextField(prefix.c_str(), valstr, parent);
 	}
@@ -125,8 +128,8 @@ void ResultScreen::createTextField(const char *leader, const char *value, Widget
 	string += ": ";
 	string += value;
 
-#ifdef DEBUG1
-	lprintfln("Value: '%s'", string.c_str());
+#if DEBUG >= 1
+	lprintfln("createTextField(): string='%s'", string.c_str());
 #endif
 
 	label = new Label(0, 0, scrWidth-PADDING*2, RADIOHEIGHT*2, parent, string, 0, gFont);
