@@ -18,7 +18,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Modified by Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the main input data screen.
- * $Id: EditBoxScreen.cpp,v 1.12 2010-04-18 20:33:13 turbo Exp $
+ * $Id: EditBoxScreen.cpp,v 1.13 2010-04-24 09:23:10 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -26,13 +26,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "MAHeaders.h"
 #include "Util.h"
 #include "EditBoxScreen.h"
-#include "RadioButton.h"
-#include "RadioButtonGroup.h"
-#include "ScreenTransition.h"
 #include "screen.h"
 
-EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
+EditBoxScreen::EditBoxScreen(MainScreen *previous) : previous(previous) {
 	Label *label;
+	int i, radio_buttons = 3;
 
 	/* Create the main work/text area */
 	mainLayout = createMainLayout("Radera", "Tillbaka");
@@ -57,22 +55,32 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	listBox->add(label);
 
 	/* ---------------------------------- */
-	label = createLabel("Axeltyp, framaxel", (FONTHEIGHT+(3*(RADIOHEIGHT+PADDING))));
+	if(previous->trailer_screen)
+		radio_buttons = 4;
+
+	label = createLabel("Axeltyp, framaxel", (FONTHEIGHT+(radio_buttons*(RADIOHEIGHT+PADDING))));
 	listBox_select1 = new TouchListBox(	0, FONTHEIGHT, label->getWidth()-PADDING*2, label->getHeight(), label);
 	listBox_select1->setEnabled(true);
 	group1 = new RadioButtonGroup();
 
-	for(int i = 0; i < 3; i++) {
+	for(i = 0; i < radio_buttons; i++) {
 		select1.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*RADIOHEIGHT), label->getWidth()-PADDING*2,
 									RADIOHEIGHT, listBox_select1, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
 		group1->addRadioButton(select1[i]);
 	}
 
-	select1[0]->setCaption("Enkelaxel");		select1[0]->setSkin(false);
-	select1[1]->setCaption("Boggieaxel");		select1[1]->setSkin(false);
-	select1[2]->setCaption("Trippelaxel");		select1[2]->setSkin(false);
+	i = 0;
+	if(previous->trailer_screen) {
+		select1[i]->setCaption("Trailer");		select1[i]->setSkin(false);	i++;
+	}
+	select1[i]->setCaption("Enkelaxel");		select1[i]->setSkin(false);	i++;
+	select1[i]->setCaption("Boggieaxel");		select1[i]->setSkin(false);	i++;
+	select1[i]->setCaption("Trippelaxel");		select1[i]->setSkin(false);	i++;
 
-	group1->setSelectedButton(0);
+	if(previous->trailer_screen)
+		group1->setSelectedButton(1);
+	else
+		group1->setSelectedButton(0);
 	listBox->add(label);
 
 	/* ---------------------------------- */
@@ -89,7 +97,7 @@ EditBoxScreen::EditBoxScreen(Screen *previous) : previous(previous) {
 	listBox_select2->setEnabled(true);
 	group2 = new RadioButtonGroup();
 
-	for(int i = 0; i < 3; i++) {
+	for(i = 0; i < 3; i++) {
 		select2.add(new RadioButton(PADDING, (PADDING / 2) + ((i+1)*RADIOHEIGHT), label->getWidth()-PADDING*2,
 									RADIOHEIGHT, listBox_select2, RES_RADIOBUTTON_SELECTED, RES_RADIOBUTTON_UNSELECTED));
 		group2->addRadioButton(select2[i]);
@@ -142,7 +150,7 @@ void EditBoxScreen::selectionChanged(Widget *widget, bool selected) {
 }
 
 void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
-#ifdef DEBUG1
+#if DEBUG >= 2
 	lprintfln("Index: %d (%d / %d)", listBox->getSelectedIndex(), keyCode, nativeCode);
 #endif
 
@@ -162,12 +170,12 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			if((listBox->getSelectedIndex() == 2) || (listBox->getSelectedIndex() == 4))
 				listBox->selectNextItem();
 			else if (listBox->getSelectedIndex() == 5) {
-#ifdef DEBUG1
+#if DEBUG >= 2
 				lprintfln("Flipping checkbox...");
 #endif
 				CheckBox * cb = (CheckBox *)((Label*)listBox->getChildren()[listBox->getSelectedIndex()])->getChildren()[0];
 				cb->flip();
-#ifdef DEBUG1
+#if DEBUG >= 2
 				lprintfln("flipped...");
 #endif
 			}
@@ -183,14 +191,14 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_SOFTRIGHT:
-#ifdef DEBUG1
+#if DEBUG >= 2
 			lprintfln("Showing previous screen...");
 #endif
 			ScreenTransition::makeTransition(this, previous, -1, 400);
 			break;
 
 		case MAK_UP:
-#ifdef DEBUG1
+#if DEBUG >= 2
 			lprintfln("selectPreviousItem()");
 #endif
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() > 0))
@@ -202,7 +210,7 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 			break;
 
 		case MAK_DOWN:
-#ifdef DEBUG1
+#if DEBUG >= 2
 			lprintfln("selectNextItem()");
 #endif
 			if((listBox->getSelectedIndex() == 2) && (listBox_select1->getSelectedIndex() < 2))
@@ -213,7 +221,7 @@ void EditBoxScreen::keyPressEvent(int keyCode, int nativeCode) {
 				listBox->selectNextItem();
 			break;
 	}
-#ifdef DEBUG1
+#if DEBUG >= 2
 	lprintfln("keyPressEvent() done...");
 #endif
 }
@@ -227,12 +235,12 @@ void EditBoxScreen::pointerPressEvent(MAPoint2d point) {
 			listBox->setSelectedIndex(i);
 
 			if (listBox->getSelectedIndex() == 5) {
-#ifdef DEBUG1
+#if DEBUG >= 2
 				lprintfln("Flipping checkbox (touch)...");
 #endif
 				CheckBox * cb = (CheckBox *)((Label*)listBox->getChildren()[listBox->getSelectedIndex()])->getChildren()[0];
 				cb->flip();
-#ifdef DEBUG1
+#if DEBUG >= 2
 				lprintfln("flipped (touch)...");
 #endif
 			}
