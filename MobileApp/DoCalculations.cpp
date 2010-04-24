@@ -4,7 +4,7 @@
  * This is part of the MainScreen/screen.cpp class,
  * but in it's separate file to avoid clutter.
  *
- * $Id: DoCalculations.cpp,v 1.9 2010-03-16 13:30:19 turbo Exp $
+ * $Id: DoCalculations.cpp,v 1.10 2010-04-24 09:19:01 turbo Exp $
  */
 
 #include <MAFS/File.h>
@@ -18,10 +18,10 @@
 
 // Main calculation method
 void MainScreen::doCalculations() {
-#ifdef DEBUG2
+#if DEBUG >= 1
+#if DEBUG >= 2
 	lprintfln("------------------");
 #endif
-#ifdef DEBUG1
 	lprintfln("Doing calculations...");
 #endif
 
@@ -40,32 +40,20 @@ void MainScreen::doCalculations() {
 	fetchValues();
 
 	/* ---------------------------------- */
-// Default values for debugging purposes
-//	result_weight[BK1] = 18.0; result_weight[BK2] = 16.7; result_weight[BK3] = 14.7;
-//	result_load[BK1]   =  8.3; result_load[BK2]   =  7.0; result_load[BK3]   =  5.0;
-//
-//	truck_weight = 17800; road_nice[TRUCK] = TRUE; weicle_link[TRUCK] = 9935;
-//	weicle_load[TRUCK][FRONT] = 24000; weicle_load[TRUCK][BACK] = 24000;
-//	axle_type[TRUCK][FRONT] = AXLE_TRIPPLE; axle_type[TRUCK][BACK] = AXLE_TRIPPLE;
-//	truck_axle = "2520+2540+4185+1360+1310"; // => 11915
-//	truck_axle = "2020+3120+1360+1310";      // =>  7810
-//	truck_axle = "1310+1360+3120+2020";      // =>  7810
-
-	/* ---------------------------------- */
 	// We can't use the distance string, we need a Vector...
 	if(truck_axle) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("Truck axle dists: %s", truck_axle);
 #endif
 		weicle_dists[TRUCK]   = split("+", truck_axle);
 	}
 	if(trailer_axle) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("Trailer axle dists: %s", trailer_axle);
 #endif
 		weicle_dists[TRAILER] = split("+", trailer_axle);
 	}
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("");
 #endif
 
@@ -86,7 +74,7 @@ void MainScreen::doCalculations() {
 				total_dist = 0;
 				for(int i = 0; i < weicle_dists[type].size(); i++)
 					total_dist += weicle_dists[type][i];
-#ifdef DEBUG1
+#if DEBUG >= 1
 				lprintfln("Total dist: %Lfmm", total_dist);
 #endif
 
@@ -95,7 +83,7 @@ void MainScreen::doCalculations() {
 				GROSS_BK[type][bk] = parseTable(TABLE_DATA[bk], total_dist, bk+1);
 			} else
 				GROSS_BK[type][bk] = 0;
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("GROSS_BK[%d][BK%d] (%0.Lfm): %02.02Lf", type, bk+1, total_dist/1000, GROSS_BK[type][bk]);
 			lprintfln("");
 #endif
@@ -105,30 +93,30 @@ void MainScreen::doCalculations() {
 			/* ---------------------------------- */
 			// Get the lowest axle load allowed
 			for(int location = 0; location < 2; location++) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 				lprintfln("Getting axle load on bk=%d for type=%d, at location=%d", bk+1, type, location);
 #endif
 
 				if(weicle_load[type][location]) {
 					if(axle_type[type][location] == AXLE_SINGLE) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 						lprintfln("  single axle");
 #endif
 						if(weicle_load[type][location] <= BK[bk][location]) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 							lprintfln("    weicle_load[%d][%d] (%d) <= BK[%d][%d] (%d)",
 									type, location, weicle_load[type][location], bk, location, BK[bk][location]);
 #endif
 							load[location] = weicle_load[type][location];
 						} else {
-#ifdef DEBUG1
+#if DEBUG >= 1
 							lprintfln("    weicle_load[%d][%d] (%d) >= BK[%d][%d] (%d)",
 									type, location, weicle_load[type][location], bk, location, BK[bk][location]);
 #endif
 							load[location] = BK[bk][location];
 						}
 					} else if(axle_type[type][location] == AXLE_BOGGIE) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 						lprintfln("  boggie axle");
 #endif
 						int cnt = weicle_dists[type].size();
@@ -140,7 +128,7 @@ void MainScreen::doCalculations() {
 							load[location] = parseTable(TABLE_DATA[3], weicle_dists[type][cnt-1], bk+1) * 1000;
 						}
 					} else {
-#ifdef DEBUG1
+#if DEBUG >= 1
 						lprintfln("  tripple axle");
 #endif
 						int cnt = weicle_dists[type].size();
@@ -157,7 +145,7 @@ void MainScreen::doCalculations() {
 					load[location] = 0;
 				}
 
-#ifdef DEBUG1
+#if DEBUG >= 1
 				lprintfln("  load[%d]: %Lf", location, load[location]);
 #endif
 			}
@@ -165,7 +153,7 @@ void MainScreen::doCalculations() {
 			/* ---------------------------------- */
 			// Calculate 'axle dist' for train (front of truck to back of trailer)
 			MAX_AXLE[type][bk] = (load[FRONT] + load[BACK]) / 1000;
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("MAX_AXLE[%d][BK%d]: %02.02Lf+%02.02Lf=%02.02Lf", type, bk+1, load[FRONT]/1000, load[BACK]/1000, MAX_AXLE[type][bk]);
 			lprintfln("");
 #endif
@@ -179,7 +167,7 @@ void MainScreen::doCalculations() {
 		NR_AXLES[type] = 0;
 
 		for(int location = 0; location < 2; location++) {
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("Axle type[%d][%d]: %d", type, location, axle_type[type][location]);
 #endif
 			switch(axle_type[type][location]) {
@@ -198,11 +186,11 @@ void MainScreen::doCalculations() {
 			}
 		}
 
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("Number of axles (type=%d): %d", type, NR_AXLES[type]);
 #endif
 	}
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("");
 #endif
 
@@ -212,7 +200,7 @@ void MainScreen::doCalculations() {
 		for(int type = 0; type < 2; type++) {
 			/* ---------------------------------- */
 			// Get the lowest denominator of GROSS_BK / MAX_AXLE
-#ifdef DEBUG2
+#if DEBUG >= 2
 			lprintfln("GROSS_BK[%d][BK%d] (%02.02Lf) <= MAX_AXLE[%d][BK%d] (%02.02Lf)",
 					type, bk+1, GROSS_BK[type][bk], type, bk+1, MAX_AXLE[type][bk]);
 #endif
@@ -220,7 +208,7 @@ void MainScreen::doCalculations() {
 				LOAD[type][bk] = GROSS_BK[type][bk];
 			else
 				LOAD[type][bk] = MAX_AXLE[type][bk];
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("LOAD[%d][BK%d]: %02.02Lf", type, bk+1, LOAD[type][bk]);
 #endif
 
@@ -250,7 +238,7 @@ void MainScreen::doCalculations() {
 				LOAD[type][bk] = 0;
 			}
 
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("=> LOAD[%d][BK%d]: %02.02Lf", type, bk+1, LOAD[type][bk]);
 #endif
 		}
@@ -262,11 +250,11 @@ void MainScreen::doCalculations() {
 			LOAD[TRAIN][bk] = parseTable(TABLE_DATA[bk], (weicle_link[TRUCK] + weicle_link[TRAILER]), bk+1);
 
 		LOAD[TRAIN][bk] = LOAD[TRUCK][bk] + LOAD[TRAILER][bk];
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("=> LOAD[%d][BK%d]: %02.02Lf", TRAIN, bk+1, LOAD[TRAIN][bk]);
 #endif
 	}
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("");
 #endif
 
@@ -275,8 +263,9 @@ void MainScreen::doCalculations() {
 	double weight[3];
 	weight[TRUCK]   = (double)truck_weight/1000;
 	weight[TRAILER] = (double)trailer_weight/1000;
-#ifdef DEBUG1
-	lprintfln("truck_weight=%02.02Lf, trailer_weight=%02.02Lf", weight[TRUCK], weight[TRAILER]);
+#if DEBUG >= 1
+	lprintfln("truck_weight=%02.02Lf (%02.02Lf), trailer_weight=%02.02Lf (%02.02Lf)",
+			  truck_weight, weight[TRUCK], trailer_weight, weight[TRAILER]);
 #endif
 	for(int bk = 0; bk <= 2; bk++) {
 		result_weight[TRUCK][bk]   = LOAD[TRUCK][bk];
@@ -286,7 +275,7 @@ void MainScreen::doCalculations() {
 		result_load[TRUCK][bk]     = LOAD[TRUCK][bk] - weight[TRUCK];
 		result_load[TRAILER][bk]   = LOAD[TRAILER][bk] - weight[TRAILER];
 		result_load[TRAIN][bk]     = result_weight[TRAIN][bk] - (weight[TRUCK] + weight[TRAILER]);
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("result_weight[TRAIN][BK%d]: %02.02Lf + %02.02Lf = %02.02Lf",
 				bk+1, result_weight[TRUCK][bk], result_weight[TRAILER][bk], result_weight[TRAIN][bk]);
 		lprintfln("result_load[TRAIN][BK%d]: %02.02Lf + %02.02Lf = %02.02Lf",
@@ -294,47 +283,46 @@ void MainScreen::doCalculations() {
 #endif
 	}
 
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("------------------");
 #endif
 }
 
 // Get values from EditBox'es
-void MainScreen::fetchValues()
-{
+void MainScreen::fetchValues() {
 	/* ---------------------------------- */
 	// Get values we need - truck
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("Fetching values - truck");
 #endif
-	truck_weight                = (int)atof((const char *)editBoxScreens[0]->editBox[0]->getText().c_str());
-	weicle_load[TRUCK][FRONT]   = (int)atof((const char *)editBoxScreens[0]->editBox[1]->getText().c_str());
+	truck_weight                = getIntValue(editBoxScreens[0]->editBox[0]);
+	weicle_load[TRUCK][FRONT]   = getIntValue(editBoxScreens[0]->editBox[1]);
 	axle_type[TRUCK][FRONT]     = (int)editBoxScreens[0]->group1->getSelectedButton();
-	weicle_load[TRUCK][BACK]    = (int)atof((const char *)editBoxScreens[0]->editBox[2]->getText().c_str());
+	weicle_load[TRUCK][BACK]    = getIntValue(editBoxScreens[0]->editBox[2]);
 	axle_type[TRUCK][BACK]      = (int)editBoxScreens[0]->group2->getSelectedButton();
 	if(editBoxScreens[0]->checkBox[0]->isChecked())
 		road_nice[TRUCK]        = TRUE;
 	else
 		road_nice[TRUCK]        = FALSE;
-	truck_axle                  = (char *)editBoxScreens[0]->editBox[3]->getText().c_str();
-	weicle_link[TRUCK]          = (int)atof((const char *)editBoxScreens[0]->editBox[4]->getText().c_str());
+	truck_axle                  = getCharValue(editBoxScreens[0]->editBox[3]);
+	weicle_link[TRUCK]          = getIntValue(editBoxScreens[0]->editBox[4]);
 
 	/* ---------------------------------- */
 	// Get values we need - trailer
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("Fetching values - trailer");
 #endif
-	trailer_weight              = (int)atof((const char *)editBoxScreens[1]->editBox[0]->getText().c_str());
-	weicle_load[TRAILER][FRONT] = (int)atof((const char *)editBoxScreens[1]->editBox[1]->getText().c_str());
+	trailer_weight              = getIntValue(editBoxScreens[1]->editBox[0]);
+	weicle_load[TRAILER][FRONT] = getIntValue(editBoxScreens[1]->editBox[1]);
 	axle_type[TRAILER][FRONT]   = (int)editBoxScreens[1]->group1->getSelectedButton();
-	weicle_load[TRAILER][BACK]  = (int)atof((const char *)editBoxScreens[1]->editBox[2]->getText().c_str());
+	weicle_load[TRAILER][BACK]  = getIntValue(editBoxScreens[1]->editBox[2]);
 	axle_type[TRAILER][BACK]    = (int)editBoxScreens[1]->group2->getSelectedButton();
 	if(editBoxScreens[1]->checkBox[0]->isChecked())
 		road_nice[TRAILER]      = TRUE;
 	else
 		road_nice[TRAILER]      = FALSE;
-	trailer_axle                = (char *)editBoxScreens[1]->editBox[3]->getText().c_str();
-	weicle_link[TRAILER]        = (int)atof((const char *)editBoxScreens[1]->editBox[4]->getText().c_str());
+	trailer_axle                = getCharValue(editBoxScreens[1]->editBox[3]);
+	weicle_link[TRAILER]        = getIntValue(editBoxScreens[1]->editBox[4]);
 }
 
 // Check if front/back axle of truck is really tripple/boggie
@@ -344,20 +332,20 @@ void MainScreen::checkAxleTypeTruck()
 		// Check if front axle type really is what user claims (check distances
 		// between them). If not, override users distance claims (truck_axle)!
 		checkAxleType(weicle_dists[TRUCK], axle_type[TRUCK][FRONT], true);
-#ifdef DEBUG2
+#if DEBUG >= 2
 		for(int i=0; i < weicle_dists[TRUCK].size(); i++)
 			lprintfln("    weicle_dists[TRUCK][%d] = '%Lf'", i, weicle_dists[TRUCK][i]);
 #endif
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("    TRUCK FRONT: '%d', BACK: '%d'", axle_type[TRUCK][FRONT], axle_type[TRUCK][BACK]);
 #endif
 
 		checkAxleType(weicle_dists[TRUCK], axle_type[TRUCK][BACK], false);
-#ifdef DEBUG2
+#if DEBUG >= 2
 		for(int i=0; i < weicle_dists[TRUCK].size(); i++)
 			lprintfln("    weicle_dists[TRUCK][%d] = '%Lf'", i, weicle_dists[TRUCK][i]);
 #endif
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("    TRUCK FRONT: '%d', BACK: '%d'", axle_type[TRUCK][FRONT], axle_type[TRUCK][BACK]);
 #endif
 	}
@@ -370,20 +358,20 @@ void MainScreen::checkAxleTypeTrailer()
 		// Check if front axle type really is what user claims (check distances
 		// between them). If not, override users distance claims (trailer_axle)!
 		checkAxleType(weicle_dists[TRAILER], axle_type[TRAILER][FRONT], true);
-#ifdef DEBUG2
+#if DEBUG >= 2
 		for(int i=0; i < weicle_dists[TRAILER].size(); i++)
 			lprintfln("    weicle_dists[TRAILER][%d] = '%d'", i, weicle_dists[TRAILER][i]);
 #endif
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("    TRAILER FRONT: '%d', BACK: '%d'", axle_type[TRAILER][FRONT], axle_type[TRAILER][BACK]);
 #endif
 
 		checkAxleType(weicle_dists[TRAILER], axle_type[TRAILER][BACK], false);
-#ifdef DEBUG2
+#if DEBUG >= 2
 		for(int i=0; i < weicle_dists[TRAILER].size(); i++)
 			lprintfln("    weicle_dists[TRAILER][%d] = '%d'", i, weicle_dists[TRAILER][i]);
 #endif
-#ifdef DEBUG1
+#if DEBUG >= 1
 		lprintfln("    TRAILER FRONT: '%d', BACK: '%d'", axle_type[TRAILER][FRONT], axle_type[TRAILER][BACK]);
 #endif
 	}
@@ -392,7 +380,7 @@ void MainScreen::checkAxleTypeTrailer()
 void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool front)
 {
 	Vector<double> new_dist; // Temp variable
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("checkAxleType(axle_dists, %d, %d)", axle_type, front);
 #endif
 
@@ -401,7 +389,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 			/* ---------------------------------- */
 			case AXLE_TRIPPLE:
 				// User claims to have a TRIPPLE axle at the front of the truck.
-#ifdef DEBUG1
+#if DEBUG >= 1
 				lprintfln("  axle_type = tripple");
 #endif
 
@@ -412,7 +400,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 					// TRIPPLE + SINGLE:  1520+1540+4185
 					// TRIPPLE + BOGGIE:  1520+1540+4185+1360
 					// TRIPPLE + TRIPPLE: 1520+1540+4185+1360+1310
-#ifdef DEBUG1
+#if DEBUG >= 1
 					lprintfln("    checking front axles");
 #endif
 					if((axle_dists.size() >= 3) && ((axle_dists[0]+axle_dists[1]) > 5000)) {
@@ -436,7 +424,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 						axle_dists.remove(0);
 						axle_dists.remove(0);
 
-#ifdef DEBUG2
+#if DEBUG >= 2
 						for(int i = 0; i < axle_dists.size(); i++)
 							lprintfln("      axle_dists[%d]: %Lf", i, axle_dists[i]);
 #endif
@@ -452,7 +440,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 					// SINGLE  + TRIPPLE:           4185+1520+1540
 					// BOGGIE  + TRIPPLE:      1360+4185+1520+1540
 					// TRIPPLE + TRIPPLE: 1310+1360+4185+1520+1540
-#ifdef DEBUG1
+#if DEBUG >= 1
 					lprintfln("    checking back axles");
 #endif
 					int size = axle_dists.size();
@@ -470,7 +458,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 			/* ---------------------------------- */
 			case AXLE_BOGGIE:
 				// User claims to have a BOGGIE axle at the front of the truck.
-#ifdef DEBUG1
+#if DEBUG >= 1
 				lprintfln("  axle_type = boggie");
 #endif
 
@@ -478,7 +466,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 					// BOGGIE + SINGLE:  1360+4185
 					// BOGGIE + BOGGIE:  1360+4185+1360
 					// BOGGIE + TRIPPLE: 1360+4185+1360+1310
-#ifdef DEBUG1
+#if DEBUG >= 1
 					lprintfln("    checking front axles");
 #endif
 					if((axle_dists.size() >= 2) && (axle_dists[0] > 2000)) {
@@ -495,7 +483,7 @@ void MainScreen::checkAxleType(Vector<double> &axle_dists, int &axle_type, bool 
 					// SINGLE  + BOGGIE:           4185+1360
 					// BOGGIE  + BOGGIE:      1360+4185+1360
 					// TRIPPLE + BOGGIE: 1310+1360+4185+1360
-#ifdef DEBUG1
+#if DEBUG >= 1
 					lprintfln("    checking back axles");
 #endif
 					int size = axle_dists.size();
@@ -535,7 +523,7 @@ Vector<String> MainScreen::openTable(const char *name)
 	}
 
 	while(MA_fgets(line, 32, file)) {
-#ifdef DEBUG2
+#if DEBUG >= 2
 		lprintfln("Read line from '%s': '%s'", name, line);
 #endif
 
@@ -562,19 +550,19 @@ double MainScreen::parseTable(Vector<String> data, double dist, int road)
 	// Convert distance to meters
 	dist = dist / 1000;
 
-#ifdef DEBUG1
+#if DEBUG >= 1
 	lprintfln("parseTable(data, %Lf, BK%d)", dist, road);
 #endif
 
 	for(int i = 0; i < data.size(); i++) {
-#ifdef DEBUG2
+#if DEBUG >= 2
 		lprintfln("  data[%d]: %s", i, data[i].c_str());
 #endif
 
     	// Split up the line in three data parts
     	// Ex: 11.00<11.25=44.00
     	vals = split("+<>=,", (char *)data[i].c_str());
-#ifdef DEBUG2
+#if DEBUG >= 2
     	for(int j = 0; j < vals.size(); j++)
     		lprintfln("  vals[%d]: '%Lf'", j, vals[j]);
 #endif
@@ -593,7 +581,7 @@ double MainScreen::parseTable(Vector<String> data, double dist, int road)
     		for(; dist > x ; x += vals[2], y += vals[4]);
     		y -= vals[4];
 
-#ifdef DEBUG1
+#if DEBUG >= 1
     		lprintfln("  => axle distance > 22m (ret=%Lf)", y);
 #endif
     		return(y);
@@ -602,19 +590,19 @@ double MainScreen::parseTable(Vector<String> data, double dist, int road)
     			((dist > vals[0]) && (vals[1] == 0)) )
     		{
     			// Ex: 18.00>00.00=60.00
-#ifdef DEBUG1
+#if DEBUG >= 1
     			lprintfln("  find=%d, size=%d", data[i].find(",", 0), vals.size());
 #endif
     			if(data[i].find(",", 0) && (vals.size() == 5)) {
     				// => Boggie- or Tripple axle
     				// Ex: 02.60<00.00=24.00,22.00,13.00
-#ifdef DEBUG1
+#if DEBUG >= 1
     				lprintfln("  => boggie/tripple axle (%s) (ret=%Lf)", data[i].c_str(), vals[1+road]); // if road=1 => 24.00
 #endif
     				return(vals[1+road]);
     			} else {
     				// => Single axle
-#ifdef DEBUG1
+#if DEBUG >= 1
     				lprintfln("  => single axle (%s) (ret=%Lf)", data[i].c_str(), vals[2]);
 #endif
     				return(vals[2]);
@@ -642,7 +630,7 @@ Vector<double> MainScreen::split(const char *needles, char *heystack)
 		String value = heystack;
 		int pos = 0, j = 0;
 
-#ifdef DEBUG2
+#if DEBUG >= 2
 		lprintfln("   needles (%s) in heystack (%s):", needles, value.c_str());
 #endif
 		for(int i = 0; i < value.size(); i++) {
@@ -653,7 +641,7 @@ Vector<double> MainScreen::split(const char *needles, char *heystack)
 
 					ret_str.add(atof(val));
 
-#ifdef DEBUG2
+#if DEBUG >= 2
 					lprintfln("    Found needle %c at %2d => %d+%d=%Lf (%s)",
 							needles[j], i, pos, i-pos, ret_str[j], val);
 #endif
@@ -669,12 +657,12 @@ Vector<double> MainScreen::split(const char *needles, char *heystack)
 			val = sub.c_str();
 
 			ret_str.add(atof(val));
-#ifdef DEBUG2
+#if DEBUG >= 2
 			lprintfln("    Rest of string: '%Lf' (%s)", ret_str[j], val);
 #endif
 		}
 
-#ifdef DEBUG2
+#if DEBUG >= 2
 		lprintfln("ret_str.size(): %d, value.find(): %d", ret_str.size(), value.find("+", 0));
 #endif
 		if((ret_str.size() == 0) && (value.find("+", 0) == -1)) {
@@ -682,11 +670,47 @@ Vector<double> MainScreen::split(const char *needles, char *heystack)
 			val = sub.c_str();
 
 			ret_str.add(atof(val));
-#ifdef DEBUG1
+#if DEBUG >= 1
 			lprintfln("ret_str[0]: %Lf", ret_str[0]);
 #endif
 		}
 	}
 
 	return(ret_str);
+}
+
+int MainScreen::getIntValue(EditBox *e) {
+	int val;
+	char *str;
+	String txt;
+
+	txt = e->getText();
+	str = (char *)txt.c_str();
+	val = (int)atof(str);
+#if DEBUG >= 1
+	lprintfln("(1) val=%d, str=%s, strlen=%d, size=%d, length=%d)", val, str, strlen(str), txt.size(), txt.length());
+#endif
+
+	if(strlen(str) <= 0)
+		val = 0;
+#if DEBUG >= 1
+	lprintfln("(2) val=%d", val);
+#endif
+
+	return(val);
+}
+
+char *MainScreen::getCharValue(EditBox *e) {
+	char *str;
+	int len = e->getText().size();
+
+	if(len >= 1)
+		str = (char *)e->getText().c_str();
+	else
+		str = NULL;
+
+#if DEBUG >= 1
+	lprintfln("String size: %d (%s)", len, str);
+#endif
+	return(str);
 }
