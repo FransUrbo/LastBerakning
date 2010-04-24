@@ -1,7 +1,7 @@
 /* Copyright (C) 2010 Turbo Fredriksson <turbo@bayour.com>
  *
  * This screen is the help text screen.
- * $Id: LabelScreen.cpp,v 1.9 2010-04-18 19:42:04 turbo Exp $
+ * $Id: LabelScreen.cpp,v 1.10 2010-04-24 09:24:11 turbo Exp $
  */
 
 #include <conprint.h> /* lprintfln() */
@@ -129,7 +129,9 @@ void LabelScreen::keyPressEvent(int keyCode, int nativeCode) {
 
 		case MAK_SOFTRIGHT:
 		case MAK_LEFT:
+#if DEBUG >= 2
 			lprintfln("Showing previous screen...");
+#endif
 			ScreenTransition::makeTransition(this, previous, -1, 400);
 			break;
 

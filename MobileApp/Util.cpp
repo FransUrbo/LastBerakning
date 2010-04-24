@@ -47,7 +47,7 @@ Widget* createSoftKeyBar(int height, const char *left, const char *right) {
 	Layout *mainLayout;
 	Label *label;
 	TouchListBox *listBoxL, *listBoxR;
-#ifdef DEBUG2
+#if DEBUG >= 2
 	lprintfln("Screen Width=%d, Height=%d, Left=%s, Right=%s", scrWidth, height, left, right);
 #endif
 
