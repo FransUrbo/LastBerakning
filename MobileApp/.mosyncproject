@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project supports-build-configs="true" version="1">
-<build.cfg id="Debug"/>
-<build.cfg id="Release"/>
+<build.cfg id="Debug" types="Debug"/>
+<build.cfg id="Release" types="Release"/>
 <criteria>
 <filter profiles="Acer/E101,HTC/Bravo,HTC/Diamond,HTC/Dream,HTC/Excalibur,HTC/G1,HTC/G1_1.1,HTC/HD2 T8585,HTC/Hermes,HTC/Hero,HTC/Himalaya,HTC/Magic,HTC/Mega,HTC/P3600,HTC/P3650,HTC/P3700,HTC/P4550,HTC/Polaris,HTC/S620,HTC/S621,HTC/S720,HTC/ST7377,HTC/Salsa,HTC/Snap,HTC/StarTrek,HTC/T7272,HTC/T8282,HTC/Tattoo,HTC/Tide,HTC/Tilt,HTC/Titan,HTC/Tornado,HTC/Touch2,HTC/TouchCruise,HTC/TouchPro,HTC/Trinity,HTC/TyTN,HTC/Universal,HTC/Vox,HTC/Wizard,Imate/Jam,Imate/Jamin,Imate/JasJar,Imate/K-Jam,Imate/SP3K,Imate/SP5" require="0" type="com.mobilesorcery.mosync.filters.profile" vendors="Alcatel,BenQ,Gigabyte,Google,Huawei,LG,Mio,MobileSorcery,Moblin,Motorola,NEC,Nokia,O2,Palm,Qtek,Sagem,Samsung,Sharp,Siemens,Sony-Ericsson,T-Mobile,Verizon,Vertu,Vodafone"/>
 </criteria>
