@@ -26,12 +26,14 @@
 #include "CheckBox.h"
 #include "RadioButton.h"
 #include "RadioButtonGroup.h"
+#include "ScreenTransition.h"
 
 using namespace MAUI;
 
+class MainScreen;
 class EditBoxScreen : public Screen, WidgetListener {
 	public:
-		EditBoxScreen(Screen *previous);
+		EditBoxScreen(MainScreen *previous);
 		~EditBoxScreen();
 
 		void selectionChanged(Widget *widget, bool selected);
